@@ -1,0 +1,81 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment and secrets
+.env.local
+.env.*.local
+*.pem
+*.key
+*.crt
+*.pfx
+openbao-data/
+vault-data/
+step-ca-data/
+
+# Model weights and artifacts
+models/*.gguf
+models/*.bin
+models/*.safetensors
+!models/.gitkeep
+
+# Ledger state and runtime data
+data/ledger/
+data/telemetry/
+data/sqlite/
+*.sqlite
+*.db
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Competition source documents & internal tracking (Never commit)
+Bayora PRD.md
+Hack_in_Hills_26_PS04_Bayora.pdf
+task.md

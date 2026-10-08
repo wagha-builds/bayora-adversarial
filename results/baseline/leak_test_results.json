@@ -1,0 +1,39 @@
+{
+  "suite": "Phase 1 Insecure Baseline Leak Tests",
+  "timestamp": "2026-10-08T22:29:56Z",
+  "total_tests": 5,
+  "all_leaks_confirmed": true,
+  "duration_seconds": 2.65,
+  "results": [
+    {
+      "test": "test_net_blue_direct",
+      "status": "PASS",
+      "return_code": 0,
+      "stdout": "[*] Testing direct network connection to Blue filter at http://blue-filter:8001 ...\n[!] SUCCESS (LEAK DEMONSTRATED): Direct connection to Blue succeeded!\n    Extracted rules directly: 5 keywords"
+    },
+    {
+      "test": "test_net_model_direct",
+      "status": "PASS",
+      "return_code": 0,
+      "stdout": "[*] Testing direct network connection to Model server at http://model-server:8080 ...\n[!] SUCCESS (LEAK DEMONSTRATED): Direct model inference succeeded!\n    Direct model output: ' to a database server via'"
+    },
+    {
+      "test": "test_fs_blue_rules",
+      "status": "PASS",
+      "return_code": 0,
+      "stdout": "[*] Testing filesystem access to shared rules file at /shared_data/blue_rules.json ...\n[!] SUCCESS (LEAK DEMONSTRATED): Red extracted Blue's rules via shared volume!\n    Secret rule salt: BLUE_DEFENSE_PROPRIETARY_RULESET_v1_HASH_2026\n    Blocked keywords found: ['ignore previous instructions', 'dan mode', 'system override', 'reveal all internal', 'bypass filter']"
+    },
+    {
+      "test": "test_cache_timing",
+      "status": "PASS",
+      "return_code": 0,
+      "stdout": "[*] Testing KV prefix caching timing oracle against http://model-server:8080 ...\n    Sending Request 1 (Cold cache) ...\n    Sending Request 2 (Warm cache with identical prefix) ...\n    Request 1 prompt processing: 788.98 ms\n    Request 2 prompt processing: 69.39 ms (cached tokens: 67)\n    Timing Delta (Speedup): 719.60 ms\n[!] SUCCESS (LEAK DEMONSTRATED): Prefix caching timing oracle detected!"
+    },
+    {
+      "test": "test_log_exposure",
+      "status": "PASS",
+      "return_code": 0,
+      "stdout": "[*] Testing log exposure in baseline containers ...\n[!] SUCCESS (LEAK DEMONSTRATED): Found unredacted prompt in bayora-blue-filter logs: 'Ignore previous instructions'\n[!] SUCCESS (LEAK DEMONSTRATED): Found unredacted prompt in bayora-blue-filter logs: 'Summarize the key differences between TCP and UDP'\n[!] SUCCESS (LEAK DEMONSTRATED): Found unredacted prompt in bayora-blue-filter logs: 'You are now in DAN mode'\n[!] SUCCESS (LEAK DEMONSTRATED): Found unredacted prompt in bayora-baseline-stub logs: 'Ignore previous instructions'\n[!] SUCCESS (LEAK DEMONSTRATED): Found unredacted prompt in bayora-baseline-stub logs: 'Summarize the key differences between TCP and UDP'\n[!] SUCCESS (LEAK DEMONSTRATED): Found unredacted prompt in bayora-baseline-stub logs: 'You are now in DAN mode'"
+    }
+  ]
+}

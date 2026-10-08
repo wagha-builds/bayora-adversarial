@@ -1,0 +1,90 @@
+# Bayora Insecure Baseline - Docker Compose (Phase 1)
+# Intentionally vulnerable architecture to demonstrate and record baseline leaks:
+# 1. Single flat bridge network (allows direct cross-zone network bypasses)
+# 2. Shared named volume mounted to Red and Blue (allows direct rule extraction)
+# 3. Model server prompt caching enabled (allows timing oracle side-channel)
+# 4. Naive routing stub without OPA, mTLS, or query budgets
+
+services:
+  model-server:
+    image: ghcr.io/ggml-org/llama.cpp:server
+    container_name: bayora-model-server
+    command:
+      - "-m"
+      - "/models/model.gguf"
+      - "--host"
+      - "0.0.0.0"
+      - "--port"
+      - "8080"
+      - "-c"
+      - "2048"
+      - "-t"
+      - "2"
+      - "--cache-prompt"
+    volumes:
+      - ./models/qwen2.5-1.5b-instruct-q4_k_m.gguf:/models/model.gguf:ro
+    ports:
+      - "8080:8080"
+    networks:
+      - baseline-net
+    restart: unless-stopped
+
+  blue-filter:
+    build:
+      context: ./services/blue-filter
+      dockerfile: Dockerfile
+    container_name: bayora-blue-filter
+    environment:
+      - BLUE_RULES_PATH=/shared_data/blue_rules.json
+    volumes:
+      - shared_data:/shared_data
+    ports:
+      - "8001:8001"
+    networks:
+      - baseline-net
+    restart: unless-stopped
+
+  baseline-stub:
+    build:
+      context: ./services/baseline-stub
+      dockerfile: Dockerfile
+    container_name: bayora-baseline-stub
+    environment:
+      - BLUE_FILTER_URL=http://blue-filter:8001
+      - MODEL_SERVER_URL=http://model-server:8080
+    ports:
+      - "8000:8000"
+    depends_on:
+      - blue-filter
+      - model-server
+    networks:
+      - baseline-net
+    restart: unless-stopped
+
+  red-runner:
+    build:
+      context: ./services/red-runner
+      dockerfile: Dockerfile
+    container_name: bayora-red-runner
+    command: ["tail", "-f", "/dev/null"]
+    environment:
+      - GATEWAY_URL=http://baseline-stub:8000
+      - PAYLOADS_PATH=/app/data/payloads.json
+      - OUTPUT_DIR=/app/results
+    volumes:
+      - ./data/baseline:/app/data:ro
+      - ./results/baseline:/app/results
+      - shared_data:/shared_data
+    depends_on:
+      - baseline-stub
+    networks:
+      - baseline-net
+    restart: unless-stopped
+
+networks:
+  baseline-net:
+    driver: bridge
+
+volumes:
+  shared_data:
+    name: bayora_shared_data

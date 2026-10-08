@@ -1,0 +1,2 @@
+# This directory holds downloaded GGUF model weights.
+# Weights are explicitly ignored by .gitignore and should never be committed.

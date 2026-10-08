@@ -1,0 +1,14 @@
+{
+  "version": "1.0-baseline",
+  "policy_name": "naive_keyword_filter",
+  "description": "Naive static keyword filter representing vulnerable baseline defender",
+  "blocked_keywords": [
+    "ignore previous instructions",
+    "dan mode",
+    "system override",
+    "reveal all internal",
+    "bypass filter"
+  ],
+  "action_on_match": "BLOCK",
+  "secret_rule_salt": "BLUE_DEFENSE_PROPRIETARY_RULESET_v1_HASH_2026"
+}

@@ -1,7 +1,7 @@
 # Bayora — Adversarial AI Evaluation Platform
 
 > **Proof of Concept: Hardened Five-Zone Sandbox for Adversarial LLM Safety Evaluations**  
-> *Project Phase: Phase 0 — Alignment + Threat Model (Documentation Only)*
+> *Project Status: Phase 1 (Insecure Baseline) Completed | Entering Phase 2 (Hardening)*
 
 ---
 
@@ -61,7 +61,7 @@ All workloads exist within strictly partitioned network and computational zones:
 
 ---
 
-## 4. Documentation Index (Phase 0 Deliverables)
+## 4. Documentation & Deliverables
 
 All Phase 0 artifacts live in the [`docs/`](docs/) directory:
 
@@ -77,13 +77,23 @@ All Phase 0 artifacts live in the [`docs/`](docs/) directory:
 - **Project Tracking:**
   - [`task.md`](task.md): Master sub-task tracker and execution status.
 
+### Phase 1 (Insecure Baseline) Deliverables
+- **Architecture**: A naive, unsegmented Docker Compose stack representing the typical "Current Insecure State" without our Five-Zone protections.
+- **Automated Leak Tests** (`tests/baseline/`): Successfully developed and executed 5 targeted exploit scripts proving the following vulnerabilities exist in the unhardened state:
+  1. `test_net_blue_direct`: Red directly queries Blue, bypassing the Gateway.
+  2. `test_net_model_direct`: Red directly queries the Model, bypassing the Gateway.
+  3. `test_fs_blue_rules`: Red reads sensitive Blue configuration via shared volumes.
+  4. `test_cache_timing`: Red exploits the Model KV cache for a side-channel timing oracle.
+  5. `test_log_exposure`: Unredacted stdout allows cross-container log snooping.
+- **Metrics Dashboard**: Captured initial unhardened latency and throughput metrics (stored in `results/baseline/`).
+
 ---
 
 ## 5. Development Roadmap
 
-- **Phase 0:** Alignment & Threat Model *(CURRENT)*
-- **Phase 1:** Insecure Baseline (Docker Compose single network — demonstrating vulnerabilities)
-- **Phase 2:** Five-Zone Network Isolation (Docker bridge networks, internal DNS, unskippable Gateway)
+- **Phase 0:** Alignment & Threat Model ✅
+- **Phase 1:** Insecure Baseline (Docker Compose single network — demonstrating vulnerabilities) ✅
+- **Phase 2:** Five-Zone Network Isolation (Docker bridge networks, internal DNS, unskippable Gateway) *(CURRENT)*
 - **Phase 3:** OS & Kernel Hardening (gVisor `runsc`, seccomp, AppArmor, `nftables`, dedicated cpusets)
 - **Phase 4:** Identity, Secrets & Policy (OpenBao, `step-ca` mTLS, OPA ABAC engine)
 - **Phase 5:** Audit Ledger & External Anchoring (SHA-256 hash chain, Ed25519 signing, Git anchor)

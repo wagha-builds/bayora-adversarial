@@ -1,0 +1,126 @@
+{
+  "test_name": "Resource Contention Distortion (Baseline)",
+  "framework_phase": "Phase 1 - Insecure Baseline",
+  "environment": "PROVISIONAL_WSL2_LAPTOP",
+  "host_cores_detected": 16,
+  "host_memory_kb": "7983704",
+  "requests_per_condition": 15,
+  "results_alternating": {
+    "unloaded_1": {
+      "p50_ms": 3237.08,
+      "p95_ms": 3397.19,
+      "max_ms": 3397.19,
+      "outcomes": {
+        "completed": 15,
+        "blue_timeout": 0,
+        "model_timeout": 0,
+        "error": 0,
+        "blue_timeout_passed": 0
+      },
+      "raw_latencies_ms": [
+        3360.96,
+        3191.85,
+        3163.46,
+        3377.43,
+        3136.55,
+        3178.08,
+        3136.41,
+        3312.76,
+        3333.11,
+        3384.66,
+        3349.89,
+        3397.19,
+        3083.46,
+        3237.08,
+        3068.94
+      ]
+    },
+    "loaded_1": {
+      "p50_ms": 5371.7,
+      "p95_ms": 6016.71,
+      "max_ms": 6016.71,
+      "outcomes": {
+        "completed": 15,
+        "blue_timeout": 0,
+        "model_timeout": 0,
+        "error": 0,
+        "blue_timeout_passed": 0
+      },
+      "raw_latencies_ms": [
+        4068.83,
+        4444.24,
+        4308.08,
+        4084.59,
+        4247.8,
+        4134.83,
+        5371.7,
+        5286.07,
+        5968.74,
+        5760.38,
+        6016.71,
+        5617.34,
+        5873.14,
+        5856.57,
+        5817.16
+      ]
+    },
+    "loaded_2": {
+      "p50_ms": 4838.92,
+      "p95_ms": 7770.37,
+      "max_ms": 7770.37,
+      "outcomes": {
+        "completed": 15,
+        "blue_timeout": 0,
+        "model_timeout": 0,
+        "error": 0,
+        "blue_timeout_passed": 0
+      },
+      "raw_latencies_ms": [
+        6275.76,
+        5641.67,
+        6197.57,
+        6161.04,
+        7770.37,
+        6005.99,
+        5044.33,
+        4838.92,
+        4710.84,
+        4645.05,
+        4406.83,
+        4280.15,
+        4091.66,
+        4096.37,
+        4199.65
+      ]
+    },
+    "unloaded_2": {
+      "p50_ms": 3129.84,
+      "p95_ms": 3362.45,
+      "max_ms": 3362.45,
+      "outcomes": {
+        "completed": 15,
+        "blue_timeout": 0,
+        "model_timeout": 0,
+        "error": 0,
+        "blue_timeout_passed": 0
+      },
+      "raw_latencies_ms": [
+        3110.66,
+        3156.39,
+        3090.46,
+        3151.21,
+        3157.96,
+        3119.26,
+        3231.29,
+        3126.2,
+        3173.62,
+        3148.46,
+        3129.84,
+        3091.09,
+        3068.31,
+        3090.0,
+        3362.45
+      ]
+    }
+  }
+}

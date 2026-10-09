@@ -225,17 +225,26 @@ For Phase 2+ to compare against, Phase 1 will record:
 
 ---
 
-## Current Phase: Phase 2 — Container Hardening & VM Migration
+## Current Phase: Phase 2 — Container Hardening & Local VM Execution
 **Status:** PLANNING
-**Objective:** Transition to the target Oracle VM, capture the definitive hardware baseline, and implement OS/Kernel-level container hardening (gVisor, AppArmor, seccomp).
+**Objective:** Transition to a full, dedicated Linux VM environment (Local Ubuntu 24.04 LTS on VMware Workstation / VirtualBox), capture the definitive native hardware baseline, and implement OS/Kernel-level container hardening (gVisor runsc, AppArmor, seccomp). Treat Oracle Cloud ARM64 as a possible later migration target.
+
+**VM Environment & Sizing (Host: i5-13450HX 10c/16t, 16 GB RAM):**
+- **Hypervisor:** VMware Workstation Pro 17+ (Free Personal) or VirtualBox 7.0+ (Windows 11 Home lacks Hyper-V Manager).
+- **VM Sizing:** 6 vCPUs, 8 GB RAM (leaves 8 GB for Windows 11 to avoid host memory exhaustion/swapping), 60 GB dynamic disk.
+- **Networking:** NAT with SSH port forwarding (e.g. host 127.0.0.1:2222 -> VM 22) or Host-Only. Avoid bridged network onto LAN.
+- **Automated Provisioning:** Use `scripts/provision-host.sh` for architecture-aware setup (Docker, gVisor `runsc`, AppArmor, cgroup v2 verification).
+- **Results Storage:** Store results per host (`results/baseline/local-ubuntu-vm/` and later `results/baseline/oracle-arm64/`).
 
 **Key Tasks:**
-- [ ] **Phase 2.0: Target Environment Migration & Native Re-Baselining:** Provision Oracle Cloud ARM64 VM (or local Ubuntu 24.04 VM fallback). Ensure SSH-only access and localhost-bound Docker ports.
-- [ ] **Phase 2.0 Definition of Done:**
-  - Docker is installed, cgroup v2 confirmed, `docker run --runtime=runsc hello-world` works, and `aa-status` shows AppArmor is available.
-  - The Phase 1 stack runs unchanged on the native VM.
-  - All five leak tests, the latency benchmark, the cache-timing test, and the contention test have been re-run with host details recorded.
-  - Tagged `phase2.0-vm-baseline`.
+- [ ] **Phase 2.0: Target Environment Setup & Native Re-Baselining:**
+  - Spin up local Ubuntu 24.04 LTS VM with recommended sizing and SSH forwarding.
+  - Run `scripts/provision-host.sh` to install Docker, gVisor (`runsc`), AppArmor utilities, and verify `cgroup v2`.
+  - Clone repository via read-only deploy key or git archive.
+  - Run the unchanged Phase 1 stack natively on the VM.
+  - Re-run all five leak tests, latency benchmark, cache-timing test, and contention test natively.
+  - Record host fingerprint and save results to `results/baseline/local-ubuntu-vm/`.
+  - Tag `phase2.0-vm-baseline`.
 - [ ] **Phase 2.1:** Implement gVisor (`runsc`) for Red Team and Model containers.
 - [ ] **Phase 2.2:** Implement `seccomp` profiles and `AppArmor`.
 - [ ] **Phase 2.3:** Drop capabilities and remove shared volumes.

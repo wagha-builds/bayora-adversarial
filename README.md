@@ -104,3 +104,13 @@ All Phase 0 artifacts live in the [`docs/`](docs/) directory:
 - **Phase 8:** Real-time Monitoring & Telemetry (Falco eBPF, Prometheus, Grafana)
 - **Phase 9:** Stress Testing & Edge Cases (High concurrency, network partitions, resource exhaustion)
 - **Phase 10:** Final Polish & Single-Command Deployment (`make up`, demo walkthrough)
+
+---
+
+## 6. Team & Contributions
+
+This project is being developed by a 3-member team for the **Hack in the Hills 26 PS04 Bayora** hackathon. The current roles and planned contributions are structured as follows:
+
+- **Akshaya (Lead Developer):** Leading the core architecture, threat modeling, and current implementation. Responsible for Phase 0 (Alignment) and Phase 1 (Baseline), and actively executing the current Phase 2 (Hardening) and Phase 3 (Network Isolation) objectives.
+- **[Member 2 Name] (Contributing Developer):** Assigned to implement upcoming critical security infrastructure. Will be taking ownership of future phases, specifically focusing on Phase 4 (Identity, Secrets & Policy via OpenBao/OPA) and Phase 5 (Audit Ledger & External Anchoring) once the foundational hardening is complete.
+- **[Member 3 Name] (Developer & Evangelist):** Focused on project documentation, ideation, and external presentation. Major responsibilities include creating the pitch deck (PPT), prototype demo videos, and driving social pitching (LinkedIn, Instagram reels) to showcase the platform's capabilities to judges and the community.

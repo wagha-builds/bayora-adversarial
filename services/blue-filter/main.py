@@ -93,8 +93,15 @@ def evaluate_prompt(req: FilterRequest):
 
     rules = load_rules()
     blocked_keywords = rules.get("blocked_keywords", [])
+    import time
+    
     prompt_lower = req.prompt.lower()
-
+    
+    # R-19 Test Hook: Only enabled if environment variable is set
+    if "simulate_slow_filter_r19" in prompt_lower and os.environ.get("ENABLE_R19_TEST_HOOK") == "1":
+        logger.warning("Simulating 35s slow filter for R-19 test...")
+        time.sleep(35)
+        
     for kw in blocked_keywords:
         if kw.lower() in prompt_lower:
             logger.warning("PROMPT BLOCKED! Keyword matched: '%s'", kw)

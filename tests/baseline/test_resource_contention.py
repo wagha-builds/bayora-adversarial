@@ -41,7 +41,7 @@ def run_workload(condition_name, num_requests):
     }
     
     for i in range(num_requests):
-        # Append unique UUID to prevent KV cache from masking contention time
+        # Append unique UUID to force full prompt processing (controls for cache effects)
         prompt = f"{BASE_PROMPT} [Salt: {uuid.uuid4().hex}]"
         
         req = urllib.request.Request(

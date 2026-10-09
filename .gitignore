@@ -75,7 +75,6 @@ htmlcov/
 Thumbs.db
 desktop.ini
 
-# Competition source documents & internal tracking (Never commit)
+# Competition source documents (Never commit)
 Bayora PRD.md
 Hack_in_Hills_26_PS04_Bayora.pdf
-task.md

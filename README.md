@@ -87,18 +87,20 @@ All Phase 0 artifacts live in the [`docs/`](docs/) directory:
   5. `test_log_exposure`: Unredacted stdout allows cross-container log snooping.
 - **Metrics Dashboard**: Captured initial unhardened latency and throughput metrics (stored in `results/baseline/`).
 
+> **Note on Tagging:** The initial local tag `phase1-baseline` was moved once during final test adjustments. To ensure reproducible history, the final, completely verified Phase 1 baseline state should be tagged as `phase1-baseline-v2`.
+
 ---
 
 ## 5. Development Roadmap
 
 - **Phase 0:** Alignment & Threat Model ✅
 - **Phase 1:** Insecure Baseline (Docker Compose single network — demonstrating vulnerabilities) ✅
-- **Phase 2:** Five-Zone Network Isolation (Docker bridge networks, internal DNS, unskippable Gateway) *(CURRENT)*
-- **Phase 3:** OS & Kernel Hardening (gVisor `runsc`, seccomp, AppArmor, `nftables`, dedicated cpusets)
+- **Phase 2:** Container Hardening & VM Migration (Oracle VM baseline, gVisor `runsc`, AppArmor, seccomp) *(CURRENT)*
+- **Phase 3:** Five-Zone Network Isolation (Docker bridge networks, internal DNS, `nftables`)
 - **Phase 4:** Identity, Secrets & Policy (OpenBao, `step-ca` mTLS, OPA ABAC engine)
 - **Phase 5:** Audit Ledger & External Anchoring (SHA-256 hash chain, Ed25519 signing, Git anchor)
 - **Phase 6:** LLM Hardening (llama.cpp stateless configuration, uniform refusal, cache timing mitigation)
-- **Phase 7:** Automated Test Harness (Side-channel probes, policy bypass tests, ledger verification)
+- **Phase 7:** Automated Test Harness & Resource Governance (Side-channel probes, policy bypass tests, ledger verification, dedicated cpusets)
 - **Phase 8:** Real-time Monitoring & Telemetry (Falco eBPF, Prometheus, Grafana)
 - **Phase 9:** Stress Testing & Edge Cases (High concurrency, network partitions, resource exhaustion)
 - **Phase 10:** Final Polish & Single-Command Deployment (`make up`, demo walkthrough)

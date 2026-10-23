@@ -7,6 +7,7 @@ This document tracks architectural decisions, environment specifications, and th
 - **Host Specs & VM Sizing:**
   - Host: 13th Gen Intel Core i5-13450HX (10 cores / 16 threads, 16 GB RAM).
   - VM Configuration: **6 vCPUs, 8 GB RAM** (avoids Windows 11 host paging/swapping), **60 GB dynamic disk**.
+  - **Limitation Note:** Windows dynamically schedules VM threads across P-cores (with hyperthreading) and E-cores. vCPUs are not pinned to physical P-cores, meaning timing results (especially contention) will have noise/variance and are considered provisional.
   - Networking: NAT with forwarded SSH port (e.g., host `127.0.0.1:2222` -> VM `22`) or Host-Only. Do not bridge onto LAN.
 - **Oracle ARM64 Strategy:** Treat Oracle OCI as a future migration target rather than a blocker. If/when Oracle capacity is provisioned, migrate only at a phase boundary.
 - **Host-Separated Evidence Storage:**

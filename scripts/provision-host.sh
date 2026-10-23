@@ -115,10 +115,12 @@ cat <<EOF > "${FINGERPRINT_FILE}"
   "kernel": "$(uname -r)",
   "cpu_model": "$(lscpu | grep 'Model name' | sed 's/Model name:[ \t]*//' || echo 'Unknown')",
   "vcpus": $(nproc),
+  "vcpu_notes": "vCPUs are not pinned to P-cores; host scheduling may cause variance. Results are provisional.",
   "total_memory_kb": $(grep MemTotal /proc/meminfo | awk '{print $2}'),
   "cgroup_version": "${CGROUP_TYPE}",
   "docker_version": "$(docker --version 2>/dev/null || echo 'Unknown')",
-  "runsc_version": "$(runsc --version 2>/dev/null | head -n 1 || echo 'Unknown')"
+  "runsc_version": "$(runsc --version 2>/dev/null | head -n 1 || echo 'Unknown')",
+  "host_tuning_notes": "NOT_RECORDED"
 }
 EOF
 

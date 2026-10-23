@@ -1,0 +1,134 @@
+# bayora-compose-config.txt
+# Rendered docker compose config — Step 15.2
+# Captured: 2026-10-23T15:19:xx UTC
+# Command: docker compose config (from ~/bayora_adversarial)
+# Guest: wagha__ @ Ubuntu 24.04.5 LTS
+
+name: bayora_adversarial
+services:
+  baseline-stub:
+    restart: unless-stopped
+    container_name: bayora-baseline-stub
+    environment:
+      BLUE_FILTER_URL: http://blue-filter:8001
+      MODEL_SERVER_URL: http://model-server:8080
+    networks:
+      baseline-net: null
+    build:
+      context: /home/wagha__/bayora_adversarial/services/baseline-stub
+      dockerfile: Dockerfile
+    depends_on:
+      blue-filter:
+        condition: service_started
+        required: true
+      model-server:
+        condition: service_started
+        required: true
+    ports:
+      - mode: ingress
+        target: 8000
+        published: "8000"
+        protocol: tcp
+  blue-filter:
+    restart: unless-stopped
+    container_name: bayora-blue-filter
+    environment:
+      BLUE_RULES_PATH: /shared_data/blue_rules.json
+    networks:
+      baseline-net: null
+    volumes:
+      - type: volume
+        source: shared_data
+        target: /shared_data
+        volume: {}
+    build:
+      context: /home/wagha__/bayora_adversarial/services/blue-filter
+      dockerfile: Dockerfile
+    ports:
+      - mode: ingress
+        target: 8001
+        published: "8001"
+        protocol: tcp
+  model-server:
+    restart: unless-stopped
+    container_name: bayora-model-server
+    command:
+      - -m
+      - /models/model.gguf
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - -c
+      - "2048"
+      - -t
+      - "2"
+      - --cache-prompt
+    image: ghcr.io/ggml-org/llama.cpp:server
+    networks:
+      baseline-net: null
+    volumes:
+      - type: bind
+        source: /home/wagha__/bayora_adversarial/models/qwen2.5-1.5b-instruct-q4_k_m.gguf
+        target: /models/model.gguf
+        read_only: true
+        bind: {}
+    ports:
+      - mode: ingress
+        target: 8080
+        published: "8080"
+        protocol: tcp
+  red-runner:
+    restart: unless-stopped
+    container_name: bayora-red-runner
+    command:
+      - tail
+      - -f
+      - /dev/null
+    environment:
+      GATEWAY_URL: http://baseline-stub:8000
+      OUTPUT_DIR: /app/results
+      PAYLOADS_PATH: /app/data/payloads.json
+    networks:
+      baseline-net: null
+    volumes:
+      - type: bind
+        source: /home/wagha__/bayora_adversarial/data/baseline
+        target: /app/data
+        read_only: true
+        bind: {}
+      - type: bind
+        source: /home/wagha__/bayora_adversarial/results/baseline
+        target: /app/results
+        bind: {}
+      - type: volume
+        source: shared_data
+        target: /shared_data
+        volume: {}
+    build:
+      context: /home/wagha__/bayora_adversarial/services/red-runner
+      dockerfile: Dockerfile
+    depends_on:
+      baseline-stub:
+        condition: service_started
+        required: true
+networks:
+  baseline-net:
+    name: bayora_adversarial_baseline-net
+    driver: bridge
+volumes:
+  shared_data:
+    name: bayora_shared_data
+
+# PORT EXPOSURE ANALYSIS:
+# baseline-stub publishes 8000 (mode: ingress, no explicit bind address → Docker default 0.0.0.0)
+# blue-filter   publishes 8001 (mode: ingress, no explicit bind address → Docker default 0.0.0.0)
+# model-server  publishes 8080 (mode: ingress, no explicit bind address → Docker default 0.0.0.0)
+# red-runner    has NO published ports.
+#
+# INTENTIONAL BASELINE BEHAVIOUR (per docker-compose.yml header comment and task.md):
+# These 0.0.0.0 bindings are deliberate insecure-baseline leaks required by the PRD.
+# VirtualBox NAT isolates them from the Windows LAN — only the single forwarding rule
+# (127.0.0.1:2222 -> guest:22) exists. Ports 8000/8001/8080 are NOT forwarded to Windows.
+# They are accessible only within the guest and between containers on baseline-net.
+# DO NOT change these bindings — they are the target of leak tests SEC-008 and LLM-001.

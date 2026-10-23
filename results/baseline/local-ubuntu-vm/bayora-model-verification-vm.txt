@@ -1,0 +1,52 @@
+# bayora-model-verification-vm.txt
+# Model file verification — Step 15.5g (VM re-check)
+# Captured: 2026-10-23T15:20:52 UTC
+# Command run on guest: sha256sum ~/bayora_adversarial/models/qwen2.5-1.5b-instruct-q4_k_m.gguf
+# Guest: wagha__ @ Ubuntu 24.04.5 LTS
+
+=== CURRENT SHA-256 (computed on guest, 2026-10-23) ===
+6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e  /home/wagha__/bayora_adversarial/models/qwen2.5-1.5b-instruct-q4_k_m.gguf
+
+=== REPOSITORY PINNED HASH (scripts/download_model.py) ===
+6a1a2eb6d15622bf3c96857206351ba97e1af16c30d7a74ee38970e434e9407e
+
+=== HASH MATCH ===
+PASS — computed hash matches pinned hash exactly.
+
+=== CURRENT FILE SIZE (computed on guest, 2026-10-23) ===
+stat -c '%s bytes': 1117320736 bytes
+
+=== SIZE IN EVIDENCE FILES ===
+bayora-model-sha256.txt (from Windows): 6a1a2eb...  (matches)
+bayora-model-size.txt (from Windows):   1117320736 bytes  (matches exactly)
+
+=== SIZE DISCREPANCY RESOLUTION ===
+The prior session summary referenced a size of 1,113,270,736 bytes, which differs from
+the actual measured value of 1,117,320,736 bytes by ~4 MB. The actual measured value
+(1,117,320,736) is consistent across:
+  - bayora-model-size.txt on Windows
+  - stat -c '%s' on the current guest file
+  - The SHA-256 hash matching the pin confirms file integrity.
+The 1,113,270,736 figure appears to be a transcription error in the prior session summary.
+The authoritative value is 1,117,320,736 bytes (the hash is the definitive integrity check).
+
+=== MODEL SOURCE ===
+URL: https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf
+Revision: main (mutable — not pinned to an immutable commit hash in the URL)
+Filename: qwen2.5-1.5b-instruct-q4_k_m.gguf
+
+=== PUBLISHER CHECKSUM VERIFICATION STATUS ===
+NOT independently verified in this session. The HuggingFace model page was not separately
+queried for an authoritative publisher-provided SHA-256. The X-Linked-ETag field in HTTP
+response headers is not equivalent to a SHA-256 hash unless the publisher explicitly
+documents it as such. The pinned hash in the repository was established by the project
+team at download time. Independent publisher verification remains unresolved.
+
+=== ORIGINAL FAILED DOWNLOAD ===
+Preserved in: bayora-model-download.log (DO NOT OVERWRITE)
+Failed hash: 50bec1e88939ca502b580de949fb478955cfeddfac2a77fd5eb90f78d6bcece7
+The first attempt failed hash verification and the file was correctly deleted by the script.
+The current file was obtained via direct curl and independently hash-verified.
+
+=== GITIGNORE STATUS ===
+.gitignore:49:models/*.gguf — GGUF is ignored and not staged.

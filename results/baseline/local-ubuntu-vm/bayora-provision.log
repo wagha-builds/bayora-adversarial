@@ -1,0 +1,193 @@
+========================================================================
+ Starting Bayora Host Provisioning
+========================================================================
+[*] Detected Architecture: x86_64
+[*] Updating apt package lists and installing core utilities...
+Hit:1 https://download.docker.com/linux/ubuntu noble InRelease
+Hit:2 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:3 http://in.archive.ubuntu.com/ubuntu noble InRelease
+Hit:4 http://in.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:5 http://in.archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+apt-transport-https is already the newest version (2.8.3).
+ca-certificates is already the newest version (20260816ubuntu0.24.04.1).
+ca-certificates set to manually installed.
+curl is already the newest version (8.5.0-2ubuntu10.16).
+curl set to manually installed.
+gnupg is already the newest version (2.4.4-2ubuntu17.6).
+lsb-release is already the newest version (12.0-2).
+apparmor is already the newest version (4.0.1really4.0.1-0ubuntu0.24.04.9).
+apparmor set to manually installed.
+apparmor-utils is already the newest version (4.0.1really4.0.1-0ubuntu0.24.04.9).
+jq is already the newest version (1.7.1-3ubuntu0.24.04.2).
+python3 is already the newest version (3.12.3-0ubuntu2.1).
+python3-pip is already the newest version (24.0+dfsg-1ubuntu1.3).
+git is already the newest version (1:2.43.0-1ubuntu7.4).
+git set to manually installed.
+ufw is already the newest version (0.36.2-6).
+zstd is already the newest version (1.5.5+dfsg2-2build1.1).
+0 upgraded, 0 newly installed, 0 to remove and 43 not upgraded.
+[*] Verifying cgroup v2...
+[+] Confirmed: cgroup v2 is active (cgroup2fs).
+[*] Verifying AppArmor status...
+apparmor module is loaded.
+118 profiles are loaded.
+24 profiles are in enforce mode.
+   /usr/bin/man
+   /usr/lib/snapd/snap-confine
+   docker-default
+   lsb_release
+   man_filter
+   man_groff
+   nvidia_modprobe
+   nvidia_modprobe//kmod
+   plasmashell
+   plasmashell//QtWebEngineProcess
+   rsyslogd
+   tcpdump
+   ubuntu_pro_apt_news
+   ubuntu_pro_esm_cache
+   ubuntu_pro_esm_cache//apt_methods
+   ubuntu_pro_esm_cache//apt_methods_gpgv
+   ubuntu_pro_esm_cache//cloud_id
+   ubuntu_pro_esm_cache//dpkg
+   ubuntu_pro_esm_cache//ps
+   ubuntu_pro_esm_cache//ubuntu_distro_info
+   ubuntu_pro_esm_cache_systemctl
+   ubuntu_pro_esm_cache_systemd_detect_virt
+   unix-chkpwd
+   unprivileged_userns
+4 profiles are in complain mode.
+   transmission-cli
+   transmission-daemon
+   transmission-gtk
+   transmission-qt
+0 profiles are in prompt mode.
+0 profiles are in kill mode.
+90 profiles are in unconfined mode.
+   1password
+   Discord
+   MongoDB Compass
+   QtWebEngineProcess
+   balena-etcher
+   brave
+   buildah
+   cam
+   ch-checkns
+   ch-run
+   chrome
+   crun
+   devhelp
+   element-desktop
+   epiphany
+   evolution
+   firefox
+   flatpak
+   foliate
+   geary
+   github-desktop
+   goldendict
+   ipa_verify
+   kchmviewer
+   keybase
+   lc-compliance
+   libcamerify
+   linux-sandbox
+   loupe
+   lxc-attach
+   lxc-create
+   lxc-destroy
+   lxc-execute
+   lxc-stop
+   lxc-unshare
+   lxc-usernsexec
+   mmdebstrap
+   msedge
+   nautilus
+   notepadqq
+   obsidian
+   opam
+   opera
+   pageedit
+   podman
+   polypane
+   privacybrowser
+   qcam
+   qmapshack
+   qutebrowser
+   rootlesskit
+   rpm
+   rssguard
+   runc
+   sbuild
+   sbuild-abort
+   sbuild-adduser
+   sbuild-apt
+   sbuild-checkpackages
+   sbuild-clean
+   sbuild-createchroot
+   sbuild-destroychroot
+   sbuild-distupgrade
+   sbuild-hold
+   sbuild-shell
+   sbuild-unhold
+   sbuild-update
+   sbuild-upgrade
+   scide
+   signal-desktop
+   slack
+   slirp4netns
+   steam
+   stress-ng
+   surfshark
+   systemd-coredump
+   thunderbird
+   toybox
+   trinity
+   tup
+   tuxedo-control-center
+   userbindmount
+   uwsgi-core
+   vdens
+   virtiofsd
+   vivaldi-bin
+   vpnns
+   vscode
+   wike
+   wpcom
+1 processes have profiles defined.
+1 processes are in enforce mode.
+   /usr/sbin/rsyslogd (719) rsyslogd
+0 processes are in complain mode.
+0 processes are in prompt mode.
+0 processes are in kill mode.
+0 processes are unconfined but have a profile defined.
+0 processes are in mixed mode.
+[+] AppArmor is present.
+[+] Docker is already installed: Docker version 29.9.2, build a82e528
+[+] runsc already installed: runsc version release-20261012.0
+[*] Registering gVisor runtime...
+2026/10/22 16:25:08 Not overwriting runtime runsc
+2026/10/22 16:25:08 Successfully updated config.
+[*] Testing gVisor integration with Docker...
+[+] SUCCESS: 'docker run --runtime=runsc hello-world' passed!
+[*] Recording host fingerprint...
+[+] Host fingerprint written to /home/wagha__/bayora_adversarial/host_fingerprint.json:
+{
+  "timestamp": "2026-10-22T16:25:10Z",
+  "hostname": "wagha",
+  "architecture": "x86_64",
+  "kernel": "6.8.0-146-generic",
+  "cpu_model": "13th Gen Intel(R) Core(TM) i5-13450HX",
+  "vcpus": 6,
+  "total_memory_kb": 8131144,
+  "cgroup_version": "cgroup2fs",
+  "docker_version": "Docker version 29.9.2, build a82e528",
+  "runsc_version": "runsc version release-20261012.0"
+}
+========================================================================
+ Host Provisioning Completed Successfully!
+========================================================================

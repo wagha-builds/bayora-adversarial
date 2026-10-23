@@ -1,0 +1,33 @@
+# bayora-post-start-ss.txt
+# Post-start listening socket audit — Step 15.4c
+# Captured: 2026-10-23T15:35:23Z (UTC, NTP-synchronized)
+# Command: ss -tlnp (without sudo; process names omitted — require root)
+
+State  Recv-Q Send-Q Local Address:Port Peer Address:Port
+LISTEN 0      4096         0.0.0.0:22        0.0.0.0:*
+LISTEN 0      4096      127.0.0.54:53        0.0.0.0:*
+LISTEN 0      4096         0.0.0.0:8080      0.0.0.0:*
+LISTEN 0      4096         0.0.0.0:8000      0.0.0.0:*
+LISTEN 0      4096         0.0.0.0:8001      0.0.0.0:*
+LISTEN 0      4096   127.0.0.53%lo:53        0.0.0.0:*
+LISTEN 0      4096            [::]:22           [::]:*
+LISTEN 0      4096            [::]:8080         [::]:*
+LISTEN 0      4096            [::]:8000         [::]:*
+LISTEN 0      4096            [::]:8001         [::]:*
+
+# Analysis:
+# New listeners vs. pre-start: 8080 (model-server), 8000 (baseline-stub), 8001 (blue-filter)
+# These are published by Docker on the guest's 0.0.0.0 interface — INTENTIONAL BASELINE.
+# Per docker-compose.yml header and task.md Phase 1 insecure conditions table:
+#   - 8080: model-server, target of test_net_model_direct (SEC-008) and test_cache_timing (LLM-001)
+#   - 8001: blue-filter,  target of test_net_blue_direct (SEC-008) and test_fs_blue_rules (SEC-001)
+#   - 8000: baseline-stub (gateway), routing hub for all traffic
+# VirtualBox NAT confirmed: ONLY 127.0.0.1:2222->guest:22 forwarding rule exists.
+# Ports 8000/8001/8080 are NOT forwarded to the Windows host. Not LAN-exposed.
+# Do not change these bindings — they are the intentional Phase 1 insecure baseline.
+
+# Container status:
+# bayora-red-runner      Up 7 minutes   (no published ports)
+# bayora-baseline-stub   Up 7 minutes   0.0.0.0:8000->8000/tcp
+# bayora-blue-filter     Up 7 minutes   0.0.0.0:8001->8001/tcp
+# bayora-model-server    Up 7 minutes   (healthy) 0.0.0.0:8080->8080/tcp

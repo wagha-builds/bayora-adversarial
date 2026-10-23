@@ -1,0 +1,29 @@
+# bayora-contention-interrupted-run.log
+# Partial execution log from unadjusted 6-core baseline contention benchmark (Step 15)
+# Captured: 2026-10-23T17:31:00Z
+#
+# Context:
+# Test command: docker exec bayora-red-runner python /app/tests/test_resource_contention.py
+# Parameters: core_count=6, NUM_REQUESTS=15 per condition (60 requests total)
+# Observation:
+# - UNLOADED (Round 1): 15/15 requests completed successfully in ~50 seconds.
+# - Stressor initialized: 6 CPU burner processes spawned on 6-vCPU VirtualBox VM (NEM mode on Win11).
+# - LOADED (Round 1): Completed request 1 and request 2 (represented by the 2 dots).
+# - Request 3 hung for >45 minutes due to 100% CPU starvation of llama.cpp inference threads
+#   under unconstrained CFS scheduler competition.
+# - Status: Interrupted gracefully per instruction to prevent indefinite scheduler lockup.
+# - This artifact is preserved strictly as partial baseline evidence; it is NOT a completed benchmark.
+
+============================================================
+ BASELINE RESOURCE CONTENTION TEST (Phase 1.9b)
+============================================================
+
+[*] Starting UNLOADED (Round 1) workload (15 requests) ...
+...............
+
+[*] Starting Red CPU stressor across 6 cores...
+[*] Waiting 3 seconds for contention to peak...
+
+[*] Starting LOADED (Round 1) workload (15 requests) ...
+..
+[INTERRUPTED: Stalled on request 3 of 15 due to 6-core VirtualBox CPU saturation]

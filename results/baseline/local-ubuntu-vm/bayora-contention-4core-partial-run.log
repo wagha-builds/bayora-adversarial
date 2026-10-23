@@ -1,0 +1,86 @@
+============================================================
+ BASELINE RESOURCE CONTENTION TEST (Phase 1.9b)
+============================================================
+
+[*] Starting UNLOADED (Round 1) workload (15 requests) ...
+...............
+
+[*] Starting Red CPU stressor across 4 cores (detected: 6 vCPUs)...
+[*] Waiting 3 seconds for contention to peak...
+
+[*] Starting LOADED (Round 1) workload (15 requests) ...
+.....
+[!] Request failed: TimeoutError('timed out')
+...
+[!] Request failed: TimeoutError('timed out')
+....
+[!] Request failed: TimeoutError('timed out')
+..
+[!] Request failed: TimeoutError('timed out')
+.Process Process-4:
+Process Process-3:
+Traceback (most recent call last):
+Process Process-2:
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/usr/local/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/app/tests/test_resource_contention.py", line 29, in cpu_burner
+    while True:
+          ^^^^
+KeyboardInterrupt
+  File "/usr/local/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/usr/local/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/app/tests/test_resource_contention.py", line 29, in cpu_burner
+    while True:
+          ^^^^
+KeyboardInterrupt
+
+
+[*] Starting LOADED (Round 2) workload (15 requests) ...
+
+[*] Stopping Red CPU stressor...
+Traceback (most recent call last):
+  File "/app/tests/test_resource_contention.py", line 196, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/app/tests/test_resource_contention.py", line 137, in main
+    loaded_2 = run_workload("LOADED (Round 2)", NUM_REQUESTS)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/tests/test_resource_contention.py", line 55, in run_workload
+    with urllib.request.urlopen(req, timeout=45.0) as resp:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 532, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 1386, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/urllib/request.py", line 1361, in do_open
+    r = h.getresponse()
+        ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/http/client.py", line 1478, in getresponse
+    response.begin()
+  File "/usr/local/lib/python3.12/http/client.py", line 343, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/http/client.py", line 304, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/socket.py", line 720, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

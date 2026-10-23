@@ -1,0 +1,41 @@
+# bayora-security-checks.txt
+# Security environment evidence — Step 15.4a
+# Captured: 2026-10-23T15:19–15:21 UTC
+# Guest: wagha__ @ Ubuntu 24.04.5 LTS, kernel 6.8.0-146-generic
+
+=== RUNSC VERSION ===
+runsc version release-20261012.0
+spec: 1.2.1
+
+=== CGROUP VERSION ===
+stat -fc '%T' /sys/fs/cgroup → cgroup2fs
+
+=== DOCKER SECURITY OPTIONS ===
+["name=apparmor,profile=default","name=seccomp,profile=builtin","name=cgroupns"]
+
+=== DOCKER RUNTIMES ===
+(runtimes JSON includes io.containerd.runc.v2, runc, and runsc at /usr/local/bin/runsc)
+(Full JSON captured in bayora-provisioning-checks.log Step 13 — Docker info runtimes)
+
+=== DOCKER + GVISOR INTEGRATION TEST ===
+Command: docker run --rm --runtime=runsc hello-world
+Result: Hello from Docker!
+Exit code: 0
+Status: PASS — gVisor runtime integration confirmed working
+
+=== APPARMOR STATUS ===
+aa-status requires root (sudo not available non-interactively via SSH BatchMode)
+Prior evidence: bayora-provisioning-checks.log Step 13 showed docker-default in enforce mode.
+Docker security options confirm apparmor profile=default is active for Docker daemon.
+Limitation: aa-status enforce-mode listing could not be re-captured without interactive sudo.
+Manual action required: run 'sudo aa-status' in VM console and append to this file if needed.
+
+=== GVISOR CHECKSUM EVIDENCE LIMITATION ===
+provision-host.sh downloads gvisor.tar.zstd and its .sha512 companion from the official
+Google release bucket and calls sha512sum -c. The original bayora-provision.log does not
+preserve the checksum OK line verbatim. The user separately confirmed sha512sum -c passed
+on a later download. This confirms the archive against its companion checksum file, but
+does not independently prove the installed binary came from that exact archive.
+runsc version release-20261012.0 is consistent with provisioning evidence.
+Independent binary-vs-archive re-verification not performed (would require re-downloading
+the 500MB+ archive; not needed for Phase 2.0 baseline scope).

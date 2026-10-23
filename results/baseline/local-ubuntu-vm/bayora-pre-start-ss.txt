@@ -1,0 +1,19 @@
+# bayora-pre-start-ss.txt
+# Pre-start listening socket audit — Step 15.3a
+# Captured: 2026-10-23T15:19:xx UTC (guest clock, NTP-synchronized)
+# Command: ss -tlnp (without sudo; process names require root and are omitted)
+# Note: sudo unavailable non-interactively; process names were captured in bayora-provisioning-checks.log Step 13
+# Guest: wagha__ @ Ubuntu 24.04.5 LTS, kernel 6.8.0-146-generic, VirtualBox NAT
+
+State  Recv-Q Send-Q Local Address:Port Peer Address:Port
+LISTEN 0      4096         0.0.0.0:22        0.0.0.0:*
+LISTEN 0      4096      127.0.0.54:53        0.0.0.0:*
+LISTEN 0      4096   127.0.0.53%lo:53        0.0.0.0:*
+LISTEN 0      4096            [::]:22           [::]:*
+
+# Analysis:
+# - sshd on 0.0.0.0:22 and [::]:22 — broad inside guest, but VirtualBox NAT only
+#   forwards 127.0.0.1:2222 (Windows loopback) -> guest:22. Not LAN-exposed.
+# - systemd-resolved on 127.0.0.53:53 and 127.0.0.54:53 — loopback only. Expected.
+# - No Docker containers running pre-start. No unexpected listeners.
+# - Consistent with Step 13 observation in bayora-provisioning-checks.log.

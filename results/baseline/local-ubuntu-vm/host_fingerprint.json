@@ -1,0 +1,61 @@
+{
+  "timestamp": "2026-10-22T16:25:10Z",
+  "hostname": "wagha",
+  "architecture": "x86_64",
+  "kernel": "6.8.0-146-generic",
+  "cpu_model": "13th Gen Intel(R) Core(TM) i5-13450HX",
+  "vcpus": 6,
+  "total_memory_kb": 8131144,
+  "cgroup_version": "cgroup2fs",
+  "docker_version": "Docker version 29.9.2, build a82e528",
+  "runsc_version": "runsc version release-20261012.0",
+  "host_os": {
+    "manufacturer": "Lenovo",
+    "model": "83DV",
+    "windows_edition": "Windows 10 Home Single Language",
+    "windows_version": "2009",
+    "windows_build": "26200"
+  },
+  "hypervisor": {
+    "name": "Oracle VirtualBox",
+    "version": "7.2.20",
+    "guest_detection": "oracle",
+    "green_turtle_indicator_observed": true,
+    "vm_log_execution_path": "unknown; not verified"
+  },
+  "windows_security": {
+    "vbs_enabled": true,
+    "virtualization_based_security_status": 2,
+    "security_services_configured": [2],
+    "security_services_running": [2],
+    "memory_integrity": "on"
+  },
+  "vm_configuration": {
+    "vcpus_allocated": 6,
+    "ram_allocated_mb": 8192,
+    "disk_filename": "Bayora-Ubuntu-24.04.vdi",
+    "disk_format": "VDI",
+    "disk_virtual_size_gb": 60,
+    "disk_actual_size_gb_at_observation": 4.31,
+    "disk_allocation": "dynamically allocated",
+    "network_mode": "NAT",
+    "ssh_forward": "127.0.0.1:2222 -> guest:22",
+    "other_port_forwards": "not independently verified"
+  },
+  "host_tuning_notes": {
+    "vbs": "enabled",
+    "memory_integrity": "on",
+    "hypervisor_observation": "Oracle VirtualBox 7.2.20; green turtle indicator observed",
+    "power_mode": "High performance",
+    "plugged_in": true,
+    "heavy_applications": "closed during testing",
+    "cpu_affinity": "none; default scheduling",
+    "resource_deviations": "none reported",
+    "clock_sync_mechanism": "systemd-timesyncd/NTP; exact daemon not independently verified",
+    "clock_synchronized": true,
+    "ntp_service_active": true,
+    "timezone": "Etc/UTC",
+    "ssh": "ssh.socket enabled and active; ssh.service disabled/inactive; socket listening on port 22"
+  }
+}
+

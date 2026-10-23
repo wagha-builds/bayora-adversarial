@@ -1,0 +1,28 @@
+{
+  "test_name": "Post-Contention Unloaded Recovery Check",
+  "timestamp": "2026-10-23T18:30:06Z",
+  "environment": "LOCAL_UBUNTU_VM_VBOX",
+  "requests_total": 10,
+  "completed_count": 10,
+  "timeout_count": 0,
+  "error_count": 0,
+  "total_duration_seconds": 78.58,
+  "latency_metrics": {
+    "p50_ms": 7790.57,
+    "p95_ms": 8862.45,
+    "max_ms": 8862.45
+  },
+  "raw_latencies_ms": [
+    8862.45,
+    7908.94,
+    7799.15,
+    7964.54,
+    7830.36,
+    7781.99,
+    7664.0,
+    7740.93,
+    7311.14,
+    7719.54
+  ],
+  "notes": "Executed on healthy VM after 4-core contention stressor was halted. Compares recovery latency to initial unloaded performance; similarity demonstrates operational recovery but does not prove total absence of subtle state drift."
+}

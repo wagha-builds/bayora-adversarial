@@ -1,0 +1,9 @@
+# bayora-pre-start-docker.txt
+# Pre-start Docker container audit — Step 15.3b
+# Captured: 2026-10-23T15:19:xx UTC
+# Command: docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
+
+NAMES     STATUS    PORTS
+(no containers running)
+
+# Analysis: No containers running before stack start. No published ports. Expected.

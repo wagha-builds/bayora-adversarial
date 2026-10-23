@@ -232,19 +232,56 @@ For Phase 2+ to compare against, Phase 1 will record:
 **VM Environment & Sizing (Host: i5-13450HX 10c/16t, 16 GB RAM):**
 - **Hypervisor:** VMware Workstation Pro 17+ (Free Personal) or VirtualBox 7.0+ (Windows 11 Home lacks Hyper-V Manager).
 - **VM Sizing:** 6 vCPUs, 8 GB RAM (leaves 8 GB for Windows 11 to avoid host memory exhaustion/swapping), 60 GB dynamic disk.
+- **Limitation Note:** Windows dynamically schedules VM threads across P-cores (with hyperthreading) and E-cores. vCPUs are not pinned to physical P-cores, meaning timing results (especially contention) will have noise/variance and are considered provisional.
 - **Networking:** NAT with SSH port forwarding (e.g. host 127.0.0.1:2222 -> VM 22) or Host-Only. Avoid bridged network onto LAN.
 - **Automated Provisioning:** Use `scripts/provision-host.sh` for architecture-aware setup (Docker, gVisor `runsc`, AppArmor, cgroup v2 verification).
 - **Results Storage:** Store results per host (`results/baseline/local-ubuntu-vm/` and later `results/baseline/oracle-arm64/`).
 
 **Key Tasks:**
 - [ ] **Phase 2.0: Target Environment Setup & Native Re-Baselining:**
-  - Spin up local Ubuntu 24.04 LTS VM with recommended sizing and SSH forwarding.
-  - Run `scripts/provision-host.sh` to install Docker, gVisor (`runsc`), AppArmor utilities, and verify `cgroup v2`.
-  - Clone repository via read-only deploy key or git archive.
-  - Run the unchanged Phase 1 stack natively on the VM.
-  - Re-run all five leak tests, latency benchmark, cache-timing test, and contention test natively.
-  - Record host fingerprint and save results to `results/baseline/local-ubuntu-vm/`.
-  - Tag `phase2.0-vm-baseline`.
+  - [x] Spin up local Ubuntu 24.04 LTS VM with recommended sizing and SSH forwarding.
+  - [x] Run `scripts/provision-host.sh` to install Docker, gVisor (`runsc`), AppArmor utilities, and verify `cgroup v2`.
+  - [x] Clone repository via read-only deploy key.
+  - [x] Verify no ports are published beyond localhost (`ss -tlnp` and `docker ps`).
+  - [x] Run the unchanged Phase 1 stack natively on the VM (`bayora-model-server`, `bayora-blue-filter`, `bayora-baseline-stub`, `bayora-red-runner`).
+  - [x] Re-run evaluation pipeline (`vm-baseline-run-001`), all five leak tests (5/5 PASSED), and prefix cache-timing test.
+  - [ ] Contention benchmark (PARTIAL / INTERRUPTED — WAIVED): Evaluated under unconstrained Phase 1 baseline conditions on the VirtualBox Ubuntu 24.04 VM (distinguished from the earlier WSL2 reference measurement of p50=3,237.08 ms). Both 6-core and 4-core stressors induced severe host contention, client timeouts, and kernel watchdog soft-lockup alarms under unthrottled CFS scheduling. Safely halted via cleanup guard; all stressor processes terminated. Server-side timestamped gateway logs verify that during Loaded Round 1, 15 queries were received, yielding 10 HTTP 200 responses and 5 HTTP 502 responses. The client log recorded 4 explicit timeout messages, but individual client outcomes cannot reliably be mapped to gateway requests from the available client-side evidence. One additional query was received at the gateway belonging to the interrupted Round 2, and the full 60-request A-B-B-A benchmark remains incomplete. A post-contention unloaded recovery check completed 10/10 requests with a median latency of 7,790.57 ms, compared to the initial unloaded baseline median of 5,577.94 ms (approximately 39.7% higher). Both unloaded runs used matching inference settings (prompt, salting, 64-token limit, temperature=0.7), and server logs confirmed zero residual inference work prior to the recovery check. Host-level thread scheduling across hybrid P/E-cores and thermal/power throttling are plausible explanations, but their exact cause was not independently verified. These figures represent two observations on an unpinned VM host rather than formal bounds.
+  - [x] Record host fingerprint (including manual Windows tuning notes) and save all 18 baseline evidence files to `results/baseline/local-ubuntu-vm/`.
+  - [x] Tag `phase2.0-vm-baseline` (authorized and tagged).
+  - [ ] Take Snapshot #3: Post-Baseline, Pre-Hardening (deferred pending clean VM shutdown per runbook).
+
+### Phase 2.0 Baseline Audit Findings & Contention Notes
+**Date:** 2026-10-24
+**Environment:** Local Ubuntu 24.04 LTS on Oracle VirtualBox 7.2.20 (6 vCPUs, 8 GB RAM, unpinned host threads on Intel Core i5-13450HX)
+**Status / Sign-off Readiness:** Phase 2.0 complete with waiver
+
+1. **Distinction from WSL2 Reference Measurements:**
+   - Earlier Phase 1 reference measurements on Windows/WSL2 recorded an unloaded median latency of $p50 = 3,237.08\text{ ms}$ across 16 host execution threads.
+   - On the dedicated 6-vCPU VirtualBox Ubuntu 24.04 VM, the initial unloaded baseline (Round 1, $N=15$) measured a median latency of $p50 = 5,577.94\text{ ms}$. These environments are distinct and not directly comparable.
+
+2. **Loaded Contention Benchmark Reconciliation (Step 15 — Partial / Interrupted):**
+   - **Experimental Setup:** Both 6-core and 4-core stressor attempts induced severe host starvation, client timeouts, and Linux kernel watchdog soft-lockup alarms under unconstrained CFS scheduling. The benchmark was halted safely via the cleanup guard; all stressor processes terminated.
+   - **Gateway Verification:** Server-side timestamped gateway logs verify that during Loaded Round 1, 15 queries were received, yielding:
+     - **10 HTTP 200 responses** (latencies ranging from 7.5s to 442.4s).
+     - **5 HTTP 502 responses** (upstream gateway timeouts to Blue filter / Model server).
+   - **Client-Side Evidence:** The client log recorded 4 explicit timeout messages (`TimeoutError('timed out')` at 45.0s threshold). However, individual client outcomes cannot reliably be mapped to gateway requests from the available client-side evidence.
+   - **Claims Strictly Excluded:** Unsupported claims that 8 requests definitely completed within the client's 45-second timeout or that two specific client-timed-out requests later completed on the server are removed and not asserted.
+   - **Benchmark Incompleteness:** Exactly one additional query (`[Salt: d4543642...]`) was received at the gateway belonging to the interrupted Round 2. The full 60-request A-B-B-A benchmark remains incomplete.
+
+3. **Post-Contention Unloaded Recovery Check:**
+   - Following termination of all stressor processes and system stabilization, a dedicated post-contention recovery check (`test_unloaded_recovery.py`) completed 10/10 requests ($N=10$) with a median latency of $p50 = 7,790.57\text{ ms}$ (max: $8,862.45\text{ ms}$).
+   - Compared to the initial unloaded baseline median ($5,577.94\text{ ms}$), recovery latency was approximately 39.7% higher.
+   - Both unloaded runs used matching inference settings (identical base prompt, UUID salting, 64-token limit, temperature=0.7), and server logs confirmed zero residual inference work prior to the recovery check (>4 minutes idle).
+   - Host-level thread scheduling across heterogeneous P/E-cores on Windows 11 and thermal/power throttling are plausible explanations, but their exact cause was not independently verified. These figures represent two discrete observations on an unpinned VM host rather than formal upper/lower bounds.
+
+4. **Phase 2.0 Definition of Done Assessment & Waiver:**
+   - Under a strict literal reading of `docs/roadmap.md` DoD criterion #4 ("contention test run successfully"), the partial run blocks unconditional sign-off because the 60-request scripted benchmark was halted before completion.
+   - However, the empirical objective of PRD Sec 5.2 / RES-004 / PERF-004 (demonstrating that unconstrained CPU flood causes severe latency degradation and upstream timeouts) was conclusively demonstrated and documented.
+   - **Waiver — accepted by Akshaya on 2026-10-24:** The partial/interrupted contention run is accepted as baseline failure-mode evidence for Phase 2.0. A bounded contention rerun is deferred to the start of Phase 7 (using ≤2 stressor processes or quota/nice limits, leaving at least 2 vCPUs free for the guest and inference), using the preserved pre-hardening VM snapshot, subject to the Phase 7 test plan.
+   - Sign-off status: **Phase 2.0 complete with waiver**.
+
+5. **Host Fingerprint Evidence Provenance:**
+   - `power_mode, plugged_in, heavy_applications are operator-reported, not telemetry.` All 18 raw evidence artifacts in `results/baseline/local-ubuntu-vm/` remain preserved and unmodified.
 - [ ] **Phase 2.1:** Implement gVisor (`runsc`) for Red Team and Model containers.
 - [ ] **Phase 2.2:** Implement `seccomp` profiles and `AppArmor`.
 - [ ] **Phase 2.3:** Drop capabilities and remove shared volumes.

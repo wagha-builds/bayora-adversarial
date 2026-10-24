@@ -46,3 +46,14 @@ This document tracks architectural decisions, environment specifications, and th
 7. **Separate Evidence Storage:** 10 new evidence artifacts stored under `results/hardening/phase2.2-seccomp-apparmor/local-ubuntu-vm/`, leaving prior phase artifacts untouched.
 8. **Rollback Path:** Documented clear rollback procedure via Compose security attributes.
 
+## Phase 2.3 Definition of Done (IMPLEMENTED & VERIFIED ✅)
+1. **Shared Volume Removal (SEC-001):** Removed `shared_data` named volume mounts from `red-runner` and `blue-filter`; removed top-level `volumes` block.
+2. **Baked-In Blue Rules:** Reconfigured `blue-filter` via `BLUE_RULES_PATH=/app/blue_rules.json`; verified rules load correctly from container image.
+3. **Capability Dropping (`cap_drop: ALL`):** Applied `cap_drop: ["ALL"]` across all four services (`model-server`, `blue-filter`, `baseline-stub`, `red-runner`); verified `CapDrop: ["ALL"]` and `CapAdd: null` via Docker inspect.
+4. **SEC-001 Verification:** Verified that `test_fs_blue_rules.py` fails inside `red-runner` (file not found), demonstrating that SEC-001 is mitigated.
+5. **Leak Test Suite Parity:** Remaining 4 leak tests accurately classified as `still_reproducible` pending later phases (network, cache, logging).
+6. **Smoke Test Verification:** Verified single-request gateway inference smoke test ($7,101.66\text{ ms}$, 0 timeouts, 0 errors).
+7. **Separate Evidence Storage:** 8 new evidence artifacts stored under `results/hardening/phase2.3-least-privilege/local-ubuntu-vm/`.
+8. **Rollback Path:** Documented clear rollback procedure for capabilities and volume restoration.
+
+

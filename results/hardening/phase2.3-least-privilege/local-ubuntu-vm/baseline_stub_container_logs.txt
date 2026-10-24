@@ -1,0 +1,13 @@
+/usr/local/lib/python3.12/site-packages/pydantic/_internal/_fields.py:132: UserWarning: Field "model_output" in QueryResponse has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2026-10-24 15:41:56,598 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: 250148bb41b5]'
+2026-10-24 15:41:56,682 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+2026-10-24 15:42:03,615 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+2026-10-24 15:42:03,619 [INFO] [baseline-stub] Query completed in 7020.69 ms. Output: ' TCP (Transmission Control Protocol) and UDP (User'
+INFO:     172.18.0.1:58600 - "POST /query HTTP/1.1" 200 OK

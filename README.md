@@ -118,10 +118,10 @@ Workloads and services are strictly compartmentalized across five isolated secur
 | **Phase 0** | Alignment & Threat Model | STRIDE threat model, Five-Zone DFD, Gateway API contract, 22-item risk register | ✅ Complete |
 | **Phase 1** | Insecure Baseline (WSL2) | Naive Compose stack, 5 automated leak tests, provisional contention baseline | ✅ Complete (`phase1-baseline-v2`) |
 | **Phase 2.0** | Native VM Re-Baselining | Ubuntu 24.04 VM, 18 evidence artifacts, verified leak suite, accepted waiver | ✅ Complete (`phase2.0-vm-baseline`) |
-| **Phase 2.1** | Container Hardening (gVisor) | Apply gVisor `runsc` runtime to Red Team and Model containers; measure overhead | 🔄 **NEXT** |
-| **Phase 2.2** | System Call & MAC Hardening | Custom `seccomp` syscall profiles and AppArmor enforcement per container | 🔲 Planned |
-| **Phase 2.3** | Least Privilege & Storage | Drop all unnecessary Linux capabilities (`CAP_DROP=ALL`); remove shared volumes | 🔲 Planned |
-| **Phase 3** | Five-Zone Network Isolation | Strict Docker bridge network isolation (5 distinct bridges), internal DNS, `nftables` | 🔲 Planned |
+| **Phase 2.1** | Container Hardening (gVisor) | Apply gVisor `runsc` runtime to Red Team container; empirical Model evaluation | ✅ Complete (`phase2.1-gvisor-hardening`) |
+| **Phase 2.2** | System Call & MAC Hardening | Custom `seccomp` syscall profiles and AppArmor enforcement per container | ✅ Complete (`phase2.2-seccomp-apparmor`) |
+| **Phase 2.3** | Least Privilege & Storage | Drop all unnecessary Linux capabilities (`CAP_DROP=ALL`); remove shared volumes | ✅ Complete |
+| **Phase 3** | Five-Zone Network Isolation | Strict Docker bridge network isolation (5 distinct bridges), internal DNS, `nftables` | 🔄 **NEXT** |
 | **Phase 4** | Identity, Secrets & Policy | OpenBao secrets engine, `step-ca` automated mTLS per zone, OPA ABAC engine | 🔲 Planned |
 | **Phase 5** | Cryptographic Audit Ledger | Append-only SHA-256 chained ledger with Ed25519 signatures, external Git anchoring | 🔲 Planned |
 | **Phase 6** | LLM Hardening | Stateless llama.cpp runtime, prompt caching disabled, uniform refusal responses | 🔲 Planned |

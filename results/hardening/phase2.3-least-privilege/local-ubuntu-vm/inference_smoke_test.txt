@@ -1,0 +1,15 @@
+=================================================================
+ BAYORA RUNTIME INFERENCE BENCHMARK (reference_runc)
+ Target: http://127.0.0.1:8000/query | Runtime: runc | Requests: 1
+=================================================================
+[01/1] completed in 8001.58 ms | Gen: 9.55 tok/s
+
+=================================================================
+ BENCHMARK SUMMARY (reference_runc ??? runc)
+=================================================================
+ Completed: 1/1 | Timeouts: 0 | Errors: 0
+ End-to-End Latency: p50 = 8001.58 ms | p95 = 8001.58 ms | min = 8001.58 ms | max = 8001.58 ms
+ Generation Speed:   p50 = 9.55 tok/s | mean = 9.55 tok/s
+ Token Latency:      p50 = 104.71 ms/token | mean = 104.71 ms/token
+ Wall Duration:     8.01 s
+=================================================================

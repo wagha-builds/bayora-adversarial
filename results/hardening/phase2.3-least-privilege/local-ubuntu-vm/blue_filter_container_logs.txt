@@ -1,0 +1,14 @@
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+2026-10-24 15:40:11,064 [INFO] [blue-filter] Loaded rules from /app/blue_rules.json: 5 keywords
+INFO:     172.18.0.1:46892 - "GET /rules HTTP/1.1" 200 OK
+2026-10-24 15:41:56,672 [INFO] [blue-filter] Evaluating prompt_id=run-default, payload='Summarize the key differences between TCP and UDP protocols. [Salt: 250148bb41b5]'
+2026-10-24 15:41:56,673 [INFO] [blue-filter] Loaded rules from /app/blue_rules.json: 5 keywords
+2026-10-24 15:41:56,673 [INFO] [blue-filter] Prompt passed filter
+INFO:     172.18.0.4:36934 - "POST /evaluate HTTP/1.1" 200 OK
+2026-10-24 15:43:08,961 [INFO] [blue-filter] Loaded rules from /app/blue_rules.json: 5 keywords
+INFO:     172.18.0.5:59725 - "GET /rules HTTP/1.1" 200 OK
+2026-10-24 15:43:39,678 [INFO] [blue-filter] Loaded rules from /app/blue_rules.json: 5 keywords
+INFO:     172.18.0.1:40950 - "GET /rules HTTP/1.1" 200 OK

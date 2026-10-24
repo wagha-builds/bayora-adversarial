@@ -28,6 +28,8 @@ services:
     security_opt:
       - seccomp:./policies/seccomp/model-server-seccomp.json
       - apparmor:bayora-model-server
+    cap_drop:
+      - ALL
     networks:
       - baseline-net
     restart: unless-stopped
@@ -38,14 +40,14 @@ services:
       dockerfile: Dockerfile
     container_name: bayora-blue-filter
     environment:
-      - BLUE_RULES_PATH=/shared_data/blue_rules.json
-    volumes:
-      - shared_data:/shared_data
+      - BLUE_RULES_PATH=/app/blue_rules.json
     ports:
       - "8001:8001"
     security_opt:
       - seccomp:./policies/seccomp/python-service-seccomp.json
       - apparmor:bayora-python-service
+    cap_drop:
+      - ALL
     networks:
       - baseline-net
     restart: unless-stopped
@@ -63,6 +65,8 @@ services:
     security_opt:
       - seccomp:./policies/seccomp/python-service-seccomp.json
       - apparmor:bayora-python-service
+    cap_drop:
+      - ALL
     depends_on:
       - blue-filter
       - model-server
@@ -84,7 +88,8 @@ services:
     volumes:
       - ./data/baseline:/app/data:ro
       - ./results/baseline:/app/results
-      - shared_data:/shared_data
+    cap_drop:
+      - ALL
     depends_on:
       - baseline-stub
     extra_hosts:
@@ -98,7 +103,3 @@ services:
 networks:
   baseline-net:
     driver: bridge
-
-volumes:
-  shared_data:
-    name: bayora_shared_data

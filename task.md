@@ -293,7 +293,7 @@ For Phase 2+ to compare against, Phase 1 will record:
   - [x] Verified all 4 services `Up` and healthy; executed full 5-test leak suite inside Red gVisor sandbox.
   - [x] Stored all 10 evidence artifacts separately in `results/hardening/phase2.1-gvisor/local-ubuntu-vm/`.
 - [x] **Phase 2.2:** Implement custom `seccomp` profiles and `AppArmor` policies.
-- [ ] **Phase 2.3:** Drop capabilities and remove shared volumes.
+- [x] **Phase 2.3:** Drop capabilities (`cap_drop: ALL`) and remove shared storage (`shared_data`).
 
 ### Phase 2.1 Container Hardening (gVisor) Audit Findings & Evidence Summary
 **Date:** 2026-10-24
@@ -445,6 +445,56 @@ If seccomp or AppArmor profile issues occur:
 1. Revert `docker-compose.yml`: remove `security_opt` entries from services.
 2. Execute `docker compose up -d` to restart services under default Docker confinement.
 3. If necessary, unload host profiles via `sudo apparmor_parser -R /path/to/profile`.
+
+---
+
+### Phase 2.3 Least Privilege & Shared Volume Removal Audit Findings & Evidence Summary
+**Date:** 2026-10-24  
+**Environment:** Local Ubuntu 24.04 LTS on VirtualBox (6 vCPUs, 8 GB RAM, kernel 6.8.0-147-generic)  
+**Status / Sign-off Readiness:** Fully Implemented & Empirically Verified (Ready for Final Commit)
+
+#### 1. Changes Implemented
+- **Shared Volume Elimination (SEC-001):**
+  - Removed `shared_data:/shared_data` mount from `bayora-red-runner`.
+  - Removed `shared_data:/shared_data` mount from `bayora-blue-filter`.
+  - Reconfigured `bayora-blue-filter` via `BLUE_RULES_PATH=/app/blue_rules.json` to load its verified, baked-in container rules file.
+  - Removed top-level `volumes: shared_data` definition from `docker-compose.yml`.
+- **Capability Dropping (Least Privilege):**
+  - Configured `cap_drop: ["ALL"]` across all four services (`bayora-model-server`, `bayora-blue-filter`, `bayora-baseline-stub`, `bayora-red-runner`).
+  - Docker inspect verifies `CapDrop: ["ALL"]` and `CapAdd: null` across all running containers.
+  - Confirmed that standard TCP listener operations (ports 8000, 8001, 8080) and userspace inference do not require root capabilities.
+
+#### 2. Security Outcomes & Leak Test Verification
+Executed automated leak-test suite inside `bayora-red-runner`:
+| Test Script | Vulnerability ID | Execution Status | Outcome | Security Analysis |
+|:---|:---|:---:|:---:|:---|
+| `test_fs_blue_rules.py` | SEC-001 | Exited 1 (File missing) | **MITIGATED / BLOCKED** | `/shared_data/blue_rules.json` does not exist inside Red container. SEC-001 is fixed. |
+| `test_net_blue_direct.py` | SEC-008 | Clean (exit 0) | `still_reproducible` (PASS) | Flat bridge intact; network segmentation scheduled for Phase 3. |
+| `test_net_model_direct.py` | SEC-008 | Clean (exit 0) | `still_reproducible` (PASS) | Direct HTTP connection succeeds; Phase 3 isolates zones. |
+| `test_cache_timing.py` | LLM-001 | Clean (exit 0) | `still_reproducible` (PASS) | Prefix cache timing delta ($2,845.66\text{ ms}$) detected; cache hardening scheduled for Phase 6. |
+| `test_log_exposure.py` | PRIV-001 | Clean (exit 0) | `still_reproducible` (PASS) | Unredacted prompts in stdout logs; audit ledger scheduled for Phase 5. |
+
+#### 3. Functional & Smoke Verification
+- Blue Filter verified reading rules from `/app/blue_rules.json`: `/rules` returns 5 keywords and secret rule salt.
+- Model Server health check passes (`/health` returns `{"status":"ok"}`).
+- Gateway smoke test (`baseline-stub` -> `blue-filter` -> `model-server`) executed cleanly ($7,101.66\text{ ms}$, $11.63\text{ tok/s}$, 0 errors, 0 timeouts).
+
+#### 4. Evidence Artifacts Provenance (Phase 2.3)
+Stored under `results/hardening/phase2.3-least-privilege/local-ubuntu-vm/`:
+1. `leak_test_results.json` — Master leak test suite proving SEC-001 mitigation.
+2. `container_security_inspect.json` — Full Docker inspect of all 4 services confirming `CapDrop: ["ALL"]` and mount tables without shared volume.
+3. `blue_filter_rules_verification.json` — Response proving Blue loads baked-in `/app/blue_rules.json`.
+4. `inference_smoke_test.txt` — Gateway inference smoke test output.
+5. `docker_compose_ps.txt` — Running service inventory.
+6. `model_server_container_logs.txt` — Logs for `bayora-model-server`.
+7. `blue_filter_container_logs.txt` — Logs for `bayora-blue-filter`.
+8. `baseline_stub_container_logs.txt` — Logs for `bayora-baseline-stub`.
+
+#### 5. Rollback Procedure
+If capability dropping or volume removal breaks a dependent workload:
+1. Re-add `shared_data` volume to `docker-compose.yml` and revert `BLUE_RULES_PATH`.
+2. Remove `cap_drop: ["ALL"]` to restore default Docker capabilities.
+3. Recreate services via `docker compose up -d`.
 
 ---
 

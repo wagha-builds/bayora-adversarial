@@ -259,7 +259,27 @@ def main():
         json.dump(report_data, f, indent=2)
 
     print(f"\n[+] Phase 2.3 leak test report saved to: {report_path}")
+
+    # Evaluate test results strictly: nonzero exit code on any error or unexpected status
+    suite_passed = True
+    for r in results:
+        if r["raw_status"] == "ERROR":
+            suite_passed = False
+            print(f"[!] TEST ERROR: {r['test']} encountered an error or unhandled exception.")
+        elif r["test"] == "test_fs_blue_rules" and r["raw_status"] != "MITIGATED":
+            suite_passed = False
+            print(f"[!] REGRESSION: test_fs_blue_rules expected MITIGATED, got {r['raw_status']}")
+        elif r["test"] != "test_fs_blue_rules" and r["raw_status"] != "PASS":
+            suite_passed = False
+            print(f"[!] UNEXPECTED OUTCOME: {r['test']} expected PASS (reproducible baseline), got {r['raw_status']}")
+
+    if not suite_passed:
+        print("\n[-] SUITE AUDIT FAILED: One or more tests had errors or unexpected outcomes.")
+        return 1
+
+    print("\n[+] SUITE AUDIT PASSED: All Phase 2.3 security criteria verified.")
     return 0
+
 
 
 if __name__ == "__main__":

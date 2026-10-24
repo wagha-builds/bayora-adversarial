@@ -2,8 +2,13 @@
 """
 Leak Test 5: test_log_exposure (PRIV-001)
 Demonstrates that raw adversarial and benign prompts are emitted in plaintext
-to standard container logs without masking, redaction, or differential privacy.
+to standard container stdout/stderr streams without masking or redaction (PRIV-001).
+Note on Trust Boundary: This test is executed from the Docker host daemon level
+(`docker logs`), demonstrating operator/daemon-level log exposure. It does not
+claim that the untrusted Red container itself has access to host Docker logs.
+Log redaction and tamper-evident audit chaining are scheduled for Phase 5.
 """
+
 
 import subprocess
 import sys

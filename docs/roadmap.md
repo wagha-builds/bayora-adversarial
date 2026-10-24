@@ -1,4 +1,5 @@
-# Bayora Phase 2.0 Roadmap & Planning
+# Bayora Hardening Roadmap & Planning (Phases 2.0–2.3)
+
 
 This document tracks architectural decisions, environment specifications, and the Definition of Done for Phase 2.0.
 
@@ -55,8 +56,9 @@ This document tracks architectural decisions, environment specifications, and th
 6. **Negative Security Testing:** Explicit negative tests verified visible failure of denied actions: `ptrace` returned EPERM (errno=1), raw socket creation raised `PermissionError` (errno=13), mount returned permission denied, and write to rootfs returned Read-only file system.
 7. **Cold Reboot Persistence:** AppArmor profiles permanently installed in `/etc/apparmor.d/`; full cold VM reboot verified stack recovery, profile persistence in enforce mode, and `extra_hosts` IP parity.
 8. **Leak Test Suite Parity:** Remaining 4 leak tests accurately classified as `still_reproducible` pending later phases (network, cache, logging).
-9. **Smoke Test Verification:** Verified single-request gateway inference smoke test ($7,101.66\text{ ms}$, 0 timeouts, 0 errors).
+9. **Smoke Test Verification:** Verified single-request gateway inference smoke test recorded in saved artifact `inference_smoke_test.txt` ($p50 = 8,001.58\text{ ms}$, $9.55\text{ tok/s}$, 0 timeouts, 0 errors).
 10. **Separate Evidence Storage:** Evidence artifacts stored under `results/hardening/phase2.3-least-privilege/local-ubuntu-vm/`.
+
 
 
 

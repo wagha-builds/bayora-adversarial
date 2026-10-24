@@ -102,7 +102,8 @@ Workloads and services are strictly compartmentalized across five isolated secur
 | `test_net_model_direct.py` | Model Server | Red connects directly to llama.cpp port 8080 | ✅ **EXPLOIT SUCCEEDED** (HTTP 200) | SEC-008 |
 | `test_fs_blue_rules.py` | Shared Volume | Red reads proprietary `blue_rules.json` directly from shared volume | ✅ **EXPLOIT SUCCEEDED** (Rules extracted) | SEC-001 |
 | `test_cache_timing.py` | Model KV Cache | Identical prefix returns in 126 ms vs 2,565 ms (delta: 2,439 ms) | ✅ **EXPLOIT SUCCEEDED** (Oracle confirmed) | LLM-001 |
-| `test_log_exposure.py` | Container Stdout | Unredacted raw user prompts readable from container logs | ✅ **EXPLOIT SUCCEEDED** (Prompts leaked) | PRIV-001 |
+| `test_log_exposure.py` | Container Stdout | Unredacted user prompts readable from daemon stdout/stderr streams (host/operator boundary) | ✅ **EXPLOIT SUCCEEDED** (Prompts leaked) | PRIV-001 |
+
 | `test_resource_contention.py` | Host CPU | Red stressor monopolizes CPU; causes severe latency spikes and 502 timeouts | ✅ **FAILURE MODE PROVEN** (Accepted with waiver) | PERF-004 |
 | `test_unloaded_recovery.py` | Host Recovery | Clean post-contention recovery run (10/10 requests complete) | ✅ **RECOVERY VERIFIED** ($p50 = 7,790.57\text{ ms}$) | RES-004 |
 

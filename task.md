@@ -479,7 +479,7 @@ Executed automated leak-test suite inside `bayora-red-runner`:
 | `test_net_blue_direct.py` | SEC-008 | Clean (exit 0) | `still_reproducible` (PASS) | Flat bridge intact; network segmentation scheduled for Phase 3. |
 | `test_net_model_direct.py` | SEC-008 | Clean (exit 0) | `still_reproducible` (PASS) | Direct HTTP connection succeeds; Phase 3 isolates zones. |
 | `test_cache_timing.py` | LLM-001 | Clean (exit 0) | `still_reproducible` (PASS) | Prefix cache timing delta detected; cache hardening scheduled for Phase 6. |
-| `test_log_exposure.py` | PRIV-001 | Clean (exit 0) | `still_reproducible` (PASS) | Unredacted prompts in stdout logs; audit ledger scheduled for Phase 5. |
+| `test_log_exposure.py` | PRIV-001 | Clean (exit 0) | `still_reproducible` (PASS) | Unredacted prompts in stdout logs; audit ledger scheduled for Phase 5. (Note: Evaluated at Docker daemon/operator boundary via `docker logs`, not via in-container Red access). |
 
 #### 3. Negative Security Tests Verification
 Added explicit negative tests (`tests/hardening/test_negative_security.py`) to confirm that denied actions fail visibly:
@@ -491,22 +491,23 @@ Added explicit negative tests (`tests/hardening/test_negative_security.py`) to c
 
 #### 4. Functional & Smoke Verification
 - Blue Filter verified reading rules from `/app/blue_rules.json`: `/rules` returns 5 keywords and secret rule salt.
-
 - Model Server health check passes (`/health` returns `{"status":"ok"}`).
-- Gateway smoke test (`baseline-stub` -> `blue-filter` -> `model-server`) executed cleanly ($7,101.66\text{ ms}$, $11.63\text{ tok/s}$, 0 errors, 0 timeouts).
+- Gateway smoke test recorded in saved artifact `inference_smoke_test.txt`: $p50 = 8,001.58\text{ ms}$, $9.55\text{ tok/s}$, 0 timeouts, 0 errors (distinguished from an earlier interactive trial of $7,101.66\text{ ms}$).
 
-#### 4. Evidence Artifacts Provenance (Phase 2.3)
+#### 5. Evidence Artifacts Provenance (Phase 2.3)
 Stored under `results/hardening/phase2.3-least-privilege/local-ubuntu-vm/`:
-1. `leak_test_results.json` — Master leak test suite proving SEC-001 mitigation.
+1. `leak_test_results.json` — Master leak test suite proving SEC-001 filesystem path removal.
 2. `container_security_inspect.json` — Full Docker inspect of all 4 services confirming `CapDrop: ["ALL"]` and mount tables without shared volume.
 3. `blue_filter_rules_verification.json` — Response proving Blue loads baked-in `/app/blue_rules.json`.
-4. `inference_smoke_test.txt` — Gateway inference smoke test output.
-5. `docker_compose_ps.txt` — Running service inventory.
+4. `inference_smoke_test.txt` — Gateway inference smoke test output ($8,001.58\text{ ms}$, $9.55\text{ tok/s}$).
+5. `docker_compose_ps.txt` — Running service inventory and localhost port bindings.
 6. `model_server_container_logs.txt` — Logs for `bayora-model-server`.
 7. `blue_filter_container_logs.txt` — Logs for `bayora-blue-filter`.
 8. `baseline_stub_container_logs.txt` — Logs for `bayora-baseline-stub`.
+9. `negative_security_tests.txt` — Output of explicit negative security test executions.
 
-#### 5. Rollback Procedure
+#### 6. Rollback Procedure
+
 If capability dropping or volume removal breaks a dependent workload:
 1. Re-add `shared_data` volume to `docker-compose.yml` and revert `BLUE_RULES_PATH`.
 2. Remove `cap_drop: ["ALL"]` to restore default Docker capabilities.

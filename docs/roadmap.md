@@ -24,7 +24,7 @@ This document tracks architectural decisions, environment specifications, and th
 4. **Native Baseline Testing:** All five leak tests, latency benchmark, cache-timing test, and contention test run successfully. Host fingerprint is saved with results (contention benchmark waived; deferred to Phase 7).
 5. **Tagging:** The repository is tagged as `phase2.0-vm-baseline`.
 
-## Phase 2.1 Definition of Done (PRE-COMMIT AUDIT VERIFIED — PENDING APPROVAL)
+## Phase 2.1 Definition of Done (COMPLETED & TAGGED ✅ — `phase2.1-gvisor-hardening`)
 1. **gVisor Availability:** Installed gVisor runtime (`runsc release-20261012.0`) is registered and active in Docker daemon.
 2. **Red Sandboxing:** `bayora-red-runner` runs under verified `runsc` runtime with Sentry syscall isolation (`dmesg` confirms `Starting gVisor...`).
 3. **Model Evaluation & Evidence Decision:** `bayora-model-server` was evaluated under `runsc`; empirical evidence recorded an 826.2% latency regression ($0.99\text{ tok/s}$). Runtime decision to retain `runc` for Model is documented and supported by evidence (`benchmark_gvisor_trial.json`).
@@ -36,24 +36,27 @@ This document tracks architectural decisions, environment specifications, and th
 9. **Rollback Path:** Documented clear rollback procedure via Compose runtime attribute.
 10. **Documented Limitations:** Accepted dynamic IPAM order-dependency in `extra_hosts` and pre-existing guest port exposure (`0.0.0.0`) deferred to Phase 3.
 
-## Phase 2.2 Definition of Done (IMPLEMENTED & VERIFIED ✅)
+## Phase 2.2 Definition of Done (COMPLETED & TAGGED ✅ — `phase2.2-seccomp-apparmor`)
 1. **Custom Seccomp Profiles:** Implemented tailored seccomp profiles for `model-server` (`model-server-seccomp.json`) and Python microservices (`python-service-seccomp.json`), unconditionally denying 18 high-risk syscalls (`ptrace`, `bpf`, `perf_event_open`, `mount`, etc.) while allowing required runtime execution.
 2. **Custom AppArmor Policies:** Implemented tailored AppArmor profiles (`bayora-model-server` and `bayora-python-service`) loaded into the host kernel in enforce mode, denying `network raw`, `mount`, and high-risk capabilities, while enforcing read-only model weight directory protection.
 3. **Red Runner Runtime Parity:** Maintained `red-runner` under gVisor Sentry userspace virtualization; documented non-applicability of host AppArmor.
 4. **Baseline Services Functionality:** All 4 services healthy and running; end-to-end inference passes through the gateway.
-5. **Bounded Post-Change Performance:** Measured bounded 10-request inference performance ($p50 = 7,451.25\text{ ms}$, $9.39\text{ tok/s}$), confirming negligible (~4%) overhead over baseline.
+5. **Bounded Post-Change Performance:** Measured bounded 10-request inference performance ($p50 = 7,451.25\text{ ms}$, $9.39\text{ tok/s}$), showing no measurable overhead beyond host noise (about ±40%).
 6. **Leak Test Master Suite:** Master leak suite executed within Red gVisor sandbox; all 5 tests classified as `still_reproducible` (demonstrating expected leak reproduction under host MAC and syscall isolation).
 7. **Separate Evidence Storage:** 10 new evidence artifacts stored under `results/hardening/phase2.2-seccomp-apparmor/local-ubuntu-vm/`, leaving prior phase artifacts untouched.
 8. **Rollback Path:** Documented clear rollback procedure via Compose security attributes.
 
-## Phase 2.3 Definition of Done (IMPLEMENTED & VERIFIED ✅)
-1. **Shared Volume Removal (SEC-001):** Removed `shared_data` named volume mounts from `red-runner` and `blue-filter`; removed top-level `volumes` block.
+## Phase 2.3 Definition of Done (COMPLETED & TAGGED ✅ — `phase2.3-least-privilege`)
+1. **Shared Volume Removal & Mount Lockdown:** Removed `shared_data` named volume mounts; restricted Red to payloads-only read-only mount (`payloads.json:ro`) and an in-memory `tmpfs` results volume (`/app/results`, no host filesystem access).
 2. **Baked-In Blue Rules:** Reconfigured `blue-filter` via `BLUE_RULES_PATH=/app/blue_rules.json`; verified rules load correctly from container image.
-3. **Capability Dropping (`cap_drop: ALL`):** Applied `cap_drop: ["ALL"]` across all four services (`model-server`, `blue-filter`, `baseline-stub`, `red-runner`); verified `CapDrop: ["ALL"]` and `CapAdd: null` via Docker inspect.
-4. **SEC-001 Verification:** Verified that `test_fs_blue_rules.py` fails inside `red-runner` (file not found), demonstrating that SEC-001 is mitigated.
-5. **Leak Test Suite Parity:** Remaining 4 leak tests accurately classified as `still_reproducible` pending later phases (network, cache, logging).
-6. **Smoke Test Verification:** Verified single-request gateway inference smoke test ($7,101.66\text{ ms}$, 0 timeouts, 0 errors).
-7. **Separate Evidence Storage:** 8 new evidence artifacts stored under `results/hardening/phase2.3-least-privilege/local-ubuntu-vm/`.
-8. **Rollback Path:** Documented clear rollback procedure for capabilities and volume restoration.
+3. **Capability Dropping & Non-Root Execution:** Applied `cap_drop: ["ALL"]` and `no-new-privileges: true` across all services. Blue filter and Gateway run as non-root (`65534:65534`) with `read_only: true` rootfs.
+4. **Localhost Port Binding:** Published host ports strictly bound to `127.0.0.1` (`127.0.0.1:8000:8000`, `127.0.0.1:8001:8001`, `127.0.0.1:8080:8080`).
+5. **SEC-001 Verification:** Verified that `test_fs_blue_rules.py` fails inside `red-runner` (file not found), eliminating filesystem-based rule extraction. Direct network access to `/rules` remains open until Phase 3 network segmentation.
+6. **Negative Security Testing:** Explicit negative tests verified visible failure of denied actions: `ptrace` returned EPERM (errno=1), raw socket creation raised `PermissionError` (errno=13), mount returned permission denied, and write to rootfs returned Read-only file system.
+7. **Cold Reboot Persistence:** AppArmor profiles permanently installed in `/etc/apparmor.d/`; full cold VM reboot verified stack recovery, profile persistence in enforce mode, and `extra_hosts` IP parity.
+8. **Leak Test Suite Parity:** Remaining 4 leak tests accurately classified as `still_reproducible` pending later phases (network, cache, logging).
+9. **Smoke Test Verification:** Verified single-request gateway inference smoke test ($7,101.66\text{ ms}$, 0 timeouts, 0 errors).
+10. **Separate Evidence Storage:** Evidence artifacts stored under `results/hardening/phase2.3-least-privilege/local-ubuntu-vm/`.
+
 
 

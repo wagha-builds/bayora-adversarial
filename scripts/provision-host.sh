@@ -104,7 +104,13 @@ else
     echo "[!] WARNING: runsc smoke test failed. Check daemon.json and dmesg."
 fi
 
-# 8. Record Host Fingerprint
+# 8. Install and load Bayora AppArmor profiles
+if [ -f "${SCRIPT_DIR}/load-apparmor-profiles.sh" ]; then
+    echo "[*] Installing Bayora AppArmor profiles..."
+    bash "${SCRIPT_DIR}/load-apparmor-profiles.sh"
+fi
+
+# 9. Record Host Fingerprint
 echo "[*] Recording host fingerprint..."
 FINGERPRINT_FILE="host_fingerprint.json"
 cat <<EOF > "${FINGERPRINT_FILE}"

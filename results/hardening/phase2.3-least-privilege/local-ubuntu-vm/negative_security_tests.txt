@@ -1,0 +1,39 @@
+# Bayora Negative Security Test Output — Phase 2.3 Verification Pass
+# Captured: 2026-10-24
+# Verified: Seccomp, AppArmor, Cap Drop (cap_drop: ALL), and Read-Only Rootfs enforcements
+
+--- Container: bayora-blue-filter (profile: bayora-python-service, seccomp: python-service-seccomp.json) ---
+=================================================================
+ Bayora Negative Security Test Suite — Container: bayora-blue-filter
+=================================================================
+[*] Testing ptrace syscall (should be blocked by Seccomp)...
+  [+] SUCCESS (BLOCKED): ptrace returned -1 with EPERM (errno=1, Operation not permitted)
+[*] Testing raw socket creation (should be blocked by AppArmor/cap_drop)...
+  [+] SUCCESS (BLOCKED): raw socket creation raised PermissionError: [Errno 13] Permission denied
+[*] Testing mount syscall (should be blocked by AppArmor/cap_drop)...
+  [+] SUCCESS (BLOCKED): mount returned -1 with errno=1 (Operation not permitted)
+[*] Testing file write to rootfs (should be blocked by read_only rootfs)...
+  [+] SUCCESS (BLOCKED): write to /app/test_write_denied.txt failed with: [Errno 30] Read-only file system: '/app/test_write_denied.txt'
+=================================================================
+[+] ALL NEGATIVE SECURITY TESTS CONFIRMED ENFORCEMENT.
+
+--- Container: bayora-baseline-stub (profile: bayora-python-service, seccomp: python-service-seccomp.json) ---
+=================================================================
+ Bayora Negative Security Test Suite — Container: bayora-baseline-stub
+=================================================================
+[*] Testing ptrace syscall (should be blocked by Seccomp)...
+  [+] SUCCESS (BLOCKED): ptrace returned -1 with EPERM (errno=1, Operation not permitted)
+[*] Testing raw socket creation (should be blocked by AppArmor/cap_drop)...
+  [+] SUCCESS (BLOCKED): raw socket creation raised PermissionError: [Errno 13] Permission denied
+[*] Testing mount syscall (should be blocked by AppArmor/cap_drop)...
+  [+] SUCCESS (BLOCKED): mount returned -1 with errno=1 (Operation not permitted)
+[*] Testing file write to rootfs (should be blocked by read_only rootfs)...
+  [+] SUCCESS (BLOCKED): write to /app/test_write_denied.txt failed with: [Errno 30] Read-only file system: '/app/test_write_denied.txt'
+=================================================================
+[+] ALL NEGATIVE SECURITY TESTS CONFIRMED ENFORCEMENT.
+
+--- Container: bayora-model-server (profile: bayora-model-server, seccomp: model-server-seccomp.json) ---
+$ docker exec bayora-model-server sh -c 'touch /models/evil.txt; mount -t tmpfs none /mnt'
+touch: cannot touch '/models/evil.txt': Permission denied
+mount: /mnt: permission denied.
+       dmesg(1) may have more information after failed mount system call.

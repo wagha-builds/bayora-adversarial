@@ -48,23 +48,60 @@ def run_container_test(test_filename: str) -> dict:
         print(res.stderr, file=sys.stderr)
 
     test_name = test_filename.replace(".py", "")
+    stdout_lower = res.stdout.lower()
+    stderr_lower = res.stderr.lower() if res.stderr else ""
 
-    # For SEC-001 (test_fs_blue_rules):
-    # exit code 1 means "File /shared_data/blue_rules.json not found", meaning the leak is BLOCKED/FIXED.
+    # SEC-001 (test_fs_blue_rules):
+    # Only classify as MITIGATED if specific file-not-found message is confirmed in stdout.
+    # Any unexpected exit or traceback must be labeled ERROR.
     if test_name == "test_fs_blue_rules":
-        if res.returncode != 0 and "not found" in res.stdout.lower() or "does not exist" in res.stdout.lower():
-            classification = "fixed_or_blocked"
+        if res.returncode != 0 and ("does not exist at" in stdout_lower or "not found in shared mount" in stdout_lower):
+            classification = "shared_volume_removed"
             status = "MITIGATED"
-            expected = "fixed_or_blocked (SEC-001: shared volume removed in Phase 2.3)"
-        else:
+            expected = "shared_volume_removed (SEC-001: shared volume removed in Phase 2.3)"
+        elif res.returncode == 0 and ("leaked" in stdout_lower or "proprietary ruleset" in stdout_lower):
             classification = "still_reproducible"
             status = "VULNERABLE"
-            expected = "fixed_or_blocked"
+            expected = "shared_volume_removed"
+        else:
+            classification = "harness_or_script_error"
+            status = "ERROR"
+            expected = "shared_volume_removed"
+
+    # Network tests (test_net_blue_direct, test_net_model_direct):
+    elif test_name in ("test_net_blue_direct", "test_net_model_direct"):
+        if res.returncode == 0 and "success" in stdout_lower:
+            classification = "still_reproducible"
+            status = "PASS"
+            expected = "still_reproducible (network segmentation scheduled for Phase 3)"
+        elif res.returncode != 0 and ("connection refused" in stdout_lower or "unreachable" in stdout_lower or "timed out" in stdout_lower):
+            classification = "fixed_or_blocked"
+            status = "BLOCKED"
+            expected = "still_reproducible"
+        else:
+            classification = "harness_or_script_error"
+            status = "ERROR"
+            expected = "still_reproducible"
+
+    # Cache timing test:
+    elif test_name == "test_cache_timing":
+        if res.returncode == 0 and ("speedup" in stdout_lower or "oracle" in stdout_lower):
+            classification = "still_reproducible"
+            status = "PASS"
+            expected = "still_reproducible (cache partitioning scheduled for Phase 6)"
+        elif res.returncode != 0 and ("no timing difference" in stdout_lower or "disabled" in stdout_lower):
+            classification = "fixed_or_blocked"
+            status = "MITIGATED"
+            expected = "still_reproducible"
+        else:
+            classification = "harness_or_script_error"
+            status = "ERROR"
+            expected = "still_reproducible"
     else:
         reproduced = (res.returncode == 0)
         classification = "still_reproducible" if reproduced else "fixed_or_blocked"
         status = "PASS" if reproduced else "FAIL"
-        expected = "still_reproducible (network segmentation scheduled for Phase 3, cache partitioning for Phase 6)"
+        expected = "still_reproducible"
 
     return {
         "test": test_name,
@@ -74,6 +111,7 @@ def run_container_test(test_filename: str) -> dict:
         "stdout": res.stdout.strip(),
         "phase_expected": expected
     }
+
 
 
 def run_host_test(test_filename: str) -> dict:
@@ -89,17 +127,29 @@ def run_host_test(test_filename: str) -> dict:
     if res.stderr:
         print(res.stderr, file=sys.stderr)
 
-    reproduced = (res.returncode == 0)
-    classification = "still_reproducible" if reproduced else "fixed_or_blocked"
+    stdout_lower = res.stdout.lower()
+    if res.returncode == 0 and "leak" in stdout_lower:
+        classification = "still_reproducible"
+        status = "PASS"
+    elif res.returncode != 0 and ("no leak found" in stdout_lower or "redacted" in stdout_lower):
+        classification = "fixed_or_blocked"
+        status = "MITIGATED"
+    elif res.returncode != 0:
+        classification = "harness_or_script_error"
+        status = "ERROR"
+    else:
+        classification = "still_reproducible"
+        status = "PASS"
 
     return {
         "test": test_filename.replace(".py", ""),
         "exit_code": res.returncode,
-        "raw_status": "PASS" if reproduced else "FAIL",
+        "raw_status": status,
         "classification": classification,
         "stdout": res.stdout.strip(),
         "phase_expected": "still_reproducible (audit ledger and log redaction scheduled for Phase 5)"
     }
+
 
 
 def main():
@@ -131,8 +181,22 @@ def main():
         results.append(result)
 
     print(f"\n--- Running: test_log_exposure.py (from Docker host) ---")
+    # Trigger a benign query through gateway so standard logs contain traffic to inspect
+    try:
+        import urllib.request
+        query_payload = json.dumps({"prompt": "Summarize the key differences between TCP and UDP"}).encode("utf-8")
+        req = urllib.request.Request(
+            "http://127.0.0.1:8000/query",
+            data=query_payload,
+            headers={"Content-Type": "application/json"}
+        )
+        urllib.request.urlopen(req, timeout=10)
+    except Exception as e:
+        print(f"[*] Gateway query pre-check: {e}")
+
     log_result = run_host_test("test_log_exposure.py")
     results.append(log_result)
+
 
     total_duration = time.time() - start_time
 

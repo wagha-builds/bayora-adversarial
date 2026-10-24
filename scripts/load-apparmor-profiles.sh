@@ -17,11 +17,14 @@ fi
 
 for profile in "${POLICIES_DIR}"/*; do
   if [ -f "${profile}" ]; then
-    echo "[+] Loading $(basename "${profile}")..."
-    sudo apparmor_parser -r -v "${profile}"
+    fname="$(basename "${profile}")"
+    echo "[+] Installing and loading ${fname} to /etc/apparmor.d/${fname}..."
+    sudo cp -f "${profile}" "/etc/apparmor.d/${fname}"
+    sudo apparmor_parser -r -v "/etc/apparmor.d/${fname}"
   fi
 done
 
 echo "[*] Verifying loaded profiles..."
 sudo aa-status | grep bayora || true
-echo "[+] All Bayora AppArmor profiles successfully loaded and active."
+echo "[+] All Bayora AppArmor profiles successfully installed to /etc/apparmor.d and active."
+

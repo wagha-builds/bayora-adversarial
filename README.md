@@ -1,8 +1,8 @@
 # Bayora — Adversarial AI Evaluation Platform
 
 > **A Hardened Five-Zone Defense-in-Depth Sandbox for Adversarial LLM Safety Evaluations**
-> *Current Status: Phase 2.1 (Container Hardening with gVisor `runsc`) Pre-Commit Audit Verified*
-> *Active Tag: `phase2.0-vm-baseline` | Active Branch: `phase2-hardening`*
+> *Current Status: Phase 2 (Hardening: gVisor, Seccomp, AppArmor, Least Privilege & Storage Isolation) Verified & Tagged*
+> *Active Tag: `phase2.3-least-privilege` | Active Branch: `phase2-hardening`*
 
 ---
 
@@ -29,8 +29,9 @@ All architectural phases in Bayora enforce four non-negotiable security invarian
 |---|---|---|
 | **R1** | **Red Isolation** | The Red Team execution environment operates as an untrusted workload sandboxed via gVisor (`runsc`). Red has **zero** access to the host filesystem, internal networks, or the model server. Red communicates exclusively via authenticated HTTP requests to the Evaluation Gateway. |
 | **R2** | **Blue Integrity** | Blue defenses execute as sealed input/output guardrails. Red receives no visibility into Blue filter code, models, token representations, or classification scores. Blocked queries return standardized, uniform refusals. |
-| **R3** | **Model Confidentiality** | The model runtime (`llama.cpp`) operates in an isolated zone with KV prefix caching and state retention disabled. Inference processes are pinned to dedicated CPU cores (`cpuset`) to mitigate timing-oracle side channels. |
+| **R3** | **Model Confidentiality** | The model runtime (`llama.cpp`) operates in an isolated zone under standard `runc` (retained following empirical evaluation of gVisor's 9.26x CPU overhead) hardened by custom seccomp syscall filters and AppArmor confinement. KV prefix caching is scheduled for removal in Phase 6, and inference processes will be pinned to dedicated CPU cores (`cpuset`) in Phase 7 to mitigate timing-oracle side channels. |
 | **R4** | **Audit Immutability** | Every prompt submission, token metric, latency trace, and policy decision is Ed25519-signed and SHA-256 chained in an append-only ledger anchored externally. |
+
 
 ---
 
@@ -70,13 +71,14 @@ Workloads and services are strictly compartmentalized across five isolated secur
 
 ### Zone Communication Matrix
 
-| Zone | Component | Inbound Permitted From | Outbound Permitted To | Hardening Applied |
-|---|---|---|---|---|
-| **Zone 1: Red** | `red-runner` | None | Zone 4 (Gateway only) | gVisor `runsc`, dropped capabilities, no shared volumes |
-| **Zone 2: Blue** | `blue-filter` | Zone 4 (Gateway only) | Zone 4 (Verdict return) | Read-only rootfs, dropped capabilities, non-root user |
-| **Zone 3: Model** | `model-server` | Zone 4 (Gateway only) | Zone 4 (Inference stream) | gVisor `runsc`, KV cache disabled, pinned `cpuset` |
-| **Zone 4: Control** | `baseline-stub` / Gateway | Zone 1 (Red) | Zone 2 (Blue), Zone 3 (Model), Zone 5 (Audit) | OPA ABAC engine, TLS termination, token bucket limiter |
-| **Zone 5: Audit** | Audit Daemon | Zone 4 (Gateway only) | External Trust Anchor | Ed25519 signing, append-only hash ledger |
+| Zone | Component | Inbound Permitted From | Outbound Permitted To | Applied Now (Phase 2.3) | Planned Hardening (Phases 3–7) |
+|---|---|---|---|---|---|
+| **Zone 1: Red** | `red-runner` | None | Zone 4 (Gateway only) | gVisor `runsc`, `cap_drop: ALL`, `no-new-privileges: true`, payload-only `:ro` mount, in-memory `tmpfs` results volume (no host filesystem write access) | Strict bridge network isolation to Gateway only (Phase 3) |
+| **Zone 2: Blue** | `blue-filter` | Zone 4 (Gateway only) | Zone 4 (Verdict return) | `read_only: true` rootfs, non-root user (`65534:65534`), `tmpfs: /tmp`, `cap_drop: ALL`, `no-new-privileges: true`, custom seccomp profile, AppArmor profile (`bayora-python-service`) | Strict bridge network isolation to Gateway only (Phase 3), mTLS certificates (`step-ca`, Phase 4) |
+| **Zone 3: Model** | `model-server` | Zone 4 (Gateway only) | Zone 4 (Inference stream) | Hardened `runc` runtime (retained after 9.26x gVisor CPU overhead evaluation), `cap_drop: ALL`, `no-new-privileges: true`, custom seccomp profile, AppArmor profile (`bayora-model-server`), read-only model mount | Strict bridge network isolation to Gateway only (Phase 3), KV prompt caching disabled (Phase 6), `cpuset` core pinning (Phase 7) |
+| **Zone 4: Control** | `baseline-stub` / Gateway | Zone 1 (Red) | Zone 2 (Blue), Zone 3 (Model), Zone 5 (Audit) | `read_only: true` rootfs, non-root user (`65534:65534`), `tmpfs: /tmp`, `cap_drop: ALL`, `no-new-privileges: true`, custom seccomp profile, AppArmor profile (`bayora-python-service`) | OPA ABAC engine, TLS termination, token bucket rate limiter (Phase 4) |
+| **Zone 5: Audit** | Audit Daemon | Zone 4 (Gateway only) | External Trust Anchor | Container log verification script | Append-only SHA-256 chained hash ledger with Ed25519 signatures, external Git anchoring (Phase 5) |
+
 
 ---
 
@@ -120,7 +122,8 @@ Workloads and services are strictly compartmentalized across five isolated secur
 | **Phase 2.0** | Native VM Re-Baselining | Ubuntu 24.04 VM, 18 evidence artifacts, verified leak suite, accepted waiver | ✅ Complete (`phase2.0-vm-baseline`) |
 | **Phase 2.1** | Container Hardening (gVisor) | Apply gVisor `runsc` runtime to Red Team container; empirical Model evaluation | ✅ Complete (`phase2.1-gvisor-hardening`) |
 | **Phase 2.2** | System Call & MAC Hardening | Custom `seccomp` syscall profiles and AppArmor enforcement per container | ✅ Complete (`phase2.2-seccomp-apparmor`) |
-| **Phase 2.3** | Least Privilege & Storage | Drop all unnecessary Linux capabilities (`CAP_DROP=ALL`); remove shared volumes | ✅ Complete |
+| **Phase 2.3** | Least Privilege & Storage | Drop capabilities (`cap_drop: ALL`), no-new-privileges, payloads-only mount, tmpfs results, non-root Blue/Gateway, localhost ports | ✅ Complete (`phase2.3-least-privilege`) |
+
 | **Phase 3** | Five-Zone Network Isolation | Strict Docker bridge network isolation (5 distinct bridges), internal DNS, `nftables` | 🔄 **NEXT** |
 | **Phase 4** | Identity, Secrets & Policy | OpenBao secrets engine, `step-ca` automated mTLS per zone, OPA ABAC engine | 🔲 Planned |
 | **Phase 5** | Cryptographic Audit Ledger | Append-only SHA-256 chained ledger with Ed25519 signatures, external Git anchoring | 🔲 Planned |

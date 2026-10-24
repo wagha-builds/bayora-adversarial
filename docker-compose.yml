@@ -1,9 +1,11 @@
-# Bayora Insecure Baseline - Docker Compose (Phase 1)
-# Intentionally vulnerable architecture to demonstrate and record baseline leaks:
-# 1. Single flat bridge network (allows direct cross-zone network bypasses)
-# 2. Shared named volume mounted to Red and Blue (allows direct rule extraction)
-# 3. Model server prompt caching enabled (allows timing oracle side-channel)
-# 4. Naive routing stub without OPA, mTLS, or query budgets
+# Bayora Insecure Baseline - Docker Compose (Phase 1 / Hardening Phase 2)
+# Hardened in Phase 2:
+# 1. Red isolated under gVisor (runsc)
+# 2. Seccomp and AppArmor enforcing profiles on services
+# 3. Linux capabilities dropped (cap_drop: ALL) and no-new-privileges: true
+# 4. Shared volume removed; Red given payloads-only read-only mount and tmpfs results (no host write)
+# 5. Blue filter and Gateway run as non-root (65534:65534) with read-only rootfs and tmpfs /tmp
+# 6. Host published ports strictly bound to 127.0.0.1 (localhost)
 
 services:
   model-server:
@@ -24,10 +26,11 @@ services:
     volumes:
       - ./models/qwen2.5-1.5b-instruct-q4_k_m.gguf:/models/model.gguf:ro
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     security_opt:
       - seccomp:./policies/seccomp/model-server-seccomp.json
       - apparmor:bayora-model-server
+      - no-new-privileges:true
     cap_drop:
       - ALL
     networks:
@@ -39,13 +42,18 @@ services:
       context: ./services/blue-filter
       dockerfile: Dockerfile
     container_name: bayora-blue-filter
+    user: "65534:65534"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=64m,noexec,nosuid
     environment:
       - BLUE_RULES_PATH=/app/blue_rules.json
     ports:
-      - "8001:8001"
+      - "127.0.0.1:8001:8001"
     security_opt:
       - seccomp:./policies/seccomp/python-service-seccomp.json
       - apparmor:bayora-python-service
+      - no-new-privileges:true
     cap_drop:
       - ALL
     networks:
@@ -57,14 +65,19 @@ services:
       context: ./services/baseline-stub
       dockerfile: Dockerfile
     container_name: bayora-baseline-stub
+    user: "65534:65534"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,size=64m,noexec,nosuid
     environment:
       - BLUE_FILTER_URL=http://blue-filter:8001
       - MODEL_SERVER_URL=http://model-server:8080
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     security_opt:
       - seccomp:./policies/seccomp/python-service-seccomp.json
       - apparmor:bayora-python-service
+      - no-new-privileges:true
     cap_drop:
       - ALL
     depends_on:
@@ -86,8 +99,11 @@ services:
       - PAYLOADS_PATH=/app/data/payloads.json
       - OUTPUT_DIR=/app/results
     volumes:
-      - ./data/baseline:/app/data:ro
-      - ./results/baseline:/app/results
+      - ./data/baseline/payloads.json:/app/data/payloads.json:ro
+    tmpfs:
+      - /app/results:rw,size=64m,noexec,nosuid
+    security_opt:
+      - no-new-privileges:true
     cap_drop:
       - ALL
     depends_on:

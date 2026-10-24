@@ -226,7 +226,7 @@ For Phase 2+ to compare against, Phase 1 will record:
 ---
 
 ## Current Phase: Phase 2 — Container Hardening & Local VM Execution
-**Status:** PLANNING
+**Status:** COMPLETED ✅
 **Objective:** Transition to a full, dedicated Linux VM environment (Local Ubuntu 24.04 LTS on VMware Workstation / VirtualBox), capture the definitive native hardware baseline, and implement OS/Kernel-level container hardening (gVisor runsc, AppArmor, seccomp). Treat Oracle Cloud ARM64 as a possible later migration target.
 
 **VM Environment & Sizing (Host: i5-13450HX 10c/16t, 16 GB RAM):**
@@ -238,7 +238,7 @@ For Phase 2+ to compare against, Phase 1 will record:
 - **Results Storage:** Store results per host (`results/baseline/local-ubuntu-vm/` and later `results/baseline/oracle-arm64/`).
 
 **Key Tasks:**
-- [ ] **Phase 2.0: Target Environment Setup & Native Re-Baselining:**
+- [x] **Phase 2.0: Target Environment Setup & Native Re-Baselining:**
   - [x] Spin up local Ubuntu 24.04 LTS VM with recommended sizing and SSH forwarding.
   - [x] Run `scripts/provision-host.sh` to install Docker, gVisor (`runsc`), AppArmor utilities, and verify `cgroup v2`.
   - [x] Clone repository via read-only deploy key.
@@ -248,7 +248,8 @@ For Phase 2+ to compare against, Phase 1 will record:
   - [ ] Contention benchmark (PARTIAL / INTERRUPTED — WAIVED): Evaluated under unconstrained Phase 1 baseline conditions on the VirtualBox Ubuntu 24.04 VM (distinguished from the earlier WSL2 reference measurement of p50=3,237.08 ms). Both 6-core and 4-core stressors induced severe host contention, client timeouts, and kernel watchdog soft-lockup alarms under unthrottled CFS scheduling. Safely halted via cleanup guard; all stressor processes terminated. Server-side timestamped gateway logs verify that during Loaded Round 1, 15 queries were received, yielding 10 HTTP 200 responses and 5 HTTP 502 responses. The client log recorded 4 explicit timeout messages, but individual client outcomes cannot reliably be mapped to gateway requests from the available client-side evidence. One additional query was received at the gateway belonging to the interrupted Round 2, and the full 60-request A-B-B-A benchmark remains incomplete. A post-contention unloaded recovery check completed 10/10 requests with a median latency of 7,790.57 ms, compared to the initial unloaded baseline median of 5,577.94 ms (approximately 39.7% higher). Both unloaded runs used matching inference settings (prompt, salting, 64-token limit, temperature=0.7), and server logs confirmed zero residual inference work prior to the recovery check. Host-level thread scheduling across hybrid P/E-cores and thermal/power throttling are plausible explanations, but their exact cause was not independently verified. These figures represent two observations on an unpinned VM host rather than formal bounds.
   - [x] Record host fingerprint (including manual Windows tuning notes) and save all 18 baseline evidence files to `results/baseline/local-ubuntu-vm/`.
   - [x] Tag `phase2.0-vm-baseline` (authorized and tagged).
-  - [ ] Take Snapshot #3: Post-Baseline, Pre-Hardening (deferred pending clean VM shutdown per runbook).
+  - [x] Take Snapshot #3: Post-Baseline, Pre-Hardening (UUID: `d6048cf6-9209-4781-a457-094bdc0a596a` verified active on VirtualBox host).
+
 
 ### Phase 2.0 Baseline Audit Findings & Contention Notes
 **Date:** 2026-10-24
@@ -412,7 +413,7 @@ Bounded end-to-end inference benchmark through evaluation gateway (`baseline-stu
 | Token Latency $p50$ | $101.38\text{ ms/tok}$ | $66.77\text{ ms/tok}$ | $106.64\text{ ms/tok}$ | $+5.2\%$ |
 | Total Wall Duration | $76.41\text{ s}$ | $49.10\text{ s}$ | $76.96\text{ s}$ | Stable throughout run |
 
-*Finding:* Unlike gVisor virtualization (which caused a 9.26x slowdown on CPU inference), kernel-native seccomp filters and AppArmor LSM checks impose virtually zero measurable computational overhead (~4% variance, well within VirtualBox host scheduling noise).
+*Finding:* Unlike gVisor virtualization (which caused a 9.26x slowdown on CPU inference), kernel-native seccomp filters and AppArmor LSM checks impose no measurable computational overhead beyond host scheduling noise (about ±40%, given runc baseline samples ranging from 4,860 ms to 7,451 ms). The gVisor 9.26x slowdown remains far outside this noise band, confirming the architectural decision to retain runc for the model.
 
 #### 4. Master Leak-Test Suite Verification (inside gVisor)
 All 5 automated baseline leak tests were executed with `bayora-red-runner` executing inside gVisor:
@@ -454,28 +455,43 @@ If seccomp or AppArmor profile issues occur:
 **Status / Sign-off Readiness:** Fully Implemented & Empirically Verified (Ready for Final Commit)
 
 #### 1. Changes Implemented
-- **Shared Volume Elimination (SEC-001):**
+- **Shared Volume Elimination & Mount Lockdown (SEC-001 & R1 Invariant):**
   - Removed `shared_data:/shared_data` mount from `bayora-red-runner`.
   - Removed `shared_data:/shared_data` mount from `bayora-blue-filter`.
   - Reconfigured `bayora-blue-filter` via `BLUE_RULES_PATH=/app/blue_rules.json` to load its verified, baked-in container rules file.
   - Removed top-level `volumes: shared_data` definition from `docker-compose.yml`.
-- **Capability Dropping (Least Privilege):**
+  - Restructured `bayora-red-runner` mounts: changed broad `./data/baseline:/app/data:ro` to payloads-only `./data/baseline/payloads.json:/app/data/payloads.json:ro` (preventing access to host `data/baseline/blue_rules.json`).
+  - Replaced host-writable `./results/baseline:/app/results` mount with an in-memory `tmpfs: /app/results:rw,size=64m,noexec,nosuid`, ensuring Red has zero access to write to the host repository filesystem (strict enforcement of R1 invariant).
+- **Capability Dropping & Privilege Escalation Prevention:**
   - Configured `cap_drop: ["ALL"]` across all four services (`bayora-model-server`, `bayora-blue-filter`, `bayora-baseline-stub`, `bayora-red-runner`).
-  - Docker inspect verifies `CapDrop: ["ALL"]` and `CapAdd: null` across all running containers.
-  - Confirmed that standard TCP listener operations (ports 8000, 8001, 8080) and userspace inference do not require root capabilities.
+  - Added `security_opt: - no-new-privileges:true` to all services.
+  - Configured `blue-filter` and `baseline-stub` to run as non-root `user: "65534:65534"` with `read_only: true` rootfs and `tmpfs: /tmp`.
+  - Published host ports strictly bound to localhost (`127.0.0.1:8000:8000`, `127.0.0.1:8001:8001`, `127.0.0.1:8080:8080`).
+- **Reboot Persistence:**
+  - Installed AppArmor profiles permanently to `/etc/apparmor.d/bayora-model-server` and `/etc/apparmor.d/bayora-python-service`.
+  - Verified persistence through a full cold VM reboot (`docker compose down`, host reboot, `docker compose up -d`), confirming profiles remained in enforce mode and IP addresses matched `extra_hosts`.
 
 #### 2. Security Outcomes & Leak Test Verification
 Executed automated leak-test suite inside `bayora-red-runner`:
 | Test Script | Vulnerability ID | Execution Status | Outcome | Security Analysis |
 |:---|:---|:---:|:---:|:---|
-| `test_fs_blue_rules.py` | SEC-001 | Exited 1 (File missing) | **MITIGATED / BLOCKED** | `/shared_data/blue_rules.json` does not exist inside Red container. SEC-001 is fixed. |
+| `test_fs_blue_rules.py` | SEC-001 | Exited 1 (File missing) | **SHARED VOLUME REMOVED** | The shared-volume path (`/shared_data/blue_rules.json`) and host data mount leakage (`/app/data/blue_rules.json`) have been completely removed, eliminating filesystem-based extraction of Blue defense rules. Direct network extraction of `/rules` (SEC-008) remains open over the bridge network until Phase 3 network segmentation. |
 | `test_net_blue_direct.py` | SEC-008 | Clean (exit 0) | `still_reproducible` (PASS) | Flat bridge intact; network segmentation scheduled for Phase 3. |
 | `test_net_model_direct.py` | SEC-008 | Clean (exit 0) | `still_reproducible` (PASS) | Direct HTTP connection succeeds; Phase 3 isolates zones. |
-| `test_cache_timing.py` | LLM-001 | Clean (exit 0) | `still_reproducible` (PASS) | Prefix cache timing delta ($2,845.66\text{ ms}$) detected; cache hardening scheduled for Phase 6. |
+| `test_cache_timing.py` | LLM-001 | Clean (exit 0) | `still_reproducible` (PASS) | Prefix cache timing delta detected; cache hardening scheduled for Phase 6. |
 | `test_log_exposure.py` | PRIV-001 | Clean (exit 0) | `still_reproducible` (PASS) | Unredacted prompts in stdout logs; audit ledger scheduled for Phase 5. |
 
-#### 3. Functional & Smoke Verification
+#### 3. Negative Security Tests Verification
+Added explicit negative tests (`tests/hardening/test_negative_security.py`) to confirm that denied actions fail visibly:
+- `ptrace` syscall: returns `-1` with `EPERM` (errno=1, Operation not permitted) enforced by custom Seccomp.
+- Raw socket creation: raises `PermissionError: [Errno 13] Permission denied` enforced by AppArmor (`deny network raw`) and capability dropping.
+- `mount` syscall: returns `-1` with `errno=1` (Operation not permitted) enforced by AppArmor (`deny mount`) and capability dropping.
+- Rootfs write: fails with `[Errno 30] Read-only file system` enforced by Docker read-only container rootfs.
+
+
+#### 4. Functional & Smoke Verification
 - Blue Filter verified reading rules from `/app/blue_rules.json`: `/rules` returns 5 keywords and secret rule salt.
+
 - Model Server health check passes (`/health` returns `{"status":"ok"}`).
 - Gateway smoke test (`baseline-stub` -> `blue-filter` -> `model-server`) executed cleanly ($7,101.66\text{ ms}$, $11.63\text{ tok/s}$, 0 errors, 0 timeouts).
 

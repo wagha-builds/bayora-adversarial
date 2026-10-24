@@ -1,0 +1,1072 @@
+[
+    {
+        "Id": "1aaeffe59818473dd59e15979e21e762bb435bc878b42fd1473ff3b197666f17",
+        "Created": "2026-10-24T07:28:03.748202271Z",
+        "Path": "tail",
+        "Args": [
+            "-f",
+            "/dev/null"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 4615,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-24T07:28:04.316883612Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:12cb1536db98dd499466f6e689bb648e44922755963d5033c807467064fd37b1",
+        "ResolvConfPath": "/var/lib/docker/containers/1aaeffe59818473dd59e15979e21e762bb435bc878b42fd1473ff3b197666f17/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/1aaeffe59818473dd59e15979e21e762bb435bc878b42fd1473ff3b197666f17/hostname",
+        "HostsPath": "/var/lib/docker/containers/1aaeffe59818473dd59e15979e21e762bb435bc878b42fd1473ff3b197666f17/hosts",
+        "LogPath": "/var/lib/docker/containers/1aaeffe59818473dd59e15979e21e762bb435bc878b42fd1473ff3b197666f17/1aaeffe59818473dd59e15979e21e762bb435bc878b42fd1473ff3b197666f17-json.log",
+        "Name": "/bayora-red-runner",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/home/wagha__/bayora_adversarial/results/baseline:/app/results:rw",
+                "bayora_shared_data:/shared_data:rw",
+                "/home/wagha__/bayora_adversarial/data/baseline:/app/data:ro"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "bayora_adversarial_baseline-net",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "unless-stopped",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [
+                "blue-filter:172.18.0.3",
+                "baseline-stub:172.18.0.4",
+                "model-server:172.18.0.2"
+            ],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runsc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "bayora_shared_data",
+                "Source": "/var/lib/docker/volumes/bayora_shared_data/_data",
+                "Destination": "/shared_data",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "bind",
+                "Source": "/home/wagha__/bayora_adversarial/data/baseline",
+                "Destination": "/app/data",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/home/wagha__/bayora_adversarial/results/baseline",
+                "Destination": "/app/results",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "1aaeffe59818",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "OUTPUT_DIR=/app/results",
+                "GATEWAY_URL=http://baseline-stub:8000",
+                "PAYLOADS_PATH=/app/data/payloads.json",
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.15",
+                "PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a"
+            ],
+            "Cmd": [
+                "tail",
+                "-f",
+                "/dev/null"
+            ],
+            "Image": "bayora_adversarial-red-runner",
+            "Volumes": null,
+            "WorkingDir": "/app",
+            "Entrypoint": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "4f30159b7bad22df2521657bdaa9feb93e546f4cb9d7621e00ec5421ba76b751",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:4aa685b948a8386a131151dfd6fae87809309d12223079801a335ea2d35f3b6b",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "bayora_adversarial",
+                "com.docker.compose.project.config_files": "/home/wagha__/bayora_adversarial/docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/home/wagha__/bayora_adversarial",
+                "com.docker.compose.replace": "bayora-red-runner",
+                "com.docker.compose.service": "red-runner",
+                "com.docker.compose.version": "5.6.1"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "32afa71d75fffe2dbe34ce9e6ba633b5ebf50f8fa50448fb12fc62ead4c8d850",
+            "SandboxKey": "/var/run/docker/netns/32afa71d75ff",
+            "Ports": {},
+            "Networks": {
+                "bayora_adversarial_baseline-net": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "bayora-red-runner",
+                        "red-runner"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "96f331483073bc9a4e6b41606df4a0d7e6abf4c7feded1ee33bc48d0cca99982",
+                    "EndpointID": "dbf9cce9f92d51e69fd11a21ffe0d99ec37952b8f04e399bab637ea80c40aaec",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.5",
+                    "MacAddress": "9a:c1:12:53:48:31",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "bayora-red-runner",
+                        "red-runner",
+                        "1aaeffe59818"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:4aa685b948a8386a131151dfd6fae87809309d12223079801a335ea2d35f3b6b",
+            "size": 2003,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    },
+    {
+        "Id": "7c5a7c2b622b9ddb583a70bd0fc4d17b7dcef14dd5214130f9ca7ac71ae30ce3",
+        "Created": "2026-10-24T06:16:53.789462831Z",
+        "Path": "/app/llama-server",
+        "Args": [
+            "-m",
+            "/models/model.gguf",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8080",
+            "-c",
+            "2048",
+            "-t",
+            "2",
+            "--cache-prompt"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 1397,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-24T07:18:50.322123388Z",
+            "FinishedAt": "2026-10-24T07:18:49.052979886Z",
+            "Health": {
+                "Status": "healthy",
+                "FailingStreak": 0,
+                "Log": [
+                    {
+                        "Start": "2026-10-24T07:28:31.684440193Z",
+                        "End": "2026-10-24T07:28:31.897983543Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0{\"status\":\"ok\"}\r100    15  100    15    0     0   2744      0 --:--:-- --:--:-- --:--:--  3000\n"
+                    },
+                    {
+                        "Start": "2026-10-24T07:29:01.899703822Z",
+                        "End": "2026-10-24T07:29:02.281964587Z",
+                        "ExitCode": 0,
+                        "Output": "{\"status\":\"ok\"}  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   2802      0 --:--:-- --:--:-- --:--:--  3000\n"
+                    },
+                    {
+                        "Start": "2026-10-24T07:29:32.709427511Z",
+                        "End": "2026-10-24T07:29:33.082744845Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   1067      0 --:--:-- --:--:-- --:--:--  1071\n{\"status\":\"ok\"}"
+                    },
+                    {
+                        "Start": "2026-10-24T07:30:03.087911647Z",
+                        "End": "2026-10-24T07:30:03.387313367Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   1417      0 --:--:-- --:--:-- --:--:--  1500\n{\"status\":\"ok\"}"
+                    },
+                    {
+                        "Start": "2026-10-24T07:30:33.390903876Z",
+                        "End": "2026-10-24T07:30:33.674514038Z",
+                        "ExitCode": 0,
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   2873      0 --:--:-- --:--:-- --:--:--  3000\n{\"status\":\"ok\"}"
+                    }
+                ]
+            }
+        },
+        "Image": "sha256:8c74db29f1a2bef3f0a331b52c4d6214601dfceed4bee0b94cc48b3b23ff257d",
+        "ResolvConfPath": "/var/lib/docker/containers/7c5a7c2b622b9ddb583a70bd0fc4d17b7dcef14dd5214130f9ca7ac71ae30ce3/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/7c5a7c2b622b9ddb583a70bd0fc4d17b7dcef14dd5214130f9ca7ac71ae30ce3/hostname",
+        "HostsPath": "/var/lib/docker/containers/7c5a7c2b622b9ddb583a70bd0fc4d17b7dcef14dd5214130f9ca7ac71ae30ce3/hosts",
+        "LogPath": "/var/lib/docker/containers/7c5a7c2b622b9ddb583a70bd0fc4d17b7dcef14dd5214130f9ca7ac71ae30ce3/7c5a7c2b622b9ddb583a70bd0fc4d17b7dcef14dd5214130f9ca7ac71ae30ce3-json.log",
+        "Name": "/bayora-model-server",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/home/wagha__/bayora_adversarial/models/qwen2.5-1.5b-instruct-q4_k_m.gguf:/models/model.gguf:ro"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "bayora_adversarial_baseline-net",
+            "PortBindings": {
+                "8080/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "8080"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "unless-stopped",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/home/wagha__/bayora_adversarial/models/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+                "Destination": "/models/model.gguf",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "7c5a7c2b622b",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "8080/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LLAMA_ARG_HOST=0.0.0.0",
+                "LLAMA_ARG_PORT=8080"
+            ],
+            "Cmd": [
+                "-m",
+                "/models/model.gguf",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8080",
+                "-c",
+                "2048",
+                "-t",
+                "2",
+                "--cache-prompt"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD",
+                    "curl",
+                    "-f",
+                    "http://localhost:8080/health"
+                ]
+            },
+            "Image": "ghcr.io/ggml-org/llama.cpp:server",
+            "Volumes": null,
+            "WorkingDir": "/app",
+            "Entrypoint": [
+                "/app/llama-server"
+            ],
+            "Labels": {
+                "com.docker.compose.config-hash": "36279398244ddf09ce4a93b893813c684e01867aed234f4d4cee12a4268eb822",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:8badce92ec1860c764ca19c736422e81a12c65d76da57313651a7804bfe6ed40",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "bayora_adversarial",
+                "com.docker.compose.project.config_files": "/home/wagha__/bayora_adversarial/docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/home/wagha__/bayora_adversarial",
+                "com.docker.compose.replace": "bayora-model-server",
+                "com.docker.compose.service": "model-server",
+                "com.docker.compose.version": "5.6.1",
+                "org.opencontainers.image.created": "2026-10-22T04:31:51Z",
+                "org.opencontainers.image.description": "LLM inference in C/C++",
+                "org.opencontainers.image.revision": "c7fc5094179bf8a9c73c18593db714f8da41a402",
+                "org.opencontainers.image.source": "https://github.com/ggml-org/llama.cpp",
+                "org.opencontainers.image.title": "llama.cpp",
+                "org.opencontainers.image.url": "https://github.com/ggml-org/llama.cpp",
+                "org.opencontainers.image.version": "b11804"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "a162c02e0a0db6ac8857d9b51c046a1aacf2c6f4491d8403b2b9fb0a75ab3c76",
+            "SandboxKey": "/var/run/docker/netns/a162c02e0a0d",
+            "Ports": {
+                "8080/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "8080"
+                    },
+                    {
+                        "HostIp": "::",
+                        "HostPort": "8080"
+                    }
+                ]
+            },
+            "Networks": {
+                "bayora_adversarial_baseline-net": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "bayora-model-server",
+                        "model-server"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "96f331483073bc9a4e6b41606df4a0d7e6abf4c7feded1ee33bc48d0cca99982",
+                    "EndpointID": "1a7289cb00b9ca33320cba6b9d53991720a5e58bc6db1e6243346494081f3029",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.2",
+                    "MacAddress": "4a:cc:a8:0c:2e:80",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "bayora-model-server",
+                        "model-server",
+                        "7c5a7c2b622b"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:8badce92ec1860c764ca19c736422e81a12c65d76da57313651a7804bfe6ed40",
+            "size": 1746,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    },
+    {
+        "Id": "f8d9022d0c886efee2ccf3bc52fd130a5c08fb401fc6efe8f7ad4a21e4da1eba",
+        "Created": "2026-10-23T15:27:31.065131379Z",
+        "Path": "uvicorn",
+        "Args": [
+            "main:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8001"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 1382,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-24T07:18:50.314056446Z",
+            "FinishedAt": "2026-10-24T07:18:49.052979098Z"
+        },
+        "Image": "sha256:cef827358014e4576cb1e32ad262fd32e9a52e3b344034604b760156478cd023",
+        "ResolvConfPath": "/var/lib/docker/containers/f8d9022d0c886efee2ccf3bc52fd130a5c08fb401fc6efe8f7ad4a21e4da1eba/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/f8d9022d0c886efee2ccf3bc52fd130a5c08fb401fc6efe8f7ad4a21e4da1eba/hostname",
+        "HostsPath": "/var/lib/docker/containers/f8d9022d0c886efee2ccf3bc52fd130a5c08fb401fc6efe8f7ad4a21e4da1eba/hosts",
+        "LogPath": "/var/lib/docker/containers/f8d9022d0c886efee2ccf3bc52fd130a5c08fb401fc6efe8f7ad4a21e4da1eba/f8d9022d0c886efee2ccf3bc52fd130a5c08fb401fc6efe8f7ad4a21e4da1eba-json.log",
+        "Name": "/bayora-blue-filter",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "bayora_shared_data:/shared_data:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "bayora_adversarial_baseline-net",
+            "PortBindings": {
+                "8001/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "8001"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "unless-stopped",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "bayora_shared_data",
+                "Source": "/var/lib/docker/volumes/bayora_shared_data/_data",
+                "Destination": "/shared_data",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            }
+        ],
+        "Config": {
+            "Hostname": "f8d9022d0c88",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "8001/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "BLUE_RULES_PATH=/shared_data/blue_rules.json",
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.15",
+                "PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a"
+            ],
+            "Cmd": [
+                "uvicorn",
+                "main:app",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8001"
+            ],
+            "Image": "bayora_adversarial-blue-filter",
+            "Volumes": null,
+            "WorkingDir": "/app",
+            "Entrypoint": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "87805dd4f543fd2bf616d8a500ff6995771f3abff6cbefa4757771c04ff1a09a",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:aeba11d9edae4e8b11043733a4a3beba9f19baa505134db67b24e717beb34c78",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "bayora_adversarial",
+                "com.docker.compose.project.config_files": "/home/wagha__/bayora_adversarial/docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/home/wagha__/bayora_adversarial",
+                "com.docker.compose.service": "blue-filter",
+                "com.docker.compose.version": "5.6.1"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "d009f69a803b13ad2641b372b794a9ea11dce16b7f15e086e8297d7ce3599cdb",
+            "SandboxKey": "/var/run/docker/netns/d009f69a803b",
+            "Ports": {
+                "8001/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "8001"
+                    },
+                    {
+                        "HostIp": "::",
+                        "HostPort": "8001"
+                    }
+                ]
+            },
+            "Networks": {
+                "bayora_adversarial_baseline-net": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "bayora-blue-filter",
+                        "blue-filter"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "96f331483073bc9a4e6b41606df4a0d7e6abf4c7feded1ee33bc48d0cca99982",
+                    "EndpointID": "5d743695e14483409ddc7001f9a406008ede01b9cb14706f9941438a33aea8bd",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.3",
+                    "MacAddress": "42:31:54:38:86:a1",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "bayora-blue-filter",
+                        "blue-filter",
+                        "f8d9022d0c88"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:aeba11d9edae4e8b11043733a4a3beba9f19baa505134db67b24e717beb34c78",
+            "size": 2000,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    },
+    {
+        "Id": "fab306435eac1532c645d0ae211d715f992c81fc5bc85c3bf30a06d3a7295c6a",
+        "Created": "2026-10-23T15:27:31.764360057Z",
+        "Path": "uvicorn",
+        "Args": [
+            "main:app",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "8000"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 1383,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-10-24T07:18:50.315663605Z",
+            "FinishedAt": "2026-10-24T07:18:49.05309347Z"
+        },
+        "Image": "sha256:4dbd9aa27ea3a2cd0cd0dba9fb30541209d2d81a035c58cb1a9d8002ab6804c9",
+        "ResolvConfPath": "/var/lib/docker/containers/fab306435eac1532c645d0ae211d715f992c81fc5bc85c3bf30a06d3a7295c6a/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/fab306435eac1532c645d0ae211d715f992c81fc5bc85c3bf30a06d3a7295c6a/hostname",
+        "HostsPath": "/var/lib/docker/containers/fab306435eac1532c645d0ae211d715f992c81fc5bc85c3bf30a06d3a7295c6a/hosts",
+        "LogPath": "/var/lib/docker/containers/fab306435eac1532c645d0ae211d715f992c81fc5bc85c3bf30a06d3a7295c6a/fab306435eac1532c645d0ae211d715f992c81fc5bc85c3bf30a06d3a7295c6a-json.log",
+        "Name": "/bayora-baseline-stub",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": null,
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "bayora_adversarial_baseline-net",
+            "PortBindings": {
+                "8000/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "8000"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "unless-stopped",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "fab306435eac",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "8000/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "BLUE_FILTER_URL=http://blue-filter:8001",
+                "MODEL_SERVER_URL=http://model-server:8080",
+                "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.15",
+                "PYTHON_SHA256=c2c4321961fab0fb999d66e0cecf521c2ab3994c7992873ea99e306c1094fd5a"
+            ],
+            "Cmd": [
+                "uvicorn",
+                "main:app",
+                "--host",
+                "0.0.0.0",
+                "--port",
+                "8000"
+            ],
+            "Image": "bayora_adversarial-baseline-stub",
+            "Volumes": null,
+            "WorkingDir": "/app",
+            "Entrypoint": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "2f330d6e232c85769a367db1601df0417299f7fbff0d50c327fb2033035a16d6",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "blue-filter:service_started:false,model-server:service_started:false",
+                "com.docker.compose.image": "sha256:b9624b1da422caff06fe83fff8af55e3bf000437376ba379f5517a373e003b0b",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "bayora_adversarial",
+                "com.docker.compose.project.config_files": "/home/wagha__/bayora_adversarial/docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/home/wagha__/bayora_adversarial",
+                "com.docker.compose.service": "baseline-stub",
+                "com.docker.compose.version": "5.6.1"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "9aab829e8bbefb1cb9891765368d0d3c7420a9ce0ebafa5ed4179205378f394f",
+            "SandboxKey": "/var/run/docker/netns/9aab829e8bbe",
+            "Ports": {
+                "8000/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "8000"
+                    },
+                    {
+                        "HostIp": "::",
+                        "HostPort": "8000"
+                    }
+                ]
+            },
+            "Networks": {
+                "bayora_adversarial_baseline-net": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "bayora-baseline-stub",
+                        "baseline-stub"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "96f331483073bc9a4e6b41606df4a0d7e6abf4c7feded1ee33bc48d0cca99982",
+                    "EndpointID": "0b9124cc29d22669ca13623ea2f74c47ed234e71745701ea35ed8daded9692b5",
+                    "Gateway": "172.18.0.1",
+                    "IPAddress": "172.18.0.4",
+                    "MacAddress": "ca:d4:c5:01:25:db",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "bayora-baseline-stub",
+                        "baseline-stub",
+                        "fab306435eac"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:b9624b1da422caff06fe83fff8af55e3bf000437376ba379f5517a373e003b0b",
+            "size": 1812,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]

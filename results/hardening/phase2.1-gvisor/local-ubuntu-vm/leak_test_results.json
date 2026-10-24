@@ -1,0 +1,55 @@
+{
+  "suite": "Phase 2.1 Container Hardening Leak Tests",
+  "timestamp": "2026-10-24T07:29:25Z",
+  "runtimes": {
+    "bayora-red-runner": "runsc",
+    "bayora-model-server": "runc",
+    "bayora-blue-filter": "runc",
+    "bayora-baseline-stub": "runc"
+  },
+  "total_tests": 5,
+  "duration_seconds": 23.8,
+  "results": [
+    {
+      "test": "test_net_blue_direct",
+      "exit_code": 0,
+      "raw_status": "PASS",
+      "classification": "still_reproducible",
+      "stdout": "[*] Testing direct network connection to Blue filter at http://blue-filter:8001 ...\n[!] SUCCESS (LEAK DEMONSTRATED): Direct connection to Blue succeeded!\n    Extracted rules directly: 5 keywords",
+      "phase_expected": "still_reproducible (gVisor syscall sandboxing active; network/volume isolation scheduled for later phases)"
+    },
+    {
+      "test": "test_net_model_direct",
+      "exit_code": 0,
+      "raw_status": "PASS",
+      "classification": "still_reproducible",
+      "stdout": "[*] Testing direct network connection to Model server at http://model-server:8080 ...\n[!] SUCCESS (LEAK DEMONSTRATED): Direct model inference succeeded!\n    Direct model output: ' to an AWS resource from'",
+      "phase_expected": "still_reproducible (gVisor syscall sandboxing active; network/volume isolation scheduled for later phases)"
+    },
+    {
+      "test": "test_fs_blue_rules",
+      "exit_code": 0,
+      "raw_status": "PASS",
+      "classification": "still_reproducible",
+      "stdout": "[*] Testing filesystem access to shared rules file at /shared_data/blue_rules.json ...\n[!] SUCCESS (LEAK DEMONSTRATED): Red extracted Blue's rules via shared volume!\n    Secret rule salt: BLUE_DEFENSE_PROPRIETARY_RULESET_v1_HASH_2026\n    Blocked keywords found: ['ignore previous instructions', 'dan mode', 'system override', 'reveal all internal', 'bypass filter']",
+      "phase_expected": "still_reproducible (gVisor syscall sandboxing active; network/volume isolation scheduled for later phases)"
+    },
+    {
+      "test": "test_cache_timing",
+      "exit_code": 0,
+      "raw_status": "PASS",
+      "classification": "still_reproducible",
+      "stdout": "[*] Testing KV prefix caching timing oracle against http://model-server:8080 ...\n    Sending Request 1 (Cold cache) ...\n    Sending Request 2 (Warm cache with identical prefix) ...\n    Request 1 prompt processing: 3620.20 ms\n    Request 2 prompt processing: 152.30 ms (cached tokens: 67)\n    Timing Delta (Speedup): 3467.90 ms\n[!] SUCCESS (LEAK DEMONSTRATED): Prefix caching timing oracle detected!",
+      "phase_expected": "still_reproducible (gVisor syscall sandboxing active; network/volume isolation scheduled for later phases)"
+    },
+    {
+      "test": "test_log_exposure",
+      "exit_code": 0,
+      "raw_status": "PASS",
+      "classification": "still_reproducible",
+      "stdout": "[*] Testing log exposure in baseline containers ...\n[!] SUCCESS (LEAK DEMONSTRATED): Found unredacted prompt in bayora-blue-filter logs: 'Summarize the key differences between TCP and UDP'\n[!] SUCCESS (LEAK DEMONSTRATED): Found unredacted prompt in bayora-baseline-stub logs: 'Summarize the key differences between TCP and UDP'",
+      "phase_expected": "still_reproducible (audit ledger and log redaction scheduled for Phase 5)"
+    }
+  ],
+  "analysis": "All 5 baseline vulnerabilities remain reproducible as expected because Phase 2.1 is strictly scoped to gVisor (runsc) kernel sandboxing. It does not introduce network isolation (Phase 3), volume isolation (Phase 2.3), log masking (Phase 5), or cache partitioning (Phase 6). Crucially, all tests executed cleanly inside the gVisor sandbox without runtime faults or syscall incompatibility."
+}

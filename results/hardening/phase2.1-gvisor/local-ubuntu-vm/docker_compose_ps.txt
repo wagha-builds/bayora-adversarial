@@ -1,0 +1,5 @@
+NAME                   IMAGE                               COMMAND                  SERVICE         CREATED             STATUS                    PORTS
+bayora-baseline-stub   bayora_adversarial-baseline-stub    "uvicorn main:app --…"   baseline-stub   16 hours ago        Up 11 minutes             0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+bayora-blue-filter     bayora_adversarial-blue-filter      "uvicorn main:app --…"   blue-filter     16 hours ago        Up 11 minutes             0.0.0.0:8001->8001/tcp, [::]:8001->8001/tcp
+bayora-model-server    ghcr.io/ggml-org/llama.cpp:server   "/app/llama-server -…"   model-server    About an hour ago   Up 11 minutes (healthy)   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+bayora-red-runner      bayora_adversarial-red-runner       "tail -f /dev/null"      red-runner      2 minutes ago       Up 2 minutes              

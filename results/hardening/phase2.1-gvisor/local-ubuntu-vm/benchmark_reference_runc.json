@@ -1,0 +1,220 @@
+{
+  "benchmark_label": "reference_runc",
+  "runtime_under_test": "runc",
+  "timestamp": "2026-10-24T05:38:56Z",
+  "target_url": "http://127.0.0.1:8000",
+  "requests_requested": 10,
+  "outcomes": {
+    "completed": 10,
+    "timeout": 0,
+    "error": 0
+  },
+  "total_wall_duration_seconds": 76.41,
+  "latency_metrics_ms": {
+    "p50": 7148.65,
+    "p95": 9371.66,
+    "mean": 7638.96,
+    "min": 6447.84,
+    "max": 9371.66
+  },
+  "throughput_metrics": {
+    "p50_tokens_per_second": 9.86,
+    "mean_tokens_per_second": 9.49,
+    "p50_ms_per_token": 101.38,
+    "mean_ms_per_token": 107.13
+  },
+  "raw_latencies_ms": [
+    9371.66,
+    8608.37,
+    7314.26,
+    6751.39,
+    6447.84,
+    6481.88,
+    6983.04,
+    8909.29,
+    8717.85,
+    6804.07
+  ],
+  "detailed_records": [
+    {
+      "request_index": 1,
+      "salt": "bcfd4bc0a136",
+      "status": "completed",
+      "client_elapsed_ms": 9371.66,
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 25,
+        "prompt_ms": 1616.132,
+        "prompt_per_token_ms": 64.64528,
+        "prompt_per_second": 15.469033470038337,
+        "predicted_n": 64,
+        "predicted_ms": 7560.432,
+        "predicted_per_token_ms": 120.00685714285714,
+        "predicted_per_second": 8.332857170066472
+      },
+      "tokens_predicted": 64
+    },
+    {
+      "request_index": 2,
+      "salt": "9fac57a5ee7a",
+      "status": "completed",
+      "client_elapsed_ms": 8608.37,
+      "timings": {
+        "cache_n": 15,
+        "prompt_n": 11,
+        "prompt_ms": 711.716,
+        "prompt_per_token_ms": 64.70145454545455,
+        "prompt_per_second": 15.455603077632087,
+        "predicted_n": 64,
+        "predicted_ms": 7785.595,
+        "predicted_per_token_ms": 123.58087301587302,
+        "predicted_per_second": 8.091867095578436
+      },
+      "tokens_predicted": 64
+    },
+    {
+      "request_index": 3,
+      "salt": "f84006b2d9ff",
+      "status": "completed",
+      "client_elapsed_ms": 7314.26,
+      "timings": {
+        "cache_n": 15,
+        "prompt_n": 12,
+        "prompt_ms": 756.927,
+        "prompt_per_token_ms": 63.07725,
+        "prompt_per_second": 15.853576368659064,
+        "predicted_n": 64,
+        "predicted_ms": 6433.944,
+        "predicted_per_token_ms": 102.12609523809525,
+        "predicted_per_second": 9.791816652429675
+      },
+      "tokens_predicted": 64
+    },
+    {
+      "request_index": 4,
+      "salt": "712e0038195d",
+      "status": "completed",
+      "client_elapsed_ms": 6751.39,
+      "timings": {
+        "cache_n": 15,
+        "prompt_n": 14,
+        "prompt_ms": 613.179,
+        "prompt_per_token_ms": 43.7985,
+        "prompt_per_second": 22.831832140370107,
+        "predicted_n": 64,
+        "predicted_ms": 6014.145,
+        "predicted_per_token_ms": 95.46261904761906,
+        "predicted_per_second": 10.475304469712652
+      },
+      "tokens_predicted": 64
+    },
+    {
+      "request_index": 5,
+      "salt": "5da3d5243a81",
+      "status": "completed",
+      "client_elapsed_ms": 6447.84,
+      "timings": {
+        "cache_n": 16,
+        "prompt_n": 12,
+        "prompt_ms": 537.011,
+        "prompt_per_token_ms": 44.75091666666666,
+        "prompt_per_second": 22.345910977614984,
+        "predicted_n": 64,
+        "predicted_ms": 5786.408,
+        "predicted_per_token_ms": 91.84774603174604,
+        "predicted_per_second": 10.88758345419127
+      },
+      "tokens_predicted": 64
+    },
+    {
+      "request_index": 6,
+      "salt": "4ba7dbba38c0",
+      "status": "completed",
+      "client_elapsed_ms": 6481.88,
+      "timings": {
+        "cache_n": 16,
+        "prompt_n": 10,
+        "prompt_ms": 555.344,
+        "prompt_per_token_ms": 55.534400000000005,
+        "prompt_per_second": 18.006857011149844,
+        "predicted_n": 64,
+        "predicted_ms": 5792.214,
+        "predicted_per_token_ms": 91.93990476190476,
+        "predicted_per_second": 10.876669957290941
+      },
+      "tokens_predicted": 64
+    },
+    {
+      "request_index": 7,
+      "salt": "b49b006be132",
+      "status": "completed",
+      "client_elapsed_ms": 6983.04,
+      "timings": {
+        "cache_n": 15,
+        "prompt_n": 12,
+        "prompt_ms": 531.755,
+        "prompt_per_token_ms": 44.312916666666666,
+        "prompt_per_second": 22.56678357514269,
+        "predicted_n": 64,
+        "predicted_ms": 6340.253,
+        "predicted_per_token_ms": 100.6389365079365,
+        "predicted_per_second": 9.936511997234179
+      },
+      "tokens_predicted": 64
+    },
+    {
+      "request_index": 8,
+      "salt": "33211ab6bb53",
+      "status": "completed",
+      "client_elapsed_ms": 8909.29,
+      "timings": {
+        "cache_n": 15,
+        "prompt_n": 12,
+        "prompt_ms": 819.481,
+        "prompt_per_token_ms": 68.29008333333333,
+        "prompt_per_second": 14.643414551405098,
+        "predicted_n": 64,
+        "predicted_ms": 7966.444,
+        "predicted_per_token_ms": 126.45149206349207,
+        "predicted_per_second": 7.908170822515039
+      },
+      "tokens_predicted": 64
+    },
+    {
+      "request_index": 9,
+      "salt": "50dc5283123d",
+      "status": "completed",
+      "client_elapsed_ms": 8717.85,
+      "timings": {
+        "cache_n": 16,
+        "prompt_n": 12,
+        "prompt_ms": 781.612,
+        "prompt_per_token_ms": 65.13433333333333,
+        "prompt_per_second": 15.352886086702867,
+        "predicted_n": 64,
+        "predicted_ms": 7854.643,
+        "predicted_per_token_ms": 124.67687301587301,
+        "predicted_per_second": 8.020733723989748
+      },
+      "tokens_predicted": 64
+    },
+    {
+      "request_index": 10,
+      "salt": "bff23a839162",
+      "status": "completed",
+      "client_elapsed_ms": 6804.07,
+      "timings": {
+        "cache_n": 15,
+        "prompt_n": 12,
+        "prompt_ms": 751.138,
+        "prompt_per_token_ms": 62.594833333333334,
+        "prompt_per_second": 15.975759447664743,
+        "predicted_n": 64,
+        "predicted_ms": 5960.416,
+        "predicted_per_token_ms": 94.60977777777778,
+        "predicted_per_second": 10.569732045548498
+      },
+      "tokens_predicted": 64
+    }
+  ]
+}

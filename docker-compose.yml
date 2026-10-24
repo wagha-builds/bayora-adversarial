@@ -62,6 +62,7 @@ services:
     restart: unless-stopped
 
   red-runner:
+    runtime: runsc
     build:
       context: ./services/red-runner
       dockerfile: Dockerfile
@@ -77,6 +78,10 @@ services:
       - shared_data:/shared_data
     depends_on:
       - baseline-stub
+    extra_hosts:
+      - "model-server:172.18.0.2"
+      - "blue-filter:172.18.0.3"
+      - "baseline-stub:172.18.0.4"
     networks:
       - baseline-net
     restart: unless-stopped

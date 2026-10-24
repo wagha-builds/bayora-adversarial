@@ -1,7 +1,7 @@
 # Bayora — Adversarial AI Evaluation Platform
 
 > **A Hardened Five-Zone Defense-in-Depth Sandbox for Adversarial LLM Safety Evaluations**
-> *Current Status: Phase 2.0 (Target Environment & Native Re-Baselining) Completed with Approved Waiver*
+> *Current Status: Phase 2.1 (Container Hardening with gVisor `runsc`) Pre-Commit Audit Verified*
 > *Active Tag: `phase2.0-vm-baseline` | Active Branch: `phase2-hardening`*
 
 ---

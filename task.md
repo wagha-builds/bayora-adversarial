@@ -282,9 +282,91 @@ For Phase 2+ to compare against, Phase 1 will record:
 
 5. **Host Fingerprint Evidence Provenance:**
    - `power_mode, plugged_in, heavy_applications are operator-reported, not telemetry.` All 18 raw evidence artifacts in `results/baseline/local-ubuntu-vm/` remain preserved and unmodified.
-- [ ] **Phase 2.1:** Implement gVisor (`runsc`) for Red Team and Model containers.
+- [x] **Phase 2.1:** Implement gVisor (`runsc`) for Red Team and Model containers.
+  - [x] Verify gVisor (`runsc`) registration and availability in Docker Engine.
+  - [x] Measure bounded baseline inference reference under native `runc` ($N=10$).
+  - [x] Hardened `bayora-red-runner` using `runtime: runsc` with verified sandbox kernel isolation (`dmesg` confirms `Starting gVisor...`).
+  - [x] Configured container hostname routing for Red container via `extra_hosts` in Docker Compose (with documented IPAM order-dependency limitation).
+  - [x] Evaluated `bayora-model-server` under gVisor (`runsc`); recorded empirical evidence of 9.26x latency regression ($0.99\text{ tok/s}$).
+  - [x] Empirically justified decision to retain `bayora-model-server` on `runc` while keeping Red on `runsc`.
+  - [x] Measured bounded post-change performance ($N=10$, $p50 = 4,859.72\text{ ms}$, $14.98\text{ tok/s}$).
+  - [x] Verified all 4 services `Up` and healthy; executed full 5-test leak suite inside Red gVisor sandbox.
+  - [x] Stored all 10 evidence artifacts separately in `results/hardening/phase2.1-gvisor/local-ubuntu-vm/`.
 - [ ] **Phase 2.2:** Implement `seccomp` profiles and `AppArmor`.
 - [ ] **Phase 2.3:** Drop capabilities and remove shared volumes.
+
+### Phase 2.1 Container Hardening (gVisor) Audit Findings & Evidence Summary
+**Date:** 2026-10-24
+**Environment:** Local Ubuntu 24.04 LTS on VirtualBox (6 vCPUs, 8 GB RAM, kernel 6.8.0-146-generic)
+**Status / Sign-off Readiness:** Pre-Commit Audit Verified (Pending Owner Sign-Off)
+
+#### 1. Runtime Inventory & Isolation Verification
+- **gVisor Binary & Specification:** `runsc version release-20261012.0`, `spec: 1.2.1` installed at `/usr/local/bin/runsc`.
+- **Docker Daemon Registration:** `/etc/docker/daemon.json` registers `runsc` as an available OCI runtime; default runtime remains `runc`.
+- **Effective Runtime per Service:**
+  | Service Name | Container Name | Assigned Runtime | Effective Sandbox Status | Host Process Validation |
+  |:---|:---|:---:|:---:|:---|
+  | `red-runner` | `bayora-red-runner` | `runsc` | **Full gVisor Sentry Sandbox** | Verified `runsc-sandbox`, `runsc-gofer`, `runsc-fd-parking`; `dmesg` confirms `Starting gVisor...` |
+  | `model-server` | `bayora-model-server` | `runc` | Standard Container (Native) | Reverted from `runsc` following empirical performance evaluation |
+  | `blue-filter` | `bayora-blue-filter` | `runc` | Standard Container (Native) | Unchanged Phase 2.0 baseline state |
+  | `baseline-stub` | `bayora-baseline-stub` | `runc` | Standard Container (Native) | Unchanged Phase 2.0 baseline state |
+
+#### 2. Model Container gVisor Evaluation & Runtime Decision Rationale
+- **Compatibility:** `llama.cpp:server` loaded the pinned GGUF weights (`6a1a2eb6...`) successfully under `runsc`, initialized threadpools, and passed container health checks (`/health` returned `{"status":"ok"}`).
+- **Inference Latency & Throughput Comparison:**
+  | Metric | Reference Baseline (`runc`) | gVisor Trial (`runsc`) | Final Hardened (`runc` Model / `runsc` Red) | Impact (Trial vs Reference) |
+  |:---|:---:|:---:|:---:|:---:|
+  | Requests Evaluated | 10 | 5 | 10 | Bounded, salted sequential requests |
+  | Success / Timeout | 10/10 (0 timeouts) | 5/5 (0 timeouts at 120s) | 10/10 (0 timeouts) | Zero errors across all runs |
+  | **Latency $p50$** | **$7,148.65\text{ ms}$** | **$66,213.42\text{ ms}$** | **$4,859.72\text{ ms}$** | **$+826.2\%$ (+9.26x slowdown)** |
+  | Latency $p95$ | $9,371.66\text{ ms}$ | $75,769.48\text{ ms}$ | $7,347.51\text{ ms}$ | $+708.5\%$ |
+  | **Generation Speed $p50$** | **$9.86\text{ tok/s}$** | **$0.99\text{ tok/s}$** | **$14.98\text{ tok/s}$** | **$-90.0\%$ throughput collapse** |
+  | Token Latency $p50$ | $101.38\text{ ms/tok}$ | $1,007.79\text{ ms/tok}$ | $66.77\text{ ms/tok}$ | $+894.1\%$ |
+  | Total Wall Duration | $76.41\text{ s}$ (10 reqs) | $314.14\text{ s}$ (5 reqs) | $49.10\text{ s}$ (10 reqs) | Exceeds acceptable evaluation budget |
+- **Decision:** As specified in PRD Sec 5.2 and task guidelines, `model-server` is retained on `runc`. The observed slowdown (~66 seconds per 64-token completion) is prohibitive for interactive evaluation. Retaining `runc` for Model while isolating Red under `runsc` satisfies project performance and security objectives. Full empirical traces are preserved in `benchmark_gvisor_trial.json`.
+- **Note on Root Cause:** Systrap virtualization overhead (frequent page-fault handling on mmap'd weights, futex serialization, guest-host context switches) is a plausible architectural hypothesis consistent with known gVisor CPU-bound workload behavior, but remains unconfirmed as low-level kernel profiling (`perf` or `runsc debug profile`) was not captured.
+- **Benchmark Limitations:** Measurements are bounded sequential samples ($N=5$ for trial, $N=10$ for baseline/final) subject to host VirtualBox scheduling and unpinned CPU core variability.
+
+#### 3. Red Workload & Leak-Test Suite Verification (inside gVisor)
+All 5 automated baseline leak tests were executed with `bayora-red-runner` executing inside the active `runsc` sandbox:
+| Test Script | Vulnerability ID | Execution Status | Security Outcome | Security Boundary Analysis |
+|:---|:---|:---:|:---:|:---|
+| `test_net_blue_direct.py` | SEC-008 | Clean (exit 0) | `still_reproducible` (PASS) | Flat bridge network intact; network segmentation scheduled for Phase 3. |
+| `test_net_model_direct.py` | SEC-008 | Clean (exit 0) | `still_reproducible` (PASS) | Direct HTTP connection to model server succeeds across bridge; Phase 3 isolates zones. |
+| `test_fs_blue_rules.py` | SEC-001 | Clean (exit 0) | `still_reproducible` (PASS) | Shared named volume `/shared_data` intact; volume removal scheduled for Phase 2.3. |
+| `test_cache_timing.py` | LLM-001 | Clean (exit 0) | `still_reproducible` (PASS) | Prefix cache timing delta ($3,467.90\text{ ms}$) detected; cache hardening scheduled for Phase 6. |
+| `test_log_exposure.py` | PRIV-001 | Clean (exit 0) | `still_reproducible` (PASS) | Unredacted prompts in stdout logs; audit ledger scheduled for Phase 5. |
+
+*Semantic Clarification:* In this test harness, `raw_status: PASS` means the baseline vulnerability was successfully executed and reproduced (leak demonstrated), confirming that gVisor syscall isolation alone does NOT mitigate direct network access or shared-volume leakage. The execution status (clean exit code 0 under gVisor Sentry) confirms application and test compatibility.
+
+#### 4. Evidence Artifacts Provenance (Phase 2.1)
+All 10 newly generated evidence artifacts are stored separately from the immutable Phase 2.0 baseline under:
+`results/hardening/phase2.1-gvisor/local-ubuntu-vm/`
+1. `benchmark_reference_runc.json` — Pre-change reference benchmark on native `runc` ($N=10$).
+2. `benchmark_gvisor_trial.json` — Empirical model evaluation under `runsc` ($N=5$) documenting the 9.26x slowdown.
+3. `benchmark_final_hardened.json` — Post-change benchmark under final runtime configuration ($N=10$).
+4. `leak_test_results.json` — Master leak test suite executed with Red sandboxed in gVisor.
+5. `container_inspect.json` — Full Docker inspect metadata for all 4 services.
+6. `docker_runtimes.json` — Docker daemon registered runtime configuration.
+7. `docker_compose_ps.txt` — Running service inventory and port bindings.
+8. `host_runsc_processes.txt` — Active `runsc-sandbox` and `runsc-gofer` host process table.
+9. `red_runner_dmesg_gvisor.txt` — In-container `dmesg` buffer confirming gVisor kernel initialization.
+10. `runsc_version.txt` — Verified installed gVisor binary version and OCI specification version.
+
+#### 5. Rollback Procedure
+If runtime regression or failure occurs:
+1. Revert `docker-compose.yml`: remove `runtime: runsc` and `extra_hosts` from `red-runner`.
+2. Execute `docker compose up -d red-runner` to restart Red on standard `runc`.
+3. Verify via `docker inspect -f '{{.HostConfig.Runtime}}' bayora-red-runner` (returns empty / default `runc`).
+
+#### 6. Residual Risks & Next Steps (Phase 2.2)
+- **What Phase 2.1 Protects:** Strong syscall-level virtualization isolating untrusted Red Team evaluation code from the host Linux kernel, mitigating host kernel privilege escalation and escape vulnerabilities (STRIDE: Elevation of Privilege).
+- **Residual Attack Surface:** Red can still issue all non-blocked Linux syscalls supported by gVisor, execute unconstrained file operations inside its container, traverse flat bridge networks, and read shared volumes.
+- **Immediate Next Step (Phase 2.2):** Implement custom `seccomp` profiles and restrictive `AppArmor` policies to constrain syscalls and filesystem access for remaining services.
+
+#### 7. Audit Limitations & Accepted Technical Debt
+- **Hardcoded `extra_hosts` Mappings:** The mappings `model-server: 172.18.0.2`, `blue-filter: 172.18.0.3`, and `baseline-stub: 172.18.0.4` currently match running container IPs. However, Docker bridge IP assignment is sequential and depends on container startup order. Recreating containers out of order can cause IP reassignment, breaking Red's routing. This is accepted as an interim Phase 2.1 limitation, to be architecturally superseded in Phase 3 by dedicated subnets with explicit IPAM and DNS proxying.
+- **Port Exposure (`0.0.0.0` vs Localhost-only):** Services in `docker-compose.yml` publish ports on `0.0.0.0:8000`, `0.0.0.0:8001`, and `0.0.0.0:8080`. This is a pre-existing configuration from Phase 1. Within the guest VM, the localhost-only requirement is UNMET. However, external host/LAN access is blocked at the VirtualBox NAT hypervisor boundary (only `127.0.0.1:2222 -> guest:22` is forwarded). Bound port lockdown (`127.0.0.1:PORT`) and zone isolation are deferred to Phase 3 to avoid disruptive Compose network recreations.
 
 ---
 

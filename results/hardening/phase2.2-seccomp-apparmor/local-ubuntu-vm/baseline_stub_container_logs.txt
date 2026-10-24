@@ -1,0 +1,50 @@
+2026-10-24 15:08:24,159 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: bb17bde71b98]'
+2026-10-24 15:08:24,195 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+2026-10-24 15:08:32,642 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+INFO:     172.18.0.1:49248 - "POST /query HTTP/1.1" 200 OK
+2026-10-24 15:08:32,644 [INFO] [baseline-stub] Query completed in 8484.68 ms. Output: ' TCP and UDP are two different protocols used for '
+2026-10-24 15:08:32,652 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: c0586c5cf79d]'
+2026-10-24 15:08:32,675 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+2026-10-24 15:08:41,632 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+2026-10-24 15:08:41,634 [INFO] [baseline-stub] Query completed in 8982.17 ms. Output: ' TCP and UDP are two different transport layer pro'
+INFO:     172.18.0.1:36830 - "POST /query HTTP/1.1" 200 OK
+2026-10-24 15:08:41,651 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: 73c77de7eb37]'
+2026-10-24 15:08:41,685 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+2026-10-24 15:08:50,396 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+2026-10-24 15:08:50,408 [INFO] [baseline-stub] Query completed in 8757.10 ms. Output: ' TCP (Transmission Control Protocol) and UDP (User'
+INFO:     172.18.0.1:42294 - "POST /query HTTP/1.1" 200 OK
+2026-10-24 15:08:50,414 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: 3ee8c6876a2f]'
+2026-10-24 15:08:50,446 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+2026-10-24 15:08:57,113 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+2026-10-24 15:08:57,114 [INFO] [baseline-stub] Query completed in 6700.47 ms. Output: ' TCP (Transmission Control Protocol) and UDP (User'
+INFO:     172.18.0.1:55580 - "POST /query HTTP/1.1" 200 OK
+2026-10-24 15:08:57,122 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: d8203022cd5e]'
+2026-10-24 15:08:57,152 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+2026-10-24 15:09:03,509 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+2026-10-24 15:09:03,511 [INFO] [baseline-stub] Query completed in 6389.23 ms. Output: ' TCP (Transmission Control Protocol) and UDP (User'
+INFO:     172.18.0.1:55588 - "POST /query HTTP/1.1" 200 OK
+2026-10-24 15:09:03,517 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: bdfae7a79b98]'
+2026-10-24 15:09:03,546 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+INFO:     172.18.0.1:38872 - "POST /query HTTP/1.1" 200 OK
+2026-10-24 15:09:13,821 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+2026-10-24 15:09:13,822 [INFO] [baseline-stub] Query completed in 10304.87 ms. Output: ' TCP is a connection-oriented protocol, while UDP '
+2026-10-24 15:09:13,832 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: 88744e00ba50]'
+2026-10-24 15:09:13,866 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+2026-10-24 15:09:21,124 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+2026-10-24 15:09:21,126 [INFO] [baseline-stub] Query completed in 7294.26 ms. Output: ' TCP (Transmission Control Protocol) and UDP (User'
+INFO:     172.18.0.1:41774 - "POST /query HTTP/1.1" 200 OK
+2026-10-24 15:09:21,133 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: 5d50107bd6bb]'
+2026-10-24 15:09:21,157 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+2026-10-24 15:09:28,722 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+INFO:     172.18.0.1:60354 - "POST /query HTTP/1.1" 200 OK
+2026-10-24 15:09:28,725 [INFO] [baseline-stub] Query completed in 7591.23 ms. Output: ' TCP (Transmission Control Protocol) and UDP (User'
+2026-10-24 15:09:28,731 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: 69222dfa3546]'
+2026-10-24 15:09:28,752 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+2026-10-24 15:09:35,020 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+2026-10-24 15:09:35,022 [INFO] [baseline-stub] Query completed in 6290.52 ms. Output: ' TCP (Transmission Control Protocol) and UDP (User'
+INFO:     172.18.0.1:60366 - "POST /query HTTP/1.1" 200 OK
+2026-10-24 15:09:35,033 [INFO] [baseline-stub] Received query for run_id=run-default: prompt='Summarize the key differences between TCP and UDP protocols. [Salt: 8612f976748c]'
+2026-10-24 15:09:35,058 [INFO] [baseline-stub] HTTP Request: POST http://blue-filter:8001/evaluate "HTTP/1.1 200 OK"
+2026-10-24 15:09:41,047 [INFO] [baseline-stub] HTTP Request: POST http://model-server:8080/completion "HTTP/1.1 200 OK"
+INFO:     172.18.0.1:50152 - "POST /query HTTP/1.1" 200 OK
+2026-10-24 15:09:41,049 [INFO] [baseline-stub] Query completed in 6015.32 ms. Output: ' TCP (Transmission Control Protocol) and UDP (User'

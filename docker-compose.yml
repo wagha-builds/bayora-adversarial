@@ -25,6 +25,9 @@ services:
       - ./models/qwen2.5-1.5b-instruct-q4_k_m.gguf:/models/model.gguf:ro
     ports:
       - "8080:8080"
+    security_opt:
+      - seccomp:./policies/seccomp/model-server-seccomp.json
+      - apparmor:bayora-model-server
     networks:
       - baseline-net
     restart: unless-stopped
@@ -40,6 +43,9 @@ services:
       - shared_data:/shared_data
     ports:
       - "8001:8001"
+    security_opt:
+      - seccomp:./policies/seccomp/python-service-seccomp.json
+      - apparmor:bayora-python-service
     networks:
       - baseline-net
     restart: unless-stopped
@@ -54,6 +60,9 @@ services:
       - MODEL_SERVER_URL=http://model-server:8080
     ports:
       - "8000:8000"
+    security_opt:
+      - seccomp:./policies/seccomp/python-service-seccomp.json
+      - apparmor:bayora-python-service
     depends_on:
       - blue-filter
       - model-server
@@ -79,8 +88,8 @@ services:
     depends_on:
       - baseline-stub
     extra_hosts:
-      - "model-server:172.18.0.2"
-      - "blue-filter:172.18.0.3"
+      - "model-server:172.18.0.3"
+      - "blue-filter:172.18.0.2"
       - "baseline-stub:172.18.0.4"
     networks:
       - baseline-net

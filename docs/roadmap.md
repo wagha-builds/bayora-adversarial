@@ -36,3 +36,13 @@ This document tracks architectural decisions, environment specifications, and th
 9. **Rollback Path:** Documented clear rollback procedure via Compose runtime attribute.
 10. **Documented Limitations:** Accepted dynamic IPAM order-dependency in `extra_hosts` and pre-existing guest port exposure (`0.0.0.0`) deferred to Phase 3.
 
+## Phase 2.2 Definition of Done (IMPLEMENTED & VERIFIED ✅)
+1. **Custom Seccomp Profiles:** Implemented tailored seccomp profiles for `model-server` (`model-server-seccomp.json`) and Python microservices (`python-service-seccomp.json`), unconditionally denying 18 high-risk syscalls (`ptrace`, `bpf`, `perf_event_open`, `mount`, etc.) while allowing required runtime execution.
+2. **Custom AppArmor Policies:** Implemented tailored AppArmor profiles (`bayora-model-server` and `bayora-python-service`) loaded into the host kernel in enforce mode, denying `network raw`, `mount`, and high-risk capabilities, while enforcing read-only model weight directory protection.
+3. **Red Runner Runtime Parity:** Maintained `red-runner` under gVisor Sentry userspace virtualization; documented non-applicability of host AppArmor.
+4. **Baseline Services Functionality:** All 4 services healthy and running; end-to-end inference passes through the gateway.
+5. **Bounded Post-Change Performance:** Measured bounded 10-request inference performance ($p50 = 7,451.25\text{ ms}$, $9.39\text{ tok/s}$), confirming negligible (~4%) overhead over baseline.
+6. **Leak Test Master Suite:** Master leak suite executed within Red gVisor sandbox; all 5 tests classified as `still_reproducible` (demonstrating expected leak reproduction under host MAC and syscall isolation).
+7. **Separate Evidence Storage:** 10 new evidence artifacts stored under `results/hardening/phase2.2-seccomp-apparmor/local-ubuntu-vm/`, leaving prior phase artifacts untouched.
+8. **Rollback Path:** Documented clear rollback procedure via Compose security attributes.
+

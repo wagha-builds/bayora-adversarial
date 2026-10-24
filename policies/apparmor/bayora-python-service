@@ -1,0 +1,82 @@
+# profile: bayora-python-service
+# Mandatory Access Control profile for Bayora Python microservices (blue-filter, baseline-stub)
+# Restricts raw socket capabilities, filesystem mounts, and restricts kernel attack surfaces.
+
+abi <abi/3.0>,
+#include <tunables/global>
+
+profile bayora-python-service flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+
+  # Network restrictions: Allow TCP/UDP client/server communication, unix sockets
+  network inet tcp,
+  network inet udp,
+  network inet6 tcp,
+  network inet6 udp,
+  network unix,
+
+  # Explicit network hardening: deny raw and packet sockets (SEC-006 / PRD)
+  deny network raw,
+  deny network packet,
+
+  # Explicit filesystem manipulation restrictions (PRD SEC-006)
+  deny mount,
+  deny remount,
+  deny umount,
+  deny pivot_root,
+
+  # Capability restrictions: block high-risk Linux capabilities
+  capability,
+  deny capability mac_admin,
+  deny capability mac_override,
+  deny capability sys_admin,
+  deny capability sys_module,
+  deny capability sys_ptrace,
+  deny capability sys_rawio,
+  deny capability net_raw,
+
+  # Disallow obsolete socket families
+  deny network ax25,
+  deny network ipx,
+  deny network appletalk,
+  deny network netrom,
+  deny network rose,
+  deny network econet,
+  deny network atmsvc,
+  deny network irda,
+  deny network wanpipe,
+  deny network isdn,
+  deny network caif,
+  deny network alg,
+  deny network vsock,
+
+  # Signal handling: allow process control from container engine and within container
+  signal (receive) peer=unconfined,
+  signal (receive) peer=runc,
+  signal (receive) peer=docker-default,
+  signal (send,receive) peer="bayora-python-service",
+
+  # Ptrace restrictions: deny tracing across container boundary
+  deny ptrace (readby,tracedby),
+  ptrace (trace,tracedby,read,readby) peer="bayora-python-service",
+
+  # Base file permissions
+  file,
+
+  # Proc and Sys protections
+  deny @{PROC}/* w,
+  deny @{PROC}/{[^1-9/],[^1-9/][^0-9/],[^1-9s/][^0-9y/][^0-9s/],[^1-9/][^0-9/][^0-9/][^0-9/]*}/** w,
+  deny @{PROC}/sys/[^k]** w,
+  deny @{PROC}/sys/kernel/{?,??,[^s][^h][^m]**} w,
+  deny @{PROC}/sysrq-trigger rwklx,
+  deny @{PROC}/kcore rwklx,
+
+  deny /sys/[^f]*/** wklx,
+  deny /sys/f[^s]*/** wklx,
+  deny /sys/fs/[^c]*/** wklx,
+  deny /sys/fs/c[^g]*/** wklx,
+  deny /sys/fs/cg[^r]*/** wklx,
+  deny /sys/firmware/** rwklx,
+  deny /sys/devices/virtual/powercap/** rwklx,
+  deny /sys/kernel/security/** rwklx,
+}

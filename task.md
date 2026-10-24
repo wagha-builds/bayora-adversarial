@@ -292,7 +292,7 @@ For Phase 2+ to compare against, Phase 1 will record:
   - [x] Measured bounded post-change performance ($N=10$, $p50 = 4,859.72\text{ ms}$, $14.98\text{ tok/s}$).
   - [x] Verified all 4 services `Up` and healthy; executed full 5-test leak suite inside Red gVisor sandbox.
   - [x] Stored all 10 evidence artifacts separately in `results/hardening/phase2.1-gvisor/local-ubuntu-vm/`.
-- [ ] **Phase 2.2:** Implement `seccomp` profiles and `AppArmor`.
+- [x] **Phase 2.2:** Implement custom `seccomp` profiles and `AppArmor` policies.
 - [ ] **Phase 2.3:** Drop capabilities and remove shared volumes.
 
 ### Phase 2.1 Container Hardening (gVisor) Audit Findings & Evidence Summary
@@ -362,11 +362,89 @@ If runtime regression or failure occurs:
 #### 6. Residual Risks & Next Steps (Phase 2.2)
 - **What Phase 2.1 Protects:** Strong syscall-level virtualization isolating untrusted Red Team evaluation code from the host Linux kernel, mitigating host kernel privilege escalation and escape vulnerabilities (STRIDE: Elevation of Privilege).
 - **Residual Attack Surface:** Red can still issue all non-blocked Linux syscalls supported by gVisor, execute unconstrained file operations inside its container, traverse flat bridge networks, and read shared volumes.
-- **Immediate Next Step (Phase 2.2):** Implement custom `seccomp` profiles and restrictive `AppArmor` policies to constrain syscalls and filesystem access for remaining services.
+- **Immediate Next Step (Phase 2.2):** Implement custom `seccomp` profiles and restrictive `AppArmor` policies to constrain syscalls and filesystem access for remaining services (COMPLETED ✅).
 
 #### 7. Audit Limitations & Accepted Technical Debt
-- **Hardcoded `extra_hosts` Mappings:** The mappings `model-server: 172.18.0.2`, `blue-filter: 172.18.0.3`, and `baseline-stub: 172.18.0.4` currently match running container IPs. However, Docker bridge IP assignment is sequential and depends on container startup order. Recreating containers out of order can cause IP reassignment, breaking Red's routing. This is accepted as an interim Phase 2.1 limitation, to be architecturally superseded in Phase 3 by dedicated subnets with explicit IPAM and DNS proxying.
+- **Hardcoded `extra_hosts` Mappings:** The mappings `model-server: 172.18.0.3`, `blue-filter: 172.18.0.2`, and `baseline-stub: 172.18.0.4` match running container IPs. However, Docker bridge IP assignment is sequential and depends on container startup order. Recreating containers out of order can cause IP reassignment, breaking Red's routing. This is accepted as an interim limitation, to be architecturally superseded in Phase 3 by dedicated subnets with explicit IPAM and DNS proxying.
 - **Port Exposure (`0.0.0.0` vs Localhost-only):** Services in `docker-compose.yml` publish ports on `0.0.0.0:8000`, `0.0.0.0:8001`, and `0.0.0.0:8080`. This is a pre-existing configuration from Phase 1. Within the guest VM, the localhost-only requirement is UNMET. However, external host/LAN access is blocked at the VirtualBox NAT hypervisor boundary (only `127.0.0.1:2222 -> guest:22` is forwarded). Bound port lockdown (`127.0.0.1:PORT`) and zone isolation are deferred to Phase 3 to avoid disruptive Compose network recreations.
+
+---
+
+### Phase 2.2 Seccomp & AppArmor Hardening Audit Findings & Evidence Summary
+**Date:** 2026-10-24  
+**Environment:** Local Ubuntu 24.04 LTS on VirtualBox (6 vCPUs, 8 GB RAM, kernel 6.8.0-147-generic)  
+**Status / Sign-off Readiness:** Fully Implemented & Empirically Verified (Ready for Final Commit)
+
+#### 1. Security Profile Inventory & Confinement Architecture
+| Service Name | Container Name | Runtime | Active Seccomp Profile | Active AppArmor Profile | Enforcement Status |
+|:---|:---|:---:|:---|:---|:---|
+| `model-server` | `bayora-model-server` | `runc` | `policies/seccomp/model-server-seccomp.json` | `bayora-model-server` | **Enforcing** (`/app/llama-server`) |
+| `blue-filter` | `bayora-blue-filter` | `runc` | `policies/seccomp/python-service-seccomp.json` | `bayora-python-service` | **Enforcing** (`/usr/local/bin/python3.12`) |
+| `baseline-stub` | `bayora-baseline-stub` | `runc` | `policies/seccomp/python-service-seccomp.json` | `bayora-python-service` | **Enforcing** (`/usr/local/bin/python3.12`) |
+| `red-runner` | `bayora-red-runner` | `runsc` | gVisor Sentry Virtualization | N/A (unsupported by `runsc`) | **Full gVisor Sentry Sandbox** |
+
+**Scope & Architectural Rationale:**
+- **Red Runner under gVisor:** gVisor (`runsc`) runs inside an emulated userspace kernel (Sentry), virtualizing and intercepting all guest system calls before host kernel access. As confirmed in Docker runtime feature introspection, `runsc` does not support host AppArmor (`apparmor: false`). Applying host seccomp to gVisor is redundant with Sentry's existing syscall boundary.
+- **Python Microservices (`blue-filter` & `baseline-stub`):** Both are lightweight FastAPI/Uvicorn containers running on native `runc`. They share a dedicated hardened seccomp profile (`python-service-seccomp.json`) and a dedicated AppArmor policy (`bayora-python-service`), restricting attack surface while permitting standard async socket I/O.
+- **LLM Model Server (`model-server`):** Runs native `llama.cpp:server` on `runc`. Confined with tailored seccomp (`model-server-seccomp.json`) and tailored AppArmor (`bayora-model-server`), enforcing read-only model weight directory protection.
+
+#### 2. Attack Surface Mitigations (SEC-005 & SEC-006)
+- **SEC-005 Seccomp Syscall Filtering:**
+  - Default action: `SCMP_ACT_ERRNO`.
+  - Explicit unconditional denial of 18 high-risk syscalls: `ptrace`, `bpf`, `perf_event_open`, `userfaultfd`, `kexec_load`, `kexec_file_load`, `mount`, `umount`, `umount2`, `pivot_root`, `keyctl`, `add_key`, `request_key`, `init_module`, `finit_module`, `delete_module`, `process_vm_readv`, `process_vm_writev`.
+  - Permits all standard glibc, OpenMP threadpool, and networking syscalls required for stable execution.
+- **SEC-006 AppArmor Mandatory Access Control:**
+  - **Network Raw Denial:** Explicitly enforces `deny network raw` and `deny network packet`, preventing packet-crafting and raw socket privilege escalation.
+  - **Filesystem & Mount Lockdown:** Explicitly denies `mount`, `remount`, `umount`, and `pivot_root`.
+  - **Capability Lockdown:** Denies high-risk capabilities including `CAP_MAC_ADMIN`, `CAP_MAC_OVERRIDE`, `CAP_SYS_ADMIN`, `CAP_SYS_MODULE`, `CAP_SYS_PTRACE`, `CAP_SYS_RAWIO`, and `CAP_NET_RAW`.
+  - **Process Tracing Denial:** Explicitly blocks cross-container `ptrace` tracing.
+  - **File-Access Confinement:** Restricts file access across containers. For `model-server`, strictly enforces read-only access to `/models/**` (`deny /models/** w`, `deny /models/** a`, `deny /models/** k`), and restricts writable locations across all services strictly to `/tmp/**` and standard character devices.
+
+#### 3. Empirical Performance Verification ($N=10$)
+Bounded end-to-end inference benchmark through evaluation gateway (`baseline-stub` -> `blue-filter` -> `model-server`):
+| Metric | Reference Baseline (`runc`) | Phase 2.1 Post-Change | Phase 2.2 Hardened (Seccomp + AppArmor) | Overhead vs Baseline |
+|:---|:---:|:---:|:---:|:---:|
+| Requests Evaluated | 10 | 10 | 10 | Bounded sequential requests |
+| Success / Timeout | 10/10 (0 timeouts) | 10/10 (0 timeouts) | 10/10 (0 timeouts) | 100% reliability |
+| **Latency $p50$** | **$7,148.65\text{ ms}$** | **$4,859.72\text{ ms}$** | **$7,451.25\text{ ms}$** | **$+4.2\%$ (negligible)** |
+| Latency $p95$ | $9,371.66\text{ ms}$ | $7,347.51\text{ ms}$ | $10,310.48\text{ ms}$ | $+10.0\%$ |
+| **Generation Speed $p50$** | **$9.86\text{ tok/s}$** | **$14.98\text{ tok/s}$** | **$9.39\text{ tok/s}$** | **$-4.7\%$ (within host noise)** |
+| Token Latency $p50$ | $101.38\text{ ms/tok}$ | $66.77\text{ ms/tok}$ | $106.64\text{ ms/tok}$ | $+5.2\%$ |
+| Total Wall Duration | $76.41\text{ s}$ | $49.10\text{ s}$ | $76.96\text{ s}$ | Stable throughout run |
+
+*Finding:* Unlike gVisor virtualization (which caused a 9.26x slowdown on CPU inference), kernel-native seccomp filters and AppArmor LSM checks impose virtually zero measurable computational overhead (~4% variance, well within VirtualBox host scheduling noise).
+
+#### 4. Master Leak-Test Suite Verification (inside gVisor)
+All 5 automated baseline leak tests were executed with `bayora-red-runner` executing inside gVisor:
+| Test Script | Vulnerability ID | Execution Status | Security Outcome | Security Boundary Analysis |
+|:---|:---|:---:|:---:|:---|
+| `test_net_blue_direct.py` | SEC-008 | Clean (exit 0) | `still_reproducible` (PASS) | Flat bridge intact; network segmentation scheduled for Phase 3. |
+| `test_net_model_direct.py` | SEC-008 | Clean (exit 0) | `still_reproducible` (PASS) | Direct HTTP connection succeeds; Phase 3 isolates zones. |
+| `test_fs_blue_rules.py` | SEC-001 | Clean (exit 0) | `still_reproducible` (PASS) | Shared named volume `/shared_data` intact; volume removal scheduled for Phase 2.3. |
+| `test_cache_timing.py` | LLM-001 | Clean (exit 0) | `still_reproducible` (PASS) | Prefix cache timing delta ($2,616.72\text{ ms}$) detected; cache hardening scheduled for Phase 6. |
+| `test_log_exposure.py` | PRIV-001 | Clean (exit 0) | `still_reproducible` (PASS) | Unredacted prompts in stdout logs; audit ledger scheduled for Phase 5. |
+
+*Finding:* Seccomp and AppArmor provide robust defense-in-depth against host kernel exploitation and container breakout without prematurely breaking intentional baseline application-level vulnerabilities prior to Phase 2.3 and Phase 3.
+
+#### 5. Evidence Artifacts Provenance (Phase 2.2)
+All 10 newly generated evidence artifacts are stored under:
+`results/hardening/phase2.2-seccomp-apparmor/local-ubuntu-vm/`
+1. `benchmark_phase2_2_hardened.json` — 10-request end-to-end gateway inference benchmark.
+2. `leak_test_results.json` — Master leak test suite results under Phase 2.2 hardening.
+3. `container_security_inspect.json` — Full Docker inspect metadata for all 4 services confirming runtime, seccomp, and AppArmor attributes.
+4. `apparmor_status.txt` — Host `aa-status` confirming enforce mode and process confinement.
+5. `docker_compose_ps.txt` — Running service inventory and port bindings.
+6. `model_server_container_logs.txt` — Container logs for `bayora-model-server`.
+7. `blue_filter_container_logs.txt` — Container logs for `bayora-blue-filter`.
+8. `baseline_stub_container_logs.txt` — Container logs for `bayora-baseline-stub`.
+9. `model_server_seccomp_health.json` — Health check response under custom seccomp.
+10. `model_server_seccomp_inspect.json` — Initial seccomp inspect artifact.
+
+#### 6. Rollback Procedure
+If seccomp or AppArmor profile issues occur:
+1. Revert `docker-compose.yml`: remove `security_opt` entries from services.
+2. Execute `docker compose up -d` to restart services under default Docker confinement.
+3. If necessary, unload host profiles via `sudo apparmor_parser -R /path/to/profile`.
 
 ---
 

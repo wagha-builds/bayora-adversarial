@@ -59,6 +59,9 @@ This document tracks architectural decisions, environment specifications, and th
 9. **Smoke Test Verification:** Verified single-request gateway inference smoke test recorded in saved artifact `inference_smoke_test.txt` ($p50 = 8,001.58\text{ ms}$, $9.55\text{ tok/s}$, 0 timeouts, 0 errors).
 10. **Separate Evidence Storage:** Evidence artifacts stored under `results/hardening/phase2.3-least-privilege/local-ubuntu-vm/`.
 
-
-
-
+## Phase 2 Final Audit & Hardening Consolidation (COMPLETED & TAGGED ✅ — `phase2-complete`)
+1. **Consolidated Tagging:** Created and pushed annotated tag `phase2-complete` at the final verified corrective audit commit.
+2. **Git Hygiene & Tag Integrity:** Audited historical tags (`phase2.0-vm-baseline`, `phase2.1-gvisor-hardening`, `phase2.2-seccomp-apparmor`), documented `phase2.3-least-privilege` movement history, and confirmed historical commit `5b7f231` remains fully intact.
+3. **Seccomp Static Audit:** Programmatically verified that all 18 target high-risk syscalls are absent from allow rules across both profiles.
+4. **Full-Filesystem Scan:** Verified Red runner container has no access to `blue_rules.json` or `BLUE_DEFENSE_PROPRIETARY` across the entire accessible filesystem.
+5. **Rigorous Negative Security Testing:** Updated negative security test harness with strict errno assertions and exit code verification.

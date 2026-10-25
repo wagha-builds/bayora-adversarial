@@ -1,7 +1,7 @@
 [
     {
-        "Id": "228204ff756f0773102b971f81537748224168fd9d2061010c42b354aa0105c7",
-        "Created": "2026-10-24T15:39:04.511933594Z",
+        "Id": "4511b449275533c588f98b53812b778f0701d7c2c2ea39d226ca405b29245b99",
+        "Created": "2026-10-24T17:00:41.352822676Z",
         "Path": "/app/llama-server",
         "Args": [
             "-m",
@@ -23,53 +23,53 @@
             "Restarting": false,
             "OOMKilled": false,
             "Dead": false,
-            "Pid": 14460,
+            "Pid": 1455,
             "ExitCode": 0,
             "Error": "",
-            "StartedAt": "2026-10-24T15:39:06.727493974Z",
-            "FinishedAt": "0001-01-01T00:00:00Z",
+            "StartedAt": "2026-10-25T05:50:18.479091843Z",
+            "FinishedAt": "2026-10-25T05:50:17.141884201Z",
             "Health": {
                 "Status": "healthy",
                 "FailingStreak": 0,
                 "Log": [
                     {
-                        "Start": "2026-10-24T15:41:09.119341142Z",
-                        "End": "2026-10-24T15:41:09.526539163Z",
+                        "Start": "2026-10-25T06:04:09.525844509Z",
+                        "End": "2026-10-25T06:04:09.828446217Z",
                         "ExitCode": 0,
-                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0{\"status\":\"ok\"}\r100    15  100    15    0     0   4341      0 --:--:-- --:--:-- --:--:--  5000\n"
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0{\"status\":\"ok\"}\r100    15  100    15    0     0   1978      0 --:--:-- --:--:-- --:--:--  2142\n"
                     },
                     {
-                        "Start": "2026-10-24T15:41:39.542026108Z",
-                        "End": "2026-10-24T15:41:39.772323993Z",
+                        "Start": "2026-10-25T06:04:39.848871754Z",
+                        "End": "2026-10-25T06:04:40.138139167Z",
                         "ExitCode": 0,
-                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0{\"status\":\"ok\"}\r100    15  100    15    0     0   3013      0 --:--:-- --:--:-- --:--:--  3750\n"
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   4063      0 --:--:-- --:--:-- --:--:--  5000\n{\"status\":\"ok\"}"
                     },
                     {
-                        "Start": "2026-10-24T15:42:09.78087834Z",
-                        "End": "2026-10-24T15:42:09.988807595Z",
+                        "Start": "2026-10-25T06:05:10.922971522Z",
+                        "End": "2026-10-25T06:05:11.170124533Z",
                         "ExitCode": 0,
-                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0{\"status\":\"ok\"}\r100    15  100    15    0     0   3536      0 --:--:-- --:--:-- --:--:--  3750\n"
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0{\"status\":\"ok\"}\r100    15  100    15    0     0   5656      0 --:--:-- --:--:-- --:--:--  7500\n"
                     },
                     {
-                        "Start": "2026-10-24T15:42:40.211555962Z",
-                        "End": "2026-10-24T15:42:40.440177868Z",
+                        "Start": "2026-10-25T06:05:41.172868417Z",
+                        "End": "2026-10-25T06:05:41.411369072Z",
                         "ExitCode": 0,
-                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   3866      0 --:--:-- --:--:-- --:--:--  5000\n{\"status\":\"ok\"}"
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   3207      0 --:--:-- --:--:-- --:--:--  3750\n{\"status\":\"ok\"}"
                     },
                     {
-                        "Start": "2026-10-24T15:43:10.446068074Z",
-                        "End": "2026-10-24T15:43:11.150684628Z",
+                        "Start": "2026-10-25T06:06:11.421622812Z",
+                        "End": "2026-10-25T06:06:11.678142407Z",
                         "ExitCode": 0,
-                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   1153      0 --:--:-- --:--:-- --:--:--  1250\n{\"status\":\"ok\"}"
+                        "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    15  100    15    0     0   5409      0 --:--:-- --:--:-- --:--:--  7500\n{\"status\":\"ok\"}"
                     }
                 ]
             }
         },
         "Image": "sha256:8c74db29f1a2bef3f0a331b52c4d6214601dfceed4bee0b94cc48b3b23ff257d",
-        "ResolvConfPath": "/var/lib/docker/containers/228204ff756f0773102b971f81537748224168fd9d2061010c42b354aa0105c7/resolv.conf",
-        "HostnamePath": "/var/lib/docker/containers/228204ff756f0773102b971f81537748224168fd9d2061010c42b354aa0105c7/hostname",
-        "HostsPath": "/var/lib/docker/containers/228204ff756f0773102b971f81537748224168fd9d2061010c42b354aa0105c7/hosts",
-        "LogPath": "/var/lib/docker/containers/228204ff756f0773102b971f81537748224168fd9d2061010c42b354aa0105c7/228204ff756f0773102b971f81537748224168fd9d2061010c42b354aa0105c7-json.log",
+        "ResolvConfPath": "/var/lib/docker/containers/4511b449275533c588f98b53812b778f0701d7c2c2ea39d226ca405b29245b99/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/4511b449275533c588f98b53812b778f0701d7c2c2ea39d226ca405b29245b99/hostname",
+        "HostsPath": "/var/lib/docker/containers/4511b449275533c588f98b53812b778f0701d7c2c2ea39d226ca405b29245b99/hosts",
+        "LogPath": "/var/lib/docker/containers/4511b449275533c588f98b53812b778f0701d7c2c2ea39d226ca405b29245b99/4511b449275533c588f98b53812b778f0701d7c2c2ea39d226ca405b29245b99-json.log",
         "Name": "/bayora-model-server",
         "RestartCount": 0,
         "Driver": "overlayfs",
@@ -91,7 +91,7 @@
             "PortBindings": {
                 "8080/tcp": [
                     {
-                        "HostIp": "",
+                        "HostIp": "127.0.0.1",
                         "HostPort": "8080"
                     }
                 ]
@@ -112,9 +112,9 @@
                 "ALL"
             ],
             "CgroupnsMode": "private",
-            "Dns": null,
-            "DnsOptions": null,
-            "DnsSearch": null,
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
             "ExtraHosts": [],
             "GroupAdd": null,
             "IpcMode": "private",
@@ -127,7 +127,8 @@
             "ReadonlyRootfs": false,
             "SecurityOpt": [
                 "seccomp={\"defaultAction\":\"SCMP_ACT_ERRNO\",\"defaultErrnoRet\":1,\"archMap\":[{\"architecture\":\"SCMP_ARCH_X86_64\",\"subArchitectures\":[\"SCMP_ARCH_X86\",\"SCMP_ARCH_X32\"]},{\"architecture\":\"SCMP_ARCH_AARCH64\",\"subArchitectures\":[\"SCMP_ARCH_ARM\"]},{\"architecture\":\"SCMP_ARCH_MIPS64\",\"subArchitectures\":[\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64N32\"]},{\"architecture\":\"SCMP_ARCH_MIPS64N32\",\"subArchitectures\":[\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64\"]},{\"architecture\":\"SCMP_ARCH_MIPSEL64\",\"subArchitectures\":[\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64N32\"]},{\"architecture\":\"SCMP_ARCH_MIPSEL64N32\",\"subArchitectures\":[\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64\"]},{\"architecture\":\"SCMP_ARCH_S390X\",\"subArchitectures\":[\"SCMP_ARCH_S390\"]},{\"architecture\":\"SCMP_ARCH_RISCV64\",\"subArchitectures\":null},{\"architecture\":\"SCMP_ARCH_LOONGARCH64\",\"subArchitectures\":null}],\"syscalls\":[{\"names\":[\"ptrace\",\"bpf\",\"perf_event_open\",\"userfaultfd\",\"kexec_load\",\"kexec_file_load\",\"mount\",\"umount\",\"umount2\",\"pivot_root\",\"keyctl\",\"add_key\",\"request_key\",\"init_module\",\"finit_module\",\"delete_module\",\"process_vm_readv\",\"process_vm_writev\"],\"action\":\"SCMP_ACT_ERRNO\",\"args\":[],\"comment\":\"Explicit SEC-005 hardening: unconditionally deny high-risk attack surface syscalls\"},{\"names\":[\"accept\",\"accept4\",\"access\",\"adjtimex\",\"alarm\",\"bind\",\"brk\",\"cachestat\",\"capget\",\"capset\",\"chdir\",\"chmod\",\"chown\",\"chown32\",\"clock_adjtime\",\"clock_adjtime64\",\"clock_getres\",\"clock_getres_time64\",\"clock_gettime\",\"clock_gettime64\",\"clock_nanosleep\",\"clock_nanosleep_time64\",\"close\",\"close_range\",\"connect\",\"copy_file_range\",\"creat\",\"dup\",\"dup2\",\"dup3\",\"epoll_create\",\"epoll_create1\",\"epoll_ctl\",\"epoll_ctl_old\",\"epoll_pwait\",\"epoll_pwait2\",\"epoll_wait\",\"epoll_wait_old\",\"eventfd\",\"eventfd2\",\"execve\",\"execveat\",\"exit\",\"exit_group\",\"faccessat\",\"faccessat2\",\"fadvise64\",\"fadvise64_64\",\"fallocate\",\"fanotify_mark\",\"fchdir\",\"fchmod\",\"fchmodat\",\"fchmodat2\",\"fchown\",\"fchown32\",\"fchownat\",\"fcntl\",\"fcntl64\",\"fdatasync\",\"fgetxattr\",\"flistxattr\",\"flock\",\"fork\",\"fremovexattr\",\"fsetxattr\",\"fstat\",\"fstat64\",\"fstatat64\",\"fstatfs\",\"fstatfs64\",\"fsync\",\"ftruncate\",\"ftruncate64\",\"futex\",\"futex_requeue\",\"futex_time64\",\"futex_wait\",\"futex_waitv\",\"futex_wake\",\"futimesat\",\"getcpu\",\"getcwd\",\"getdents\",\"getdents64\",\"getegid\",\"getegid32\",\"geteuid\",\"geteuid32\",\"getgid\",\"getgid32\",\"getgroups\",\"getgroups32\",\"getitimer\",\"getpeername\",\"getpgid\",\"getpgrp\",\"getpid\",\"getppid\",\"getpriority\",\"getrandom\",\"getresgid\",\"getresgid32\",\"getresuid\",\"getresuid32\",\"getrlimit\",\"get_robust_list\",\"getrusage\",\"getsid\",\"getsockname\",\"getsockopt\",\"get_thread_area\",\"gettid\",\"gettimeofday\",\"getuid\",\"getuid32\",\"getxattr\",\"getxattrat\",\"inotify_add_watch\",\"inotify_init\",\"inotify_init1\",\"inotify_rm_watch\",\"io_cancel\",\"ioctl\",\"io_destroy\",\"io_getevents\",\"io_pgetevents\",\"io_pgetevents_time64\",\"ioprio_get\",\"ioprio_set\",\"io_setup\",\"io_submit\",\"ipc\",\"kill\",\"landlock_add_rule\",\"landlock_create_ruleset\",\"landlock_restrict_self\",\"lchown\",\"lchown32\",\"lgetxattr\",\"link\",\"linkat\",\"listen\",\"listmount\",\"listxattr\",\"listxattrat\",\"llistxattr\",\"_llseek\",\"lremovexattr\",\"lseek\",\"lsetxattr\",\"lstat\",\"lstat64\",\"madvise\",\"map_shadow_stack\",\"membarrier\",\"memfd_create\",\"memfd_secret\",\"mincore\",\"mkdir\",\"mkdirat\",\"mknod\",\"mknodat\",\"mlock\",\"mlock2\",\"mlockall\",\"mmap\",\"mmap2\",\"mprotect\",\"mq_getsetattr\",\"mq_notify\",\"mq_open\",\"mq_timedreceive\",\"mq_timedreceive_time64\",\"mq_timedsend\",\"mq_timedsend_time64\",\"mq_unlink\",\"mremap\",\"mseal\",\"msgctl\",\"msgget\",\"msgrcv\",\"msgsnd\",\"msync\",\"munlock\",\"munlockall\",\"munmap\",\"name_to_handle_at\",\"nanosleep\",\"newfstatat\",\"_newselect\",\"open\",\"openat\",\"openat2\",\"pause\",\"pidfd_open\",\"pidfd_send_signal\",\"pipe\",\"pipe2\",\"pkey_alloc\",\"pkey_free\",\"pkey_mprotect\",\"poll\",\"ppoll\",\"ppoll_time64\",\"prctl\",\"pread64\",\"preadv\",\"preadv2\",\"prlimit64\",\"process_mrelease\",\"pselect6\",\"pselect6_time64\",\"pwrite64\",\"pwritev\",\"pwritev2\",\"read\",\"readahead\",\"readlink\",\"readlinkat\",\"readv\",\"recv\",\"recvfrom\",\"recvmmsg\",\"recvmmsg_time64\",\"recvmsg\",\"remap_file_pages\",\"removexattr\",\"removexattrat\",\"rename\",\"renameat\",\"renameat2\",\"restart_syscall\",\"riscv_hwprobe\",\"rmdir\",\"rseq\",\"rt_sigaction\",\"rt_sigpending\",\"rt_sigprocmask\",\"rt_sigqueueinfo\",\"rt_sigreturn\",\"rt_sigsuspend\",\"rt_sigtimedwait\",\"rt_sigtimedwait_time64\",\"rt_tgsigqueueinfo\",\"sched_getaffinity\",\"sched_getattr\",\"sched_getparam\",\"sched_get_priority_max\",\"sched_get_priority_min\",\"sched_getscheduler\",\"sched_rr_get_interval\",\"sched_rr_get_interval_time64\",\"sched_setaffinity\",\"sched_setattr\",\"sched_setparam\",\"sched_setscheduler\",\"sched_yield\",\"seccomp\",\"select\",\"semctl\",\"semget\",\"semop\",\"semtimedop\",\"semtimedop_time64\",\"send\",\"sendfile\",\"sendfile64\",\"sendmmsg\",\"sendmsg\",\"sendto\",\"setfsgid\",\"setfsgid32\",\"setfsuid\",\"setfsuid32\",\"setgid\",\"setgid32\",\"setgroups\",\"setgroups32\",\"setitimer\",\"setpgid\",\"setpriority\",\"setregid\",\"setregid32\",\"setresgid\",\"setresgid32\",\"setresuid\",\"setresuid32\",\"setreuid\",\"setreuid32\",\"setrlimit\",\"set_robust_list\",\"setsid\",\"setsockopt\",\"set_thread_area\",\"set_tid_address\",\"setuid\",\"setuid32\",\"setxattr\",\"setxattrat\",\"shmat\",\"shmctl\",\"shmdt\",\"shmget\",\"shutdown\",\"sigaltstack\",\"signalfd\",\"signalfd4\",\"sigprocmask\",\"sigreturn\",\"socketcall\",\"socketpair\",\"splice\",\"stat\",\"stat64\",\"statfs\",\"statfs64\",\"statmount\",\"statx\",\"symlink\",\"symlinkat\",\"sync\",\"sync_file_range\",\"syncfs\",\"sysinfo\",\"tee\",\"tgkill\",\"time\",\"timer_create\",\"timer_delete\",\"timer_getoverrun\",\"timer_gettime\",\"timer_gettime64\",\"timer_settime\",\"timer_settime64\",\"timerfd_create\",\"timerfd_gettime\",\"timerfd_gettime64\",\"timerfd_settime\",\"timerfd_settime64\",\"times\",\"tkill\",\"truncate\",\"truncate64\",\"ugetrlimit\",\"umask\",\"uname\",\"unlink\",\"unlinkat\",\"uretprobe\",\"utime\",\"utimensat\",\"utimensat_time64\",\"utimes\",\"vfork\",\"vmsplice\",\"wait4\",\"waitid\",\"waitpid\",\"write\",\"writev\"],\"action\":\"SCMP_ACT_ALLOW\"},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":3,\"op\":\"SCMP_CMP_LT\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":7,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":8,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":9,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":10,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":13,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":14,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":15,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":16,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":17,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":18,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":21,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":22,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":24,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":26,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":27,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":28,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":29,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":30,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":31,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":32,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":33,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":35,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":36,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":39,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":41,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":42,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":43,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":44,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":45,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":0,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":8,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":131072,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":131080,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":4294967295,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"sync_file_range2\",\"swapcontext\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"ppc64le\"]}},{\"names\":[\"arm_fadvise64_64\",\"arm_sync_file_range\",\"sync_file_range2\",\"breakpoint\",\"cacheflush\",\"set_tls\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"arm\",\"arm64\"]}},{\"names\":[\"arch_prctl\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"amd64\",\"x32\"]}},{\"names\":[\"modify_ldt\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"amd64\",\"x32\",\"x86\"]}},{\"names\":[\"s390_pci_mmio_read\",\"s390_pci_mmio_write\",\"s390_runtime_instr\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"s390\",\"s390x\"]}},{\"names\":[\"riscv_flush_icache\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"riscv64\"]}},{\"names\":[\"open_by_handle_at\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_DAC_READ_SEARCH\"]}},{\"names\":[\"clone\",\"clone3\",\"fanotify_init\",\"fsconfig\",\"fsmount\",\"fsopen\",\"fspick\",\"lookup_dcookie\",\"lsm_get_self_attr\",\"lsm_list_modules\",\"lsm_set_self_attr\",\"mount_setattr\",\"move_mount\",\"open_tree\",\"quotactl\",\"quotactl_fd\",\"setdomainname\",\"sethostname\",\"setns\",\"syslog\",\"unshare\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"clone\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":2114060288,\"op\":\"SCMP_CMP_MASKED_EQ\"}],\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"],\"arches\":[\"s390\",\"s390x\"]}},{\"names\":[\"clone\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":1,\"value\":2114060288,\"op\":\"SCMP_CMP_MASKED_EQ\"}],\"comment\":\"s390 parameter ordering for clone is different\",\"includes\":{\"arches\":[\"s390\",\"s390x\"]},\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"clone3\"],\"action\":\"SCMP_ACT_ERRNO\",\"errnoRet\":38,\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"reboot\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_BOOT\"]}},{\"names\":[\"chroot\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_CHROOT\"]}},{\"names\":[\"acct\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_PACCT\"]}},{\"names\":[\"kcmp\",\"pidfd_getfd\",\"process_madvise\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_PTRACE\"]}},{\"names\":[\"iopl\",\"ioperm\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_RAWIO\"]}},{\"names\":[\"settimeofday\",\"stime\",\"clock_settime\",\"clock_settime64\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_TIME\"]}},{\"names\":[\"vhangup\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_TTY_CONFIG\"]}},{\"names\":[\"get_mempolicy\",\"mbind\",\"set_mempolicy\",\"set_mempolicy_home_node\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_NICE\"]}},{\"names\":[\"syslog\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYSLOG\"]}}]}",
-                "apparmor:bayora-model-server"
+                "apparmor:bayora-model-server",
+                "no-new-privileges:true"
             ],
             "UTSMode": "",
             "UsernsMode": "",
@@ -203,7 +204,7 @@
             }
         ],
         "Config": {
-            "Hostname": "228204ff756f",
+            "Hostname": "4511b4492755",
             "Domainname": "",
             "User": "",
             "AttachStdin": false,
@@ -248,7 +249,7 @@
                 "/app/llama-server"
             ],
             "Labels": {
-                "com.docker.compose.config-hash": "83a6ca30367942b91e5a993d985831c679d4b544944b5e5ef79d7e78928b3066",
+                "com.docker.compose.config-hash": "7e0be1867fbf6e3d993fc9c1b09b4876aec18eae8e2b3c32fd9d15eaa4fbe8b3",
                 "com.docker.compose.container-number": "1",
                 "com.docker.compose.depends_on": "",
                 "com.docker.compose.image": "sha256:8badce92ec1860c764ca19c736422e81a12c65d76da57313651a7804bfe6ed40",
@@ -256,7 +257,6 @@
                 "com.docker.compose.project": "bayora_adversarial",
                 "com.docker.compose.project.config_files": "/home/wagha__/bayora_adversarial/docker-compose.yml",
                 "com.docker.compose.project.working_dir": "/home/wagha__/bayora_adversarial",
-                "com.docker.compose.replace": "bayora-model-server",
                 "com.docker.compose.service": "model-server",
                 "com.docker.compose.version": "5.6.1",
                 "org.opencontainers.image.created": "2026-10-22T04:31:51Z",
@@ -269,16 +269,12 @@
             }
         },
         "NetworkSettings": {
-            "SandboxID": "eda907a0e93629da9146eec6e500a12a0001b1a2a555f89a25ed53ba92d418c0",
-            "SandboxKey": "/var/run/docker/netns/eda907a0e936",
+            "SandboxID": "c354d5783ace9cf183d6ef68f7a0d61ea171685c37a69c5b710327c589fce638",
+            "SandboxKey": "/var/run/docker/netns/c354d5783ace",
             "Ports": {
                 "8080/tcp": [
                     {
-                        "HostIp": "0.0.0.0",
-                        "HostPort": "8080"
-                    },
-                    {
-                        "HostIp": "::",
+                        "HostIp": "127.0.0.1",
                         "HostPort": "8080"
                     }
                 ]
@@ -293,11 +289,11 @@
                     ],
                     "DriverOpts": null,
                     "GwPriority": 0,
-                    "NetworkID": "96f331483073bc9a4e6b41606df4a0d7e6abf4c7feded1ee33bc48d0cca99982",
-                    "EndpointID": "58c23bbc5ee6b842aa479d2a30cabf550e440274ac5dc5413d160af2915274f2",
+                    "NetworkID": "25fd8abb79aecb2b80f17baf8958e75881482e538cbf0d1efed187ba6c8da11a",
+                    "EndpointID": "00df5aff359e12f751238db4b6a827755754e060cec531997bb27545575bbded",
                     "Gateway": "172.18.0.1",
-                    "IPAddress": "172.18.0.3",
-                    "MacAddress": "96:9b:48:93:73:4d",
+                    "IPAddress": "172.18.0.4",
+                    "MacAddress": "52:3c:4e:c5:a3:8d",
                     "IPPrefixLen": 16,
                     "IPv6Gateway": "",
                     "GlobalIPv6Address": "",
@@ -305,7 +301,7 @@
                     "DNSNames": [
                         "bayora-model-server",
                         "model-server",
-                        "228204ff756f"
+                        "4511b4492755"
                     ]
                 }
             }
@@ -321,8 +317,8 @@
         }
     },
     {
-        "Id": "09b5d92eba2a5445073ce33b9e48decc21cf7f930d3306c46a52e2a60b94dcdd",
-        "Created": "2026-10-24T15:39:59.647983902Z",
+        "Id": "77b57eede648ecd40c8c6d26fd4629ab11f175ea2b1a94135c89e60ee25095bb",
+        "Created": "2026-10-24T17:00:41.388887172Z",
         "Path": "uvicorn",
         "Args": [
             "main:app",
@@ -338,17 +334,17 @@
             "Restarting": false,
             "OOMKilled": false,
             "Dead": false,
-            "Pid": 14807,
+            "Pid": 1440,
             "ExitCode": 0,
             "Error": "",
-            "StartedAt": "2026-10-24T15:40:01.272204666Z",
-            "FinishedAt": "0001-01-01T00:00:00Z"
+            "StartedAt": "2026-10-25T05:50:18.474662599Z",
+            "FinishedAt": "2026-10-25T05:50:17.142916785Z"
         },
         "Image": "sha256:cef827358014e4576cb1e32ad262fd32e9a52e3b344034604b760156478cd023",
-        "ResolvConfPath": "/var/lib/docker/containers/09b5d92eba2a5445073ce33b9e48decc21cf7f930d3306c46a52e2a60b94dcdd/resolv.conf",
-        "HostnamePath": "/var/lib/docker/containers/09b5d92eba2a5445073ce33b9e48decc21cf7f930d3306c46a52e2a60b94dcdd/hostname",
-        "HostsPath": "/var/lib/docker/containers/09b5d92eba2a5445073ce33b9e48decc21cf7f930d3306c46a52e2a60b94dcdd/hosts",
-        "LogPath": "/var/lib/docker/containers/09b5d92eba2a5445073ce33b9e48decc21cf7f930d3306c46a52e2a60b94dcdd/09b5d92eba2a5445073ce33b9e48decc21cf7f930d3306c46a52e2a60b94dcdd-json.log",
+        "ResolvConfPath": "/var/lib/docker/containers/77b57eede648ecd40c8c6d26fd4629ab11f175ea2b1a94135c89e60ee25095bb/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/77b57eede648ecd40c8c6d26fd4629ab11f175ea2b1a94135c89e60ee25095bb/hostname",
+        "HostsPath": "/var/lib/docker/containers/77b57eede648ecd40c8c6d26fd4629ab11f175ea2b1a94135c89e60ee25095bb/hosts",
+        "LogPath": "/var/lib/docker/containers/77b57eede648ecd40c8c6d26fd4629ab11f175ea2b1a94135c89e60ee25095bb/77b57eede648ecd40c8c6d26fd4629ab11f175ea2b1a94135c89e60ee25095bb-json.log",
         "Name": "/bayora-blue-filter",
         "RestartCount": 0,
         "Driver": "overlayfs",
@@ -368,7 +364,7 @@
             "PortBindings": {
                 "8001/tcp": [
                     {
-                        "HostIp": "",
+                        "HostIp": "127.0.0.1",
                         "HostPort": "8001"
                     }
                 ]
@@ -389,9 +385,9 @@
                 "ALL"
             ],
             "CgroupnsMode": "private",
-            "Dns": null,
-            "DnsOptions": null,
-            "DnsSearch": null,
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
             "ExtraHosts": [],
             "GroupAdd": null,
             "IpcMode": "private",
@@ -401,11 +397,15 @@
             "PidMode": "",
             "Privileged": false,
             "PublishAllPorts": false,
-            "ReadonlyRootfs": false,
+            "ReadonlyRootfs": true,
             "SecurityOpt": [
                 "seccomp={\"defaultAction\":\"SCMP_ACT_ERRNO\",\"defaultErrnoRet\":1,\"archMap\":[{\"architecture\":\"SCMP_ARCH_X86_64\",\"subArchitectures\":[\"SCMP_ARCH_X86\",\"SCMP_ARCH_X32\"]},{\"architecture\":\"SCMP_ARCH_AARCH64\",\"subArchitectures\":[\"SCMP_ARCH_ARM\"]},{\"architecture\":\"SCMP_ARCH_MIPS64\",\"subArchitectures\":[\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64N32\"]},{\"architecture\":\"SCMP_ARCH_MIPS64N32\",\"subArchitectures\":[\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64\"]},{\"architecture\":\"SCMP_ARCH_MIPSEL64\",\"subArchitectures\":[\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64N32\"]},{\"architecture\":\"SCMP_ARCH_MIPSEL64N32\",\"subArchitectures\":[\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64\"]},{\"architecture\":\"SCMP_ARCH_S390X\",\"subArchitectures\":[\"SCMP_ARCH_S390\"]},{\"architecture\":\"SCMP_ARCH_RISCV64\",\"subArchitectures\":null},{\"architecture\":\"SCMP_ARCH_LOONGARCH64\",\"subArchitectures\":null}],\"syscalls\":[{\"names\":[\"ptrace\",\"bpf\",\"perf_event_open\",\"userfaultfd\",\"kexec_load\",\"kexec_file_load\",\"mount\",\"umount\",\"umount2\",\"pivot_root\",\"keyctl\",\"add_key\",\"request_key\",\"init_module\",\"finit_module\",\"delete_module\",\"process_vm_readv\",\"process_vm_writev\"],\"action\":\"SCMP_ACT_ERRNO\",\"args\":[],\"comment\":\"Explicit SEC-005 hardening: unconditionally deny high-risk attack surface syscalls\"},{\"names\":[\"accept\",\"accept4\",\"access\",\"adjtimex\",\"alarm\",\"bind\",\"brk\",\"cachestat\",\"capget\",\"capset\",\"chdir\",\"chmod\",\"chown\",\"chown32\",\"clock_adjtime\",\"clock_adjtime64\",\"clock_getres\",\"clock_getres_time64\",\"clock_gettime\",\"clock_gettime64\",\"clock_nanosleep\",\"clock_nanosleep_time64\",\"close\",\"close_range\",\"connect\",\"copy_file_range\",\"creat\",\"dup\",\"dup2\",\"dup3\",\"epoll_create\",\"epoll_create1\",\"epoll_ctl\",\"epoll_ctl_old\",\"epoll_pwait\",\"epoll_pwait2\",\"epoll_wait\",\"epoll_wait_old\",\"eventfd\",\"eventfd2\",\"execve\",\"execveat\",\"exit\",\"exit_group\",\"faccessat\",\"faccessat2\",\"fadvise64\",\"fadvise64_64\",\"fallocate\",\"fanotify_mark\",\"fchdir\",\"fchmod\",\"fchmodat\",\"fchmodat2\",\"fchown\",\"fchown32\",\"fchownat\",\"fcntl\",\"fcntl64\",\"fdatasync\",\"fgetxattr\",\"flistxattr\",\"flock\",\"fork\",\"fremovexattr\",\"fsetxattr\",\"fstat\",\"fstat64\",\"fstatat64\",\"fstatfs\",\"fstatfs64\",\"fsync\",\"ftruncate\",\"ftruncate64\",\"futex\",\"futex_requeue\",\"futex_time64\",\"futex_wait\",\"futex_waitv\",\"futex_wake\",\"futimesat\",\"getcpu\",\"getcwd\",\"getdents\",\"getdents64\",\"getegid\",\"getegid32\",\"geteuid\",\"geteuid32\",\"getgid\",\"getgid32\",\"getgroups\",\"getgroups32\",\"getitimer\",\"getpeername\",\"getpgid\",\"getpgrp\",\"getpid\",\"getppid\",\"getpriority\",\"getrandom\",\"getresgid\",\"getresgid32\",\"getresuid\",\"getresuid32\",\"getrlimit\",\"get_robust_list\",\"getrusage\",\"getsid\",\"getsockname\",\"getsockopt\",\"get_thread_area\",\"gettid\",\"gettimeofday\",\"getuid\",\"getuid32\",\"getxattr\",\"getxattrat\",\"inotify_add_watch\",\"inotify_init\",\"inotify_init1\",\"inotify_rm_watch\",\"io_cancel\",\"ioctl\",\"io_destroy\",\"io_getevents\",\"io_pgetevents\",\"io_pgetevents_time64\",\"ioprio_get\",\"ioprio_set\",\"io_setup\",\"io_submit\",\"ipc\",\"kill\",\"landlock_add_rule\",\"landlock_create_ruleset\",\"landlock_restrict_self\",\"lchown\",\"lchown32\",\"lgetxattr\",\"link\",\"linkat\",\"listen\",\"listmount\",\"listxattr\",\"listxattrat\",\"llistxattr\",\"_llseek\",\"lremovexattr\",\"lseek\",\"lsetxattr\",\"lstat\",\"lstat64\",\"madvise\",\"map_shadow_stack\",\"membarrier\",\"memfd_create\",\"memfd_secret\",\"mincore\",\"mkdir\",\"mkdirat\",\"mknod\",\"mknodat\",\"mlock\",\"mlock2\",\"mlockall\",\"mmap\",\"mmap2\",\"mprotect\",\"mq_getsetattr\",\"mq_notify\",\"mq_open\",\"mq_timedreceive\",\"mq_timedreceive_time64\",\"mq_timedsend\",\"mq_timedsend_time64\",\"mq_unlink\",\"mremap\",\"mseal\",\"msgctl\",\"msgget\",\"msgrcv\",\"msgsnd\",\"msync\",\"munlock\",\"munlockall\",\"munmap\",\"name_to_handle_at\",\"nanosleep\",\"newfstatat\",\"_newselect\",\"open\",\"openat\",\"openat2\",\"pause\",\"pidfd_open\",\"pidfd_send_signal\",\"pipe\",\"pipe2\",\"pkey_alloc\",\"pkey_free\",\"pkey_mprotect\",\"poll\",\"ppoll\",\"ppoll_time64\",\"prctl\",\"pread64\",\"preadv\",\"preadv2\",\"prlimit64\",\"process_mrelease\",\"pselect6\",\"pselect6_time64\",\"pwrite64\",\"pwritev\",\"pwritev2\",\"read\",\"readahead\",\"readlink\",\"readlinkat\",\"readv\",\"recv\",\"recvfrom\",\"recvmmsg\",\"recvmmsg_time64\",\"recvmsg\",\"remap_file_pages\",\"removexattr\",\"removexattrat\",\"rename\",\"renameat\",\"renameat2\",\"restart_syscall\",\"riscv_hwprobe\",\"rmdir\",\"rseq\",\"rt_sigaction\",\"rt_sigpending\",\"rt_sigprocmask\",\"rt_sigqueueinfo\",\"rt_sigreturn\",\"rt_sigsuspend\",\"rt_sigtimedwait\",\"rt_sigtimedwait_time64\",\"rt_tgsigqueueinfo\",\"sched_getaffinity\",\"sched_getattr\",\"sched_getparam\",\"sched_get_priority_max\",\"sched_get_priority_min\",\"sched_getscheduler\",\"sched_rr_get_interval\",\"sched_rr_get_interval_time64\",\"sched_setaffinity\",\"sched_setattr\",\"sched_setparam\",\"sched_setscheduler\",\"sched_yield\",\"seccomp\",\"select\",\"semctl\",\"semget\",\"semop\",\"semtimedop\",\"semtimedop_time64\",\"send\",\"sendfile\",\"sendfile64\",\"sendmmsg\",\"sendmsg\",\"sendto\",\"setfsgid\",\"setfsgid32\",\"setfsuid\",\"setfsuid32\",\"setgid\",\"setgid32\",\"setgroups\",\"setgroups32\",\"setitimer\",\"setpgid\",\"setpriority\",\"setregid\",\"setregid32\",\"setresgid\",\"setresgid32\",\"setresuid\",\"setresuid32\",\"setreuid\",\"setreuid32\",\"setrlimit\",\"set_robust_list\",\"setsid\",\"setsockopt\",\"set_thread_area\",\"set_tid_address\",\"setuid\",\"setuid32\",\"setxattr\",\"setxattrat\",\"shmat\",\"shmctl\",\"shmdt\",\"shmget\",\"shutdown\",\"sigaltstack\",\"signalfd\",\"signalfd4\",\"sigprocmask\",\"sigreturn\",\"socketcall\",\"socketpair\",\"splice\",\"stat\",\"stat64\",\"statfs\",\"statfs64\",\"statmount\",\"statx\",\"symlink\",\"symlinkat\",\"sync\",\"sync_file_range\",\"syncfs\",\"sysinfo\",\"tee\",\"tgkill\",\"time\",\"timer_create\",\"timer_delete\",\"timer_getoverrun\",\"timer_gettime\",\"timer_gettime64\",\"timer_settime\",\"timer_settime64\",\"timerfd_create\",\"timerfd_gettime\",\"timerfd_gettime64\",\"timerfd_settime\",\"timerfd_settime64\",\"times\",\"tkill\",\"truncate\",\"truncate64\",\"ugetrlimit\",\"umask\",\"uname\",\"unlink\",\"unlinkat\",\"uretprobe\",\"utime\",\"utimensat\",\"utimensat_time64\",\"utimes\",\"vfork\",\"vmsplice\",\"wait4\",\"waitid\",\"waitpid\",\"write\",\"writev\"],\"action\":\"SCMP_ACT_ALLOW\"},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":3,\"op\":\"SCMP_CMP_LT\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":7,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":8,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":9,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":10,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":13,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":14,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":15,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":16,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":17,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":18,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":21,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":22,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":24,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":26,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":27,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":28,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":29,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":30,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":31,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":32,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":33,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":35,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":36,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":39,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":41,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":42,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":43,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":44,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":45,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":0,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":8,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":131072,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":131080,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":4294967295,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"sync_file_range2\",\"swapcontext\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"ppc64le\"]}},{\"names\":[\"arm_fadvise64_64\",\"arm_sync_file_range\",\"sync_file_range2\",\"breakpoint\",\"cacheflush\",\"set_tls\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"arm\",\"arm64\"]}},{\"names\":[\"arch_prctl\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"amd64\",\"x32\"]}},{\"names\":[\"modify_ldt\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"amd64\",\"x32\",\"x86\"]}},{\"names\":[\"s390_pci_mmio_read\",\"s390_pci_mmio_write\",\"s390_runtime_instr\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"s390\",\"s390x\"]}},{\"names\":[\"riscv_flush_icache\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"riscv64\"]}},{\"names\":[\"open_by_handle_at\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_DAC_READ_SEARCH\"]}},{\"names\":[\"clone\",\"clone3\",\"fanotify_init\",\"fsconfig\",\"fsmount\",\"fsopen\",\"fspick\",\"lookup_dcookie\",\"lsm_get_self_attr\",\"lsm_list_modules\",\"lsm_set_self_attr\",\"mount_setattr\",\"move_mount\",\"open_tree\",\"quotactl\",\"quotactl_fd\",\"setdomainname\",\"sethostname\",\"setns\",\"syslog\",\"unshare\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"clone\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":2114060288,\"op\":\"SCMP_CMP_MASKED_EQ\"}],\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"],\"arches\":[\"s390\",\"s390x\"]}},{\"names\":[\"clone\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":1,\"value\":2114060288,\"op\":\"SCMP_CMP_MASKED_EQ\"}],\"comment\":\"s390 parameter ordering for clone is different\",\"includes\":{\"arches\":[\"s390\",\"s390x\"]},\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"clone3\"],\"action\":\"SCMP_ACT_ERRNO\",\"errnoRet\":38,\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"reboot\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_BOOT\"]}},{\"names\":[\"chroot\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_CHROOT\"]}},{\"names\":[\"acct\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_PACCT\"]}},{\"names\":[\"kcmp\",\"pidfd_getfd\",\"process_madvise\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_PTRACE\"]}},{\"names\":[\"iopl\",\"ioperm\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_RAWIO\"]}},{\"names\":[\"settimeofday\",\"stime\",\"clock_settime\",\"clock_settime64\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_TIME\"]}},{\"names\":[\"vhangup\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_TTY_CONFIG\"]}},{\"names\":[\"get_mempolicy\",\"mbind\",\"set_mempolicy\",\"set_mempolicy_home_node\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_NICE\"]}},{\"names\":[\"syslog\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYSLOG\"]}}]}",
-                "apparmor:bayora-python-service"
+                "apparmor:bayora-python-service",
+                "no-new-privileges:true"
             ],
+            "Tmpfs": {
+                "/tmp": "rw,size=64m,noexec,nosuid"
+            },
             "UTSMode": "",
             "UsernsMode": "",
             "ShmSize": 67108864,
@@ -471,9 +471,9 @@
         },
         "Mounts": [],
         "Config": {
-            "Hostname": "09b5d92eba2a",
+            "Hostname": "77b57eede648",
             "Domainname": "",
-            "User": "",
+            "User": "65534:65534",
             "AttachStdin": false,
             "AttachStdout": true,
             "AttachStderr": true,
@@ -504,7 +504,7 @@
             "WorkingDir": "/app",
             "Entrypoint": null,
             "Labels": {
-                "com.docker.compose.config-hash": "f9942388d5967e3d0ced34fa12a116bfdf1fbb6bab9ad83a3833241347abc994",
+                "com.docker.compose.config-hash": "fae8fe3006807f8dc0ff11735fedecad729730be1cac979e91cbbf9fc1ef9211",
                 "com.docker.compose.container-number": "1",
                 "com.docker.compose.depends_on": "",
                 "com.docker.compose.image": "sha256:aeba11d9edae4e8b11043733a4a3beba9f19baa505134db67b24e717beb34c78",
@@ -512,22 +512,17 @@
                 "com.docker.compose.project": "bayora_adversarial",
                 "com.docker.compose.project.config_files": "/home/wagha__/bayora_adversarial/docker-compose.yml",
                 "com.docker.compose.project.working_dir": "/home/wagha__/bayora_adversarial",
-                "com.docker.compose.replace": "bayora-blue-filter",
                 "com.docker.compose.service": "blue-filter",
                 "com.docker.compose.version": "5.6.1"
             }
         },
         "NetworkSettings": {
-            "SandboxID": "d78595462be7c8bc3425f9cbd3b459766802285cb990bb0fa1dbbe6178d14db6",
-            "SandboxKey": "/var/run/docker/netns/d78595462be7",
+            "SandboxID": "58613a813f209f3bb244ccadedd5af8b065867eb59e693ca1075a9cd64ef013a",
+            "SandboxKey": "/var/run/docker/netns/58613a813f20",
             "Ports": {
                 "8001/tcp": [
                     {
-                        "HostIp": "0.0.0.0",
-                        "HostPort": "8001"
-                    },
-                    {
-                        "HostIp": "::",
+                        "HostIp": "127.0.0.1",
                         "HostPort": "8001"
                     }
                 ]
@@ -542,11 +537,11 @@
                     ],
                     "DriverOpts": null,
                     "GwPriority": 0,
-                    "NetworkID": "96f331483073bc9a4e6b41606df4a0d7e6abf4c7feded1ee33bc48d0cca99982",
-                    "EndpointID": "660695ce1f86295a586b0979bc7aefcf004c981ee6645053426148bf89242bf3",
+                    "NetworkID": "25fd8abb79aecb2b80f17baf8958e75881482e538cbf0d1efed187ba6c8da11a",
+                    "EndpointID": "8c5f576f5d000907c86132a5e4b9f3445b1f425f45d20a03568b3ccc1ba15bae",
                     "Gateway": "172.18.0.1",
                     "IPAddress": "172.18.0.2",
-                    "MacAddress": "4a:62:0d:7a:2c:3b",
+                    "MacAddress": "1a:cc:b1:8e:72:93",
                     "IPPrefixLen": 16,
                     "IPv6Gateway": "",
                     "GlobalIPv6Address": "",
@@ -554,7 +549,7 @@
                     "DNSNames": [
                         "bayora-blue-filter",
                         "blue-filter",
-                        "09b5d92eba2a"
+                        "77b57eede648"
                     ]
                 }
             }
@@ -570,8 +565,8 @@
         }
     },
     {
-        "Id": "9961abf57f75fa0586645f93eb23374fb983eab7afe6b94619e31f0b9a8b1941",
-        "Created": "2026-10-24T15:40:47.014407086Z",
+        "Id": "2f21cf4259d4e86dc25f06c0e50d95980ea898a074622b8e5029a0563e7bc719",
+        "Created": "2026-10-24T17:00:41.862757418Z",
         "Path": "uvicorn",
         "Args": [
             "main:app",
@@ -587,17 +582,17 @@
             "Restarting": false,
             "OOMKilled": false,
             "Dead": false,
-            "Pid": 15155,
+            "Pid": 1447,
             "ExitCode": 0,
             "Error": "",
-            "StartedAt": "2026-10-24T15:40:49.205012214Z",
-            "FinishedAt": "0001-01-01T00:00:00Z"
+            "StartedAt": "2026-10-25T05:50:18.477010916Z",
+            "FinishedAt": "2026-10-25T05:50:17.142883012Z"
         },
         "Image": "sha256:4dbd9aa27ea3a2cd0cd0dba9fb30541209d2d81a035c58cb1a9d8002ab6804c9",
-        "ResolvConfPath": "/var/lib/docker/containers/9961abf57f75fa0586645f93eb23374fb983eab7afe6b94619e31f0b9a8b1941/resolv.conf",
-        "HostnamePath": "/var/lib/docker/containers/9961abf57f75fa0586645f93eb23374fb983eab7afe6b94619e31f0b9a8b1941/hostname",
-        "HostsPath": "/var/lib/docker/containers/9961abf57f75fa0586645f93eb23374fb983eab7afe6b94619e31f0b9a8b1941/hosts",
-        "LogPath": "/var/lib/docker/containers/9961abf57f75fa0586645f93eb23374fb983eab7afe6b94619e31f0b9a8b1941/9961abf57f75fa0586645f93eb23374fb983eab7afe6b94619e31f0b9a8b1941-json.log",
+        "ResolvConfPath": "/var/lib/docker/containers/2f21cf4259d4e86dc25f06c0e50d95980ea898a074622b8e5029a0563e7bc719/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/2f21cf4259d4e86dc25f06c0e50d95980ea898a074622b8e5029a0563e7bc719/hostname",
+        "HostsPath": "/var/lib/docker/containers/2f21cf4259d4e86dc25f06c0e50d95980ea898a074622b8e5029a0563e7bc719/hosts",
+        "LogPath": "/var/lib/docker/containers/2f21cf4259d4e86dc25f06c0e50d95980ea898a074622b8e5029a0563e7bc719/2f21cf4259d4e86dc25f06c0e50d95980ea898a074622b8e5029a0563e7bc719-json.log",
         "Name": "/bayora-baseline-stub",
         "RestartCount": 0,
         "Driver": "overlayfs",
@@ -617,7 +612,7 @@
             "PortBindings": {
                 "8000/tcp": [
                     {
-                        "HostIp": "",
+                        "HostIp": "127.0.0.1",
                         "HostPort": "8000"
                     }
                 ]
@@ -638,9 +633,9 @@
                 "ALL"
             ],
             "CgroupnsMode": "private",
-            "Dns": null,
-            "DnsOptions": null,
-            "DnsSearch": null,
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
             "ExtraHosts": [],
             "GroupAdd": null,
             "IpcMode": "private",
@@ -650,11 +645,15 @@
             "PidMode": "",
             "Privileged": false,
             "PublishAllPorts": false,
-            "ReadonlyRootfs": false,
+            "ReadonlyRootfs": true,
             "SecurityOpt": [
                 "seccomp={\"defaultAction\":\"SCMP_ACT_ERRNO\",\"defaultErrnoRet\":1,\"archMap\":[{\"architecture\":\"SCMP_ARCH_X86_64\",\"subArchitectures\":[\"SCMP_ARCH_X86\",\"SCMP_ARCH_X32\"]},{\"architecture\":\"SCMP_ARCH_AARCH64\",\"subArchitectures\":[\"SCMP_ARCH_ARM\"]},{\"architecture\":\"SCMP_ARCH_MIPS64\",\"subArchitectures\":[\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64N32\"]},{\"architecture\":\"SCMP_ARCH_MIPS64N32\",\"subArchitectures\":[\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64\"]},{\"architecture\":\"SCMP_ARCH_MIPSEL64\",\"subArchitectures\":[\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64N32\"]},{\"architecture\":\"SCMP_ARCH_MIPSEL64N32\",\"subArchitectures\":[\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64\"]},{\"architecture\":\"SCMP_ARCH_S390X\",\"subArchitectures\":[\"SCMP_ARCH_S390\"]},{\"architecture\":\"SCMP_ARCH_RISCV64\",\"subArchitectures\":null},{\"architecture\":\"SCMP_ARCH_LOONGARCH64\",\"subArchitectures\":null}],\"syscalls\":[{\"names\":[\"ptrace\",\"bpf\",\"perf_event_open\",\"userfaultfd\",\"kexec_load\",\"kexec_file_load\",\"mount\",\"umount\",\"umount2\",\"pivot_root\",\"keyctl\",\"add_key\",\"request_key\",\"init_module\",\"finit_module\",\"delete_module\",\"process_vm_readv\",\"process_vm_writev\"],\"action\":\"SCMP_ACT_ERRNO\",\"args\":[],\"comment\":\"Explicit SEC-005 hardening: unconditionally deny high-risk attack surface syscalls\"},{\"names\":[\"accept\",\"accept4\",\"access\",\"adjtimex\",\"alarm\",\"bind\",\"brk\",\"cachestat\",\"capget\",\"capset\",\"chdir\",\"chmod\",\"chown\",\"chown32\",\"clock_adjtime\",\"clock_adjtime64\",\"clock_getres\",\"clock_getres_time64\",\"clock_gettime\",\"clock_gettime64\",\"clock_nanosleep\",\"clock_nanosleep_time64\",\"close\",\"close_range\",\"connect\",\"copy_file_range\",\"creat\",\"dup\",\"dup2\",\"dup3\",\"epoll_create\",\"epoll_create1\",\"epoll_ctl\",\"epoll_ctl_old\",\"epoll_pwait\",\"epoll_pwait2\",\"epoll_wait\",\"epoll_wait_old\",\"eventfd\",\"eventfd2\",\"execve\",\"execveat\",\"exit\",\"exit_group\",\"faccessat\",\"faccessat2\",\"fadvise64\",\"fadvise64_64\",\"fallocate\",\"fanotify_mark\",\"fchdir\",\"fchmod\",\"fchmodat\",\"fchmodat2\",\"fchown\",\"fchown32\",\"fchownat\",\"fcntl\",\"fcntl64\",\"fdatasync\",\"fgetxattr\",\"flistxattr\",\"flock\",\"fork\",\"fremovexattr\",\"fsetxattr\",\"fstat\",\"fstat64\",\"fstatat64\",\"fstatfs\",\"fstatfs64\",\"fsync\",\"ftruncate\",\"ftruncate64\",\"futex\",\"futex_requeue\",\"futex_time64\",\"futex_wait\",\"futex_waitv\",\"futex_wake\",\"futimesat\",\"getcpu\",\"getcwd\",\"getdents\",\"getdents64\",\"getegid\",\"getegid32\",\"geteuid\",\"geteuid32\",\"getgid\",\"getgid32\",\"getgroups\",\"getgroups32\",\"getitimer\",\"getpeername\",\"getpgid\",\"getpgrp\",\"getpid\",\"getppid\",\"getpriority\",\"getrandom\",\"getresgid\",\"getresgid32\",\"getresuid\",\"getresuid32\",\"getrlimit\",\"get_robust_list\",\"getrusage\",\"getsid\",\"getsockname\",\"getsockopt\",\"get_thread_area\",\"gettid\",\"gettimeofday\",\"getuid\",\"getuid32\",\"getxattr\",\"getxattrat\",\"inotify_add_watch\",\"inotify_init\",\"inotify_init1\",\"inotify_rm_watch\",\"io_cancel\",\"ioctl\",\"io_destroy\",\"io_getevents\",\"io_pgetevents\",\"io_pgetevents_time64\",\"ioprio_get\",\"ioprio_set\",\"io_setup\",\"io_submit\",\"ipc\",\"kill\",\"landlock_add_rule\",\"landlock_create_ruleset\",\"landlock_restrict_self\",\"lchown\",\"lchown32\",\"lgetxattr\",\"link\",\"linkat\",\"listen\",\"listmount\",\"listxattr\",\"listxattrat\",\"llistxattr\",\"_llseek\",\"lremovexattr\",\"lseek\",\"lsetxattr\",\"lstat\",\"lstat64\",\"madvise\",\"map_shadow_stack\",\"membarrier\",\"memfd_create\",\"memfd_secret\",\"mincore\",\"mkdir\",\"mkdirat\",\"mknod\",\"mknodat\",\"mlock\",\"mlock2\",\"mlockall\",\"mmap\",\"mmap2\",\"mprotect\",\"mq_getsetattr\",\"mq_notify\",\"mq_open\",\"mq_timedreceive\",\"mq_timedreceive_time64\",\"mq_timedsend\",\"mq_timedsend_time64\",\"mq_unlink\",\"mremap\",\"mseal\",\"msgctl\",\"msgget\",\"msgrcv\",\"msgsnd\",\"msync\",\"munlock\",\"munlockall\",\"munmap\",\"name_to_handle_at\",\"nanosleep\",\"newfstatat\",\"_newselect\",\"open\",\"openat\",\"openat2\",\"pause\",\"pidfd_open\",\"pidfd_send_signal\",\"pipe\",\"pipe2\",\"pkey_alloc\",\"pkey_free\",\"pkey_mprotect\",\"poll\",\"ppoll\",\"ppoll_time64\",\"prctl\",\"pread64\",\"preadv\",\"preadv2\",\"prlimit64\",\"process_mrelease\",\"pselect6\",\"pselect6_time64\",\"pwrite64\",\"pwritev\",\"pwritev2\",\"read\",\"readahead\",\"readlink\",\"readlinkat\",\"readv\",\"recv\",\"recvfrom\",\"recvmmsg\",\"recvmmsg_time64\",\"recvmsg\",\"remap_file_pages\",\"removexattr\",\"removexattrat\",\"rename\",\"renameat\",\"renameat2\",\"restart_syscall\",\"riscv_hwprobe\",\"rmdir\",\"rseq\",\"rt_sigaction\",\"rt_sigpending\",\"rt_sigprocmask\",\"rt_sigqueueinfo\",\"rt_sigreturn\",\"rt_sigsuspend\",\"rt_sigtimedwait\",\"rt_sigtimedwait_time64\",\"rt_tgsigqueueinfo\",\"sched_getaffinity\",\"sched_getattr\",\"sched_getparam\",\"sched_get_priority_max\",\"sched_get_priority_min\",\"sched_getscheduler\",\"sched_rr_get_interval\",\"sched_rr_get_interval_time64\",\"sched_setaffinity\",\"sched_setattr\",\"sched_setparam\",\"sched_setscheduler\",\"sched_yield\",\"seccomp\",\"select\",\"semctl\",\"semget\",\"semop\",\"semtimedop\",\"semtimedop_time64\",\"send\",\"sendfile\",\"sendfile64\",\"sendmmsg\",\"sendmsg\",\"sendto\",\"setfsgid\",\"setfsgid32\",\"setfsuid\",\"setfsuid32\",\"setgid\",\"setgid32\",\"setgroups\",\"setgroups32\",\"setitimer\",\"setpgid\",\"setpriority\",\"setregid\",\"setregid32\",\"setresgid\",\"setresgid32\",\"setresuid\",\"setresuid32\",\"setreuid\",\"setreuid32\",\"setrlimit\",\"set_robust_list\",\"setsid\",\"setsockopt\",\"set_thread_area\",\"set_tid_address\",\"setuid\",\"setuid32\",\"setxattr\",\"setxattrat\",\"shmat\",\"shmctl\",\"shmdt\",\"shmget\",\"shutdown\",\"sigaltstack\",\"signalfd\",\"signalfd4\",\"sigprocmask\",\"sigreturn\",\"socketcall\",\"socketpair\",\"splice\",\"stat\",\"stat64\",\"statfs\",\"statfs64\",\"statmount\",\"statx\",\"symlink\",\"symlinkat\",\"sync\",\"sync_file_range\",\"syncfs\",\"sysinfo\",\"tee\",\"tgkill\",\"time\",\"timer_create\",\"timer_delete\",\"timer_getoverrun\",\"timer_gettime\",\"timer_gettime64\",\"timer_settime\",\"timer_settime64\",\"timerfd_create\",\"timerfd_gettime\",\"timerfd_gettime64\",\"timerfd_settime\",\"timerfd_settime64\",\"times\",\"tkill\",\"truncate\",\"truncate64\",\"ugetrlimit\",\"umask\",\"uname\",\"unlink\",\"unlinkat\",\"uretprobe\",\"utime\",\"utimensat\",\"utimensat_time64\",\"utimes\",\"vfork\",\"vmsplice\",\"wait4\",\"waitid\",\"waitpid\",\"write\",\"writev\"],\"action\":\"SCMP_ACT_ALLOW\"},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":3,\"op\":\"SCMP_CMP_LT\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":7,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":8,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":9,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":10,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":13,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":14,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":15,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":16,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":17,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":18,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":21,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":22,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":24,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":26,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":27,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":28,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":29,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":30,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":31,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":32,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":33,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":35,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":36,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":39,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":41,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":42,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":43,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":44,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"socket\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":45,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":0,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":8,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":131072,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":131080,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":4294967295,\"op\":\"SCMP_CMP_EQ\"}]},{\"names\":[\"sync_file_range2\",\"swapcontext\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"ppc64le\"]}},{\"names\":[\"arm_fadvise64_64\",\"arm_sync_file_range\",\"sync_file_range2\",\"breakpoint\",\"cacheflush\",\"set_tls\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"arm\",\"arm64\"]}},{\"names\":[\"arch_prctl\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"amd64\",\"x32\"]}},{\"names\":[\"modify_ldt\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"amd64\",\"x32\",\"x86\"]}},{\"names\":[\"s390_pci_mmio_read\",\"s390_pci_mmio_write\",\"s390_runtime_instr\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"s390\",\"s390x\"]}},{\"names\":[\"riscv_flush_icache\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"arches\":[\"riscv64\"]}},{\"names\":[\"open_by_handle_at\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_DAC_READ_SEARCH\"]}},{\"names\":[\"clone\",\"clone3\",\"fanotify_init\",\"fsconfig\",\"fsmount\",\"fsopen\",\"fspick\",\"lookup_dcookie\",\"lsm_get_self_attr\",\"lsm_list_modules\",\"lsm_set_self_attr\",\"mount_setattr\",\"move_mount\",\"open_tree\",\"quotactl\",\"quotactl_fd\",\"setdomainname\",\"sethostname\",\"setns\",\"syslog\",\"unshare\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"clone\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":2114060288,\"op\":\"SCMP_CMP_MASKED_EQ\"}],\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"],\"arches\":[\"s390\",\"s390x\"]}},{\"names\":[\"clone\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":1,\"value\":2114060288,\"op\":\"SCMP_CMP_MASKED_EQ\"}],\"comment\":\"s390 parameter ordering for clone is different\",\"includes\":{\"arches\":[\"s390\",\"s390x\"]},\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"clone3\"],\"action\":\"SCMP_ACT_ERRNO\",\"errnoRet\":38,\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"reboot\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_BOOT\"]}},{\"names\":[\"chroot\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_CHROOT\"]}},{\"names\":[\"acct\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_PACCT\"]}},{\"names\":[\"kcmp\",\"pidfd_getfd\",\"process_madvise\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_PTRACE\"]}},{\"names\":[\"iopl\",\"ioperm\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_RAWIO\"]}},{\"names\":[\"settimeofday\",\"stime\",\"clock_settime\",\"clock_settime64\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_TIME\"]}},{\"names\":[\"vhangup\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_TTY_CONFIG\"]}},{\"names\":[\"get_mempolicy\",\"mbind\",\"set_mempolicy\",\"set_mempolicy_home_node\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYS_NICE\"]}},{\"names\":[\"syslog\"],\"action\":\"SCMP_ACT_ALLOW\",\"includes\":{\"caps\":[\"CAP_SYSLOG\"]}}]}",
-                "apparmor:bayora-python-service"
+                "apparmor:bayora-python-service",
+                "no-new-privileges:true"
             ],
+            "Tmpfs": {
+                "/tmp": "rw,size=64m,noexec,nosuid"
+            },
             "UTSMode": "",
             "UsernsMode": "",
             "ShmSize": 67108864,
@@ -720,9 +719,9 @@
         },
         "Mounts": [],
         "Config": {
-            "Hostname": "9961abf57f75",
+            "Hostname": "2f21cf4259d4",
             "Domainname": "",
-            "User": "",
+            "User": "65534:65534",
             "AttachStdin": false,
             "AttachStdout": true,
             "AttachStderr": true,
@@ -754,7 +753,7 @@
             "WorkingDir": "/app",
             "Entrypoint": null,
             "Labels": {
-                "com.docker.compose.config-hash": "723a953f6f0790fcc8fad421991eb45638fe213e9ad321f5ee2068e7c333edac",
+                "com.docker.compose.config-hash": "29a15632ff79d84ba8efed3404d62a9061bdd9535f3cec490e8864926dfa6394",
                 "com.docker.compose.container-number": "1",
                 "com.docker.compose.depends_on": "model-server:service_started:false,blue-filter:service_started:false",
                 "com.docker.compose.image": "sha256:b9624b1da422caff06fe83fff8af55e3bf000437376ba379f5517a373e003b0b",
@@ -762,22 +761,17 @@
                 "com.docker.compose.project": "bayora_adversarial",
                 "com.docker.compose.project.config_files": "/home/wagha__/bayora_adversarial/docker-compose.yml",
                 "com.docker.compose.project.working_dir": "/home/wagha__/bayora_adversarial",
-                "com.docker.compose.replace": "bayora-baseline-stub",
                 "com.docker.compose.service": "baseline-stub",
                 "com.docker.compose.version": "5.6.1"
             }
         },
         "NetworkSettings": {
-            "SandboxID": "4970a5bdade93c3eff7d54303fcdf9a8fc97c4d7ed72ce5564939364d1f968c6",
-            "SandboxKey": "/var/run/docker/netns/4970a5bdade9",
+            "SandboxID": "902684f5fe15fbdedf04eea700466fd03b8fb9f36e19c2dd626ec76f22d1ddb2",
+            "SandboxKey": "/var/run/docker/netns/902684f5fe15",
             "Ports": {
                 "8000/tcp": [
                     {
-                        "HostIp": "0.0.0.0",
-                        "HostPort": "8000"
-                    },
-                    {
-                        "HostIp": "::",
+                        "HostIp": "127.0.0.1",
                         "HostPort": "8000"
                     }
                 ]
@@ -792,11 +786,11 @@
                     ],
                     "DriverOpts": null,
                     "GwPriority": 0,
-                    "NetworkID": "96f331483073bc9a4e6b41606df4a0d7e6abf4c7feded1ee33bc48d0cca99982",
-                    "EndpointID": "b072290ead98c252a29cf0b6fafead77ab4e143ad4a645196b6c531bb322bdca",
+                    "NetworkID": "25fd8abb79aecb2b80f17baf8958e75881482e538cbf0d1efed187ba6c8da11a",
+                    "EndpointID": "39b9751d762b3df9bef6e8af99e13a402c7e9609b95c727649a67f47f1aa7744",
                     "Gateway": "172.18.0.1",
-                    "IPAddress": "172.18.0.4",
-                    "MacAddress": "26:9c:81:1e:2b:6e",
+                    "IPAddress": "172.18.0.3",
+                    "MacAddress": "d2:b3:a4:58:38:c5",
                     "IPPrefixLen": 16,
                     "IPv6Gateway": "",
                     "GlobalIPv6Address": "",
@@ -804,7 +798,7 @@
                     "DNSNames": [
                         "bayora-baseline-stub",
                         "baseline-stub",
-                        "9961abf57f75"
+                        "2f21cf4259d4"
                     ]
                 }
             }
@@ -820,8 +814,8 @@
         }
     },
     {
-        "Id": "24b9de088c6a409610d0c8d91f37bf78332be576551c9757f9c56158939b459f",
-        "Created": "2026-10-24T15:41:13.495900896Z",
+        "Id": "c13bbc8695687f7e6b8e1ffee04b30d7bebdc3437b7aa4d0366beeb5036e4d5b",
+        "Created": "2026-10-24T17:00:42.205537728Z",
         "Path": "tail",
         "Args": [
             "-f",
@@ -834,17 +828,17 @@
             "Restarting": false,
             "OOMKilled": false,
             "Dead": false,
-            "Pid": 15486,
+            "Pid": 2391,
             "ExitCode": 0,
             "Error": "",
-            "StartedAt": "2026-10-24T15:41:15.39371419Z",
-            "FinishedAt": "0001-01-01T00:00:00Z"
+            "StartedAt": "2026-10-25T06:01:31.47024025Z",
+            "FinishedAt": "2026-10-25T05:50:17.141751569Z"
         },
         "Image": "sha256:12cb1536db98dd499466f6e689bb648e44922755963d5033c807467064fd37b1",
-        "ResolvConfPath": "/var/lib/docker/containers/24b9de088c6a409610d0c8d91f37bf78332be576551c9757f9c56158939b459f/resolv.conf",
-        "HostnamePath": "/var/lib/docker/containers/24b9de088c6a409610d0c8d91f37bf78332be576551c9757f9c56158939b459f/hostname",
-        "HostsPath": "/var/lib/docker/containers/24b9de088c6a409610d0c8d91f37bf78332be576551c9757f9c56158939b459f/hosts",
-        "LogPath": "/var/lib/docker/containers/24b9de088c6a409610d0c8d91f37bf78332be576551c9757f9c56158939b459f/24b9de088c6a409610d0c8d91f37bf78332be576551c9757f9c56158939b459f-json.log",
+        "ResolvConfPath": "/var/lib/docker/containers/c13bbc8695687f7e6b8e1ffee04b30d7bebdc3437b7aa4d0366beeb5036e4d5b/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/c13bbc8695687f7e6b8e1ffee04b30d7bebdc3437b7aa4d0366beeb5036e4d5b/hostname",
+        "HostsPath": "/var/lib/docker/containers/c13bbc8695687f7e6b8e1ffee04b30d7bebdc3437b7aa4d0366beeb5036e4d5b/hosts",
+        "LogPath": "/var/lib/docker/containers/c13bbc8695687f7e6b8e1ffee04b30d7bebdc3437b7aa4d0366beeb5036e4d5b/c13bbc8695687f7e6b8e1ffee04b30d7bebdc3437b7aa4d0366beeb5036e4d5b-json.log",
         "Name": "/bayora-red-runner",
         "RestartCount": 0,
         "Driver": "overlayfs",
@@ -855,8 +849,7 @@
         "ExecIDs": null,
         "HostConfig": {
             "Binds": [
-                "/home/wagha__/bayora_adversarial/data/baseline:/app/data:ro",
-                "/home/wagha__/bayora_adversarial/results/baseline:/app/results:rw"
+                "/home/wagha__/bayora_adversarial/data/baseline/payloads.json:/app/data/payloads.json:ro"
             ],
             "ContainerIDFile": "",
             "LogConfig": {
@@ -881,13 +874,13 @@
                 "ALL"
             ],
             "CgroupnsMode": "private",
-            "Dns": null,
-            "DnsOptions": null,
-            "DnsSearch": null,
+            "Dns": [],
+            "DnsOptions": [],
+            "DnsSearch": [],
             "ExtraHosts": [
+                "blue-filter:172.18.0.2",
                 "baseline-stub:172.18.0.4",
-                "model-server:172.18.0.3",
-                "blue-filter:172.18.0.2"
+                "model-server:172.18.0.3"
             ],
             "GroupAdd": null,
             "IpcMode": "private",
@@ -898,7 +891,12 @@
             "Privileged": false,
             "PublishAllPorts": false,
             "ReadonlyRootfs": false,
-            "SecurityOpt": null,
+            "SecurityOpt": [
+                "no-new-privileges:true"
+            ],
+            "Tmpfs": {
+                "/app/results": "rw,size=64m,noexec,nosuid"
+            },
             "UTSMode": "",
             "UsernsMode": "",
             "ShmSize": 67108864,
@@ -965,23 +963,15 @@
         "Mounts": [
             {
                 "Type": "bind",
-                "Source": "/home/wagha__/bayora_adversarial/data/baseline",
-                "Destination": "/app/data",
+                "Source": "/home/wagha__/bayora_adversarial/data/baseline/payloads.json",
+                "Destination": "/app/data/payloads.json",
                 "Mode": "ro",
                 "RW": false,
-                "Propagation": "rprivate"
-            },
-            {
-                "Type": "bind",
-                "Source": "/home/wagha__/bayora_adversarial/results/baseline",
-                "Destination": "/app/results",
-                "Mode": "rw",
-                "RW": true,
                 "Propagation": "rprivate"
             }
         ],
         "Config": {
-            "Hostname": "24b9de088c6a",
+            "Hostname": "c13bbc869568",
             "Domainname": "",
             "User": "",
             "AttachStdin": false,
@@ -991,9 +981,9 @@
             "OpenStdin": false,
             "StdinOnce": false,
             "Env": [
-                "OUTPUT_DIR=/app/results",
                 "GATEWAY_URL=http://baseline-stub:8000",
                 "PAYLOADS_PATH=/app/data/payloads.json",
+                "OUTPUT_DIR=/app/results",
                 "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
                 "LANG=C.UTF-8",
                 "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
@@ -1010,7 +1000,7 @@
             "WorkingDir": "/app",
             "Entrypoint": null,
             "Labels": {
-                "com.docker.compose.config-hash": "8d58ff4b41d8a9643b616064c94f20a15e8877200a8d46a38c4172c2282031d9",
+                "com.docker.compose.config-hash": "98ef561eeef64a25e930709f8c356373825d9a79898169ef49f8e1b204894c8c",
                 "com.docker.compose.container-number": "1",
                 "com.docker.compose.depends_on": "baseline-stub:service_started:false",
                 "com.docker.compose.image": "sha256:4aa685b948a8386a131151dfd6fae87809309d12223079801a335ea2d35f3b6b",
@@ -1018,14 +1008,13 @@
                 "com.docker.compose.project": "bayora_adversarial",
                 "com.docker.compose.project.config_files": "/home/wagha__/bayora_adversarial/docker-compose.yml",
                 "com.docker.compose.project.working_dir": "/home/wagha__/bayora_adversarial",
-                "com.docker.compose.replace": "bayora-red-runner",
                 "com.docker.compose.service": "red-runner",
                 "com.docker.compose.version": "5.6.1"
             }
         },
         "NetworkSettings": {
-            "SandboxID": "e32fdad68fa79b6e2f74a18e0a113580c9804448185d89e9acccde9bfab219b9",
-            "SandboxKey": "/var/run/docker/netns/e32fdad68fa7",
+            "SandboxID": "60249fd74668e264fee182fef710e83b663ce29417a5773d905af7043f34d8a0",
+            "SandboxKey": "/var/run/docker/netns/60249fd74668",
             "Ports": {},
             "Networks": {
                 "bayora_adversarial_baseline-net": {
@@ -1037,11 +1026,11 @@
                     ],
                     "DriverOpts": null,
                     "GwPriority": 0,
-                    "NetworkID": "96f331483073bc9a4e6b41606df4a0d7e6abf4c7feded1ee33bc48d0cca99982",
-                    "EndpointID": "fbe122eb205b3f20d6355af51d196aaff523c0fb9a557163100a0a5c7e09cf7c",
+                    "NetworkID": "25fd8abb79aecb2b80f17baf8958e75881482e538cbf0d1efed187ba6c8da11a",
+                    "EndpointID": "14db415da89828086912dc1b9979c03c0f13ceba59469c6c3a22e036117d2887",
                     "Gateway": "172.18.0.1",
                     "IPAddress": "172.18.0.5",
-                    "MacAddress": "f6:c8:bd:72:f8:cf",
+                    "MacAddress": "5a:29:6a:3b:23:26",
                     "IPPrefixLen": 16,
                     "IPv6Gateway": "",
                     "GlobalIPv6Address": "",
@@ -1049,7 +1038,7 @@
                     "DNSNames": [
                         "bayora-red-runner",
                         "red-runner",
-                        "24b9de088c6a"
+                        "c13bbc869568"
                     ]
                 }
             }

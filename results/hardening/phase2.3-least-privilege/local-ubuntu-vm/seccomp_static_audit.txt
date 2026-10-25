@@ -1,0 +1,7 @@
+# Bayora Static Seccomp Profile Audit
+# Target Syscalls Checked: 18
+# Profiles Checked:
+- policies/seccomp/model-server-seccomp.json: PASSED
+- policies/seccomp/python-service-seccomp.json: PASSED
+
+Verified: All 18 designated high-risk syscalls are completely absent from SCMP_ACT_ALLOW rules.

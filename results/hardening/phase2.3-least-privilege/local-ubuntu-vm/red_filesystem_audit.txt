@@ -1,0 +1,26 @@
+# Bayora Red Runner Full-Filesystem Security Audit
+# Generated: 2026-10-25T06:02:27Z
+# Target: bayora-red-runner (Runtime: runsc)
+
+1. Find Command:
+$ docker exec bayora-red-runner find / -xdev -name blue_rules.json 2>/dev/null
+Exit code: 0
+Stdout: (empty)
+Stderr: (empty)
+
+2. Grep Command:
+$ docker exec bayora-red-runner sh -c 'grep -rI -n --exclude-dir=proc --exclude-dir=sys --exclude-dir=dev "BLUE_DEFENSE_PROPRIETARY" / 2>/dev/null | head -n 20'
+Exit code: 0
+Stdout: (empty)
+Stderr: (empty)
+
+3. Mount Verification (docker inspect):
+Mounts: [{"Type":"bind","Source":"/home/wagha__/bayora_adversarial/data/baseline/payloads.json","Destination":"/app/data/payloads.json","Mode":"ro","RW":false,"Propagation":"rprivate"}]
+Tmpfs: {"/app/results":"rw,size=64m,noexec,nosuid"}
+
+Audit Verdict:
+- Named file 'blue_rules.json' and proprietary marker 'BLUE_DEFENSE_PROPRIETARY' are absent from the accessible filesystem.
+- Only 'payloads.json' is mounted from the host, and it is strictly read-only (RW: false).
+- '/app/results' is backed by in-memory tmpfs (volatile, no host filesystem access).
+- Red has zero writable host bind mounts (R1 invariant strictly satisfied).
+- Note: This filesystem-level verification does not imply that Red cannot reach Blue's unauthenticated /rules endpoint over the Docker bridge network; that network path remains open until Phase 3 network segmentation.

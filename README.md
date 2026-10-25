@@ -1,8 +1,8 @@
 # Bayora — Adversarial AI Evaluation Platform
 
 > **A Hardened Five-Zone Defense-in-Depth Sandbox for Adversarial LLM Safety Evaluations**
-> *Current Status: Phase 2 (Hardening: gVisor, Seccomp, AppArmor, Least Privilege & Storage Isolation) Verified & Tagged*
-> *Active Tag: `phase2.3-least-privilege` | Active Branch: `phase2-hardening`*
+> *Current Status: Phase 2 (Hardening: gVisor, Seccomp, AppArmor, Least Privilege & Storage Isolation) Verified, Audited & Tagged*
+> *Active Tag: `phase2-complete` | Active Branch: `phase2-hardening`*
 
 ---
 
@@ -255,6 +255,6 @@ For questions, architecture reviews, or audit verifications, refer to [`docs/roa
 
 This project is being developed by a 3-member team for the **Hack in the Hills 26 PS04 Bayora** hackathon. The current roles and planned contributions are structured as follows:
 
-- **Akshaya (Lead Developer):** Leading the core architecture, threat modeling, and current implementation. Responsible for Phase 0 (Alignment) and Phase 1 (Baseline), and actively executing the current Phase 2 (Hardening) and Phase 3 (Network Isolation) objectives.
-- **[Member 2 Name] (Contributing Developer):** Assigned to implement upcoming critical security infrastructure. Will be taking ownership of future phases, specifically focusing on Phase 4 (Identity, Secrets & Policy via OpenBao/OPA) and Phase 5 (Audit Ledger & External Anchoring) once the foundational hardening is complete.
-- **[Member 3 Name] (Developer & Evangelist):** Focused on project documentation, ideation, and external presentation. Major responsibilities include creating the pitch deck (PPT), prototype demo videos, and driving social pitching (LinkedIn, Instagram reels) to showcase the platform's capabilities to judges and the community.
+- **Atharva (Project Owner & Lead Developer):** Leading the core architecture, threat modeling, and implementation. Responsible for Phase 0 (Alignment) and Phase 1 (Baseline), and actively executing Phase 2 (Hardening) and Phase 3 (Network Isolation) objectives.
+- **Akshaya (Security Engineering & Evaluation Lead):** Leading security auditing, negative test harness verification, and evaluation pipelines across hardened container boundaries.
+- **[Member 3 Name] (Contributing Developer & Documentation):** Focused on project documentation, ideation, and external presentation. Major responsibilities include creating the pitch deck (PPT), prototype demo videos, and driving project communication.

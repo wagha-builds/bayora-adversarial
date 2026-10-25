@@ -24,7 +24,23 @@ for profile in "${POLICIES_DIR}"/*; do
   fi
 done
 
-echo "[*] Verifying loaded profiles..."
-sudo aa-status | grep bayora || true
-echo "[+] All Bayora AppArmor profiles successfully installed to /etc/apparmor.d and active."
+echo "[*] Verifying loaded profiles in kernel..."
+missing=0
+for profile in "${POLICIES_DIR}"/*; do
+  if [ -f "${profile}" ]; then
+    fname="$(basename "${profile}")"
+    if sudo aa-status --enforcing | grep -qw "${fname}"; then
+      echo "[+] Verified profile active in enforce mode: ${fname}"
+    else
+      echo "[!] ERROR: Profile ${fname} not found in enforcing mode!"
+      missing=1
+    fi
+  fi
+done
+
+if [ "${missing}" -ne 0 ]; then
+  echo "[!] ERROR: One or more AppArmor profiles failed to load in enforce mode."
+  exit 1
+fi
+echo "[+] All Bayora AppArmor profiles successfully installed to /etc/apparmor.d and active in enforce mode."
 

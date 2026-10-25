@@ -1,6 +1,6 @@
 # Bayora — Project Task Tracker & Technical Blueprint
 
-## Current Phase: Phase 0 — Alignment + Threat Model
+## Phase 0 — Alignment + Threat Model
 **Status:** COMPLETED ✅  
 **Objective:** Establish architectural consensus, formalize the Five-Zone Isolation model, document all trust boundaries and data flows, define the threat model via comprehensive STRIDE analysis, specify the Evaluation Gateway API contract, and populate the initial 22-item risk register before any container or application code is written.
 
@@ -144,8 +144,8 @@ The following checklist tracks all manual setup and review actions. Actions 1 an
 
 ---
 
-## Current Phase: Phase 1 — PREPARATION / PLANNING PASS (Insecure Baseline)
-**Status:** PLANNING
+## Phase 1 — Insecure Baseline Execution
+**Status:** COMPLETED & TAGGED ✅ (`phase1-baseline-v2`)
 **Objective:** Deliberately reproduce the insecure baseline (Current State) described in the PRD (Section 4, FR-022) so that the later hardened implementation can be objectively compared against it.
 
 ### 1. Phase 1 Technical Blueprint & Scope
@@ -278,7 +278,7 @@ For Phase 2+ to compare against, Phase 1 will record:
 4. **Phase 2.0 Definition of Done Assessment & Waiver:**
    - Under a strict literal reading of `docs/roadmap.md` DoD criterion #4 ("contention test run successfully"), the partial run blocks unconditional sign-off because the 60-request scripted benchmark was halted before completion.
    - However, the empirical objective of PRD Sec 5.2 / RES-004 / PERF-004 (demonstrating that unconstrained CPU flood causes severe latency degradation and upstream timeouts) was conclusively demonstrated and documented.
-   - **Waiver — accepted by Akshaya on 2026-10-24:** The partial/interrupted contention run is accepted as baseline failure-mode evidence for Phase 2.0. A bounded contention rerun is deferred to the start of Phase 7 (using ≤2 stressor processes or quota/nice limits, leaving at least 2 vCPUs free for the guest and inference), using the preserved pre-hardening VM snapshot, subject to the Phase 7 test plan.
+   - **Waiver — accepted by Atharva on 2026-10-24:** The partial/interrupted contention run is accepted as baseline failure-mode evidence for Phase 2.0. A bounded contention rerun is deferred to the start of Phase 7 (using ≤2 stressor processes or quota/nice limits, leaving at least 2 vCPUs free for the guest and inference), using the preserved pre-hardening VM snapshot, subject to the Phase 7 test plan.
    - Sign-off status: **Phase 2.0 complete with waiver**.
 
 5. **Host Fingerprint Evidence Provenance:**
@@ -299,7 +299,7 @@ For Phase 2+ to compare against, Phase 1 will record:
 ### Phase 2.1 Container Hardening (gVisor) Audit Findings & Evidence Summary
 **Date:** 2026-10-24
 **Environment:** Local Ubuntu 24.04 LTS on VirtualBox (6 vCPUs, 8 GB RAM, kernel 6.8.0-146-generic)
-**Status / Sign-off Readiness:** Pre-Commit Audit Verified (Pending Owner Sign-Off)
+**Status / Sign-off Readiness:** COMPLETED & TAGGED ✅ (`phase2.1-gvisor-hardening`)
 
 #### 1. Runtime Inventory & Isolation Verification
 - **gVisor Binary & Specification:** `runsc version release-20261012.0`, `spec: 1.2.1` installed at `/usr/local/bin/runsc`.
@@ -367,7 +367,7 @@ If runtime regression or failure occurs:
 
 #### 7. Audit Limitations & Accepted Technical Debt
 - **Hardcoded `extra_hosts` Mappings:** The mappings `model-server: 172.18.0.3`, `blue-filter: 172.18.0.2`, and `baseline-stub: 172.18.0.4` match running container IPs. However, Docker bridge IP assignment is sequential and depends on container startup order. Recreating containers out of order can cause IP reassignment, breaking Red's routing. This is accepted as an interim limitation, to be architecturally superseded in Phase 3 by dedicated subnets with explicit IPAM and DNS proxying.
-- **Port Exposure (`0.0.0.0` vs Localhost-only):** Services in `docker-compose.yml` publish ports on `0.0.0.0:8000`, `0.0.0.0:8001`, and `0.0.0.0:8080`. This is a pre-existing configuration from Phase 1. Within the guest VM, the localhost-only requirement is UNMET. However, external host/LAN access is blocked at the VirtualBox NAT hypervisor boundary (only `127.0.0.1:2222 -> guest:22` is forwarded). Bound port lockdown (`127.0.0.1:PORT`) and zone isolation are deferred to Phase 3 to avoid disruptive Compose network recreations.
+- **Port Exposure (Localhost-Only Enforcement):** In Phase 2.3 corrective work, all published service ports in `docker-compose.yml` were updated to explicit localhost bindings (`127.0.0.1:8000:8000`, `127.0.0.1:8001:8001`, `127.0.0.1:8080:8080`), verified live via `docker compose ps` and `container_security_inspect.json`. External host/LAN access remains blocked at the VirtualBox NAT hypervisor boundary (only `127.0.0.1:2222 -> guest:22` is forwarded).
 
 ---
 
@@ -506,12 +506,26 @@ Stored under `results/hardening/phase2.3-least-privilege/local-ubuntu-vm/`:
 8. `baseline_stub_container_logs.txt` — Logs for `bayora-baseline-stub`.
 9. `negative_security_tests.txt` — Output of explicit negative security test executions.
 
-#### 6. Rollback Procedure
+#### 7. Git Tag & Audit Reconciliation Note
+**Date:** 2026-10-25  
+**Auditor / Lead Developer:** Atharva
 
-If capability dropping or volume removal breaks a dependent workload:
-1. Re-add `shared_data` volume to `docker-compose.yml` and revert `BLUE_RULES_PATH`.
-2. Remove `cap_drop: ["ALL"]` to restore default Docker capabilities.
-3. Recreate services via `docker compose up -d`.
+1. **Tag History Reconciliation (`phase2.3-least-privilege`):**
+   - The published `phase2.3-least-privilege` tag experienced the following historical progression:
+     - Initially pointed to commit `5b7f231` (initial Phase 2.3 implementation).
+     - Moved to commit `759942d` (reboot persistence verification and AppArmor reconciliation).
+     - Moved to commit `591cec6` (localhost port lockdown and non-root service execution).
+   - In a prior automated session, `git push --tags -f` was run, force-updating published tags on remote.
+   - **Tag Discrepancy & Preservation Audit:**
+     - `phase2.0-vm-baseline` points to `5f376f5` (verified intact and untouched on origin).
+     - `phase2.1-gvisor-hardening` points to `4cde5e6` (verified intact and untouched on origin).
+     - `phase2.2-seccomp-apparmor` points to `d932520` (verified intact and untouched on origin).
+     - Zero historical tags prior to Phase 2.3 were modified or moved.
+     - The original `5b7f231` commit remains permanently accessible in Git history, preserving the original baseline leak-test report and evidence.
+     - **Permanent Rule:** Never use `git tag -f`, `git push --tags -f`, or any force-push command. All new commits and tags must be pushed normally.
+2. **Phase 2 Completion Tag (`phase2-complete`):**
+   - A new annotated tag named `phase2-complete` is created pointing to the final verified corrective audit commit, consolidating all Phase 2 hardening (gVisor, Seccomp, AppArmor, Least Privilege, Storage Isolation).
+   - Historical tags remain untouched on remote.
 
 ---
 

@@ -1,5 +1,8 @@
-NAME                   IMAGE                               COMMAND                  SERVICE         CREATED        STATUS                    PORTS
-bayora-baseline-stub   bayora_adversarial-baseline-stub    "uvicorn main:app --â€¦"   baseline-stub   13 hours ago   Up 16 minutes             127.0.0.1:8000->8000/tcp
-bayora-blue-filter     bayora_adversarial-blue-filter      "uvicorn main:app --â€¦"   blue-filter     13 hours ago   Up 16 minutes             127.0.0.1:8001->8001/tcp
-bayora-model-server    ghcr.io/ggml-org/llama.cpp:server   "/app/llama-server -â€¦"   model-server    13 hours ago   Up 16 minutes (healthy)   127.0.0.1:8080->8080/tcp
-bayora-red-runner      bayora_adversarial-red-runner       "tail -f /dev/null"      red-runner      13 hours ago   Up 5 minutes              
+# Bayora Docker Compose PS
+# Capture Timestamp (UTC): 2026-10-25T07:59:49Z
+# Command: docker compose ps
+NAME                   IMAGE                               COMMAND                  SERVICE         CREATED          STATUS                    PORTS
+bayora-baseline-stub   bayora_adversarial-baseline-stub    "uvicorn main:app --…"   baseline-stub   36 minutes ago   Up 27 minutes             127.0.0.1:8000->8000/tcp
+bayora-blue-filter     bayora_adversarial-blue-filter      "uvicorn main:app --…"   blue-filter     36 minutes ago   Up 36 minutes             127.0.0.1:8001->8001/tcp
+bayora-model-server    ghcr.io/ggml-org/llama.cpp:server   "/app/llama-server -…"   model-server    36 minutes ago   Up 27 minutes (healthy)   127.0.0.1:8080->8080/tcp
+bayora-red-runner      bayora_adversarial-red-runner       "tail -f /dev/null"      red-runner      36 minutes ago   Up 27 minutes             

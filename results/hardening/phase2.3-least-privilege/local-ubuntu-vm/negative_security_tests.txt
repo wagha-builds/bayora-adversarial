@@ -1,33 +1,56 @@
-# Bayora Negative Security Test Output — Phase 2.3 Corrective Audit Pass
-# Captured: 2026-10-25T06:05:00Z
-# Target Environment: Local Ubuntu 24.04 VM (Kernel 6.8.0-147-generic)
+# Bayora Negative Security Tests Authentic Terminal Output
+# Capture Timestamp (UTC): 2026-10-25T10:05:22Z
 
---- Container: bayora-blue-filter (profile: bayora-python-service, seccomp: python-service-seccomp.json) ---
-=================================================================
- Bayora Negative Security Test Suite — Container: bayora-blue-filter
-=================================================================
-[*] Testing ptrace syscall (expected denial: Seccomp SCMP_ACT_ERRNO -> EPERM)...
-  [+] SUCCESS (BLOCKED): ptrace returned -1 with expected EPERM (errno=1: Operation not permitted)
-  Attribution: SECCOMP (SCMP_ACT_ERRNO confirmed).
-
-[*] Testing raw socket creation (expected denial: AppArmor / cap_drop ALL -> EACCES / EPERM)...
-  [+] SUCCESS (BLOCKED): raw socket creation raised expected PermissionError: [Errno 13] Permission denied
-  Attribution: Jointly enforced by cap_drop: ALL (no CAP_NET_RAW) and AppArmor ('deny network raw'). Standalone AppArmor kernel audit line not present in dmesg; marked NOT INDEPENDENTLY VERIFIED.
-
-[*] Testing mount syscall (expected denial: Seccomp/AppArmor/cap_drop -> EPERM=1 or EACCES=13)...
-  [+] SUCCESS (BLOCKED): mount returned -1 with expected errno=1 (Operation not permitted)
-  Attribution: Jointly enforced by Seccomp (SCMP_ACT_ERRNO for mount/umount), AppArmor ('deny mount'), and cap_drop: ALL.
-
+--- Target 1: bayora-blue-filter (runc, non-root 65534, read_only rootfs, seccomp, AppArmor, cap_drop: ALL) ---
+$ docker exec -i bayora-blue-filter python3 -u - < tests/hardening/test_negative_security.py
+======================================================================
+ Bayora Negative Security Test Suite ??? Container: 185616d67ffd
+======================================================================
+[*] Testing ptrace syscall (expected denial: consistent with Seccomp SCMP_ACT_ERRNO -> EPERM=1)...
+  [+] SUCCESS (BLOCKED): ptrace returned -1 with expected EPERM (errno=1: Operation not permitted) [consistent with Seccomp]
+[*] Testing raw socket creation (expected denial: cap_drop: ALL / AppArmor -> EACCES=13 or EPERM=1)...
+  [+] SUCCESS (BLOCKED): raw socket creation raised expected PermissionError: [Errno 13] (enforced by cap_drop: ALL; AppArmor attribution not independently verified)
+[*] Testing mount syscall (expected denial: consistent with Seccomp / cap_drop: ALL -> EPERM=1)...
+  [+] SUCCESS (BLOCKED): mount returned -1 with expected errno=1 (Operation not permitted) [consistent with Seccomp/cap_drop; AppArmor attribution not independently verified]
 [*] Testing file write to rootfs (expected denial: read_only rootfs -> EROFS=30)...
-  [+] SUCCESS (BLOCKED): write to /app/test_write_denied.txt raised expected OSError: [Errno 30] Read-only file system
-  Attribution: Docker read_only: true rootfs.
-=================================================================
-[+] ALL NEGATIVE SECURITY TESTS CONFIRMED EXPECTED DENIALS.
+  [+] SUCCESS (BLOCKED): write to /app/test_write_denied.txt raised expected [Errno 30] Read-only file system (enforced by read_only rootfs)
 
---- Container: bayora-model-server (profile: bayora-model-server, seccomp: model-server-seccomp.json) ---
-$ docker exec bayora-model-server sh -c 'touch /models/evil.txt; mount -t tmpfs none /mnt'
-touch: cannot touch '/models/evil.txt': Permission denied
-mount: /mnt: permission denied.
-Attribution:
-- touch /models/evil.txt: Enforced by AppArmor 'deny /models/ w' and read-only bind mount.
-- mount /mnt: Enforced by Seccomp, AppArmor 'deny mount', and cap_drop: ALL.
+======================================================================
+ NEGATIVE SECURITY TEST SUMMARY
+======================================================================
+TEST NAME                 | STATUS       | DETAIL
+----------------------------------------------------------------------
+ptrace_seccomp            | PASS         | EPERM (errno=1) [consistent with Seccomp]
+raw_socket_capdrop        | PASS         | PermissionError: [Errno 13] (cap_drop: ALL; AppArmor unverified)
+mount_seccomp_capdrop     | PASS         | errno=1 (EPERM) [consistent with Seccomp/cap_drop; AppArmor unverified]
+readonly_rootfs           | PASS         | [Errno 30] Read-only file system (read_only rootfs)
+----------------------------------------------------------------------
+[+] ALL NEGATIVE SECURITY TESTS CONFIRMED EXPECTED DENIALS (100% PASS).
+Exit Status: 0
+
+--- Target 2: bayora-baseline-stub (runc, non-root 65534, read_only rootfs, seccomp, AppArmor, cap_drop: ALL) ---
+$ docker exec -i bayora-baseline-stub python3 -u - < tests/hardening/test_negative_security.py
+======================================================================
+ Bayora Negative Security Test Suite ??? Container: fec83483d5ee
+======================================================================
+[*] Testing ptrace syscall (expected denial: consistent with Seccomp SCMP_ACT_ERRNO -> EPERM=1)...
+  [+] SUCCESS (BLOCKED): ptrace returned -1 with expected EPERM (errno=1: Operation not permitted) [consistent with Seccomp]
+[*] Testing raw socket creation (expected denial: cap_drop: ALL / AppArmor -> EACCES=13 or EPERM=1)...
+  [+] SUCCESS (BLOCKED): raw socket creation raised expected PermissionError: [Errno 13] (enforced by cap_drop: ALL; AppArmor attribution not independently verified)
+[*] Testing mount syscall (expected denial: consistent with Seccomp / cap_drop: ALL -> EPERM=1)...
+  [+] SUCCESS (BLOCKED): mount returned -1 with expected errno=1 (Operation not permitted) [consistent with Seccomp/cap_drop; AppArmor attribution not independently verified]
+[*] Testing file write to rootfs (expected denial: read_only rootfs -> EROFS=30)...
+  [+] SUCCESS (BLOCKED): write to /app/test_write_denied.txt raised expected [Errno 30] Read-only file system (enforced by read_only rootfs)
+
+======================================================================
+ NEGATIVE SECURITY TEST SUMMARY
+======================================================================
+TEST NAME                 | STATUS       | DETAIL
+----------------------------------------------------------------------
+ptrace_seccomp            | PASS         | EPERM (errno=1) [consistent with Seccomp]
+raw_socket_capdrop        | PASS         | PermissionError: [Errno 13] (cap_drop: ALL; AppArmor unverified)
+mount_seccomp_capdrop     | PASS         | errno=1 (EPERM) [consistent with Seccomp/cap_drop; AppArmor unverified]
+readonly_rootfs           | PASS         | [Errno 30] Read-only file system (read_only rootfs)
+----------------------------------------------------------------------
+[+] ALL NEGATIVE SECURITY TESTS CONFIRMED EXPECTED DENIALS (100% PASS).
+Exit Status: 0

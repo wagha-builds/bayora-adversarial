@@ -1,3 +1,6 @@
+# Bayora Docker Compose Config
+# Capture Timestamp (UTC): 2026-10-25T07:59:50Z
+# Command: docker compose config
 name: bayora_adversarial
 services:
   baseline-stub:

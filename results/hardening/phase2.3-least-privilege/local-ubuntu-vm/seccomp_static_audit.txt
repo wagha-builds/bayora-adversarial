@@ -1,7 +1,64 @@
-# Bayora Static Seccomp Profile Audit
-# Target Syscalls Checked: 18
-# Profiles Checked:
-- policies/seccomp/model-server-seccomp.json: PASSED
-- policies/seccomp/python-service-seccomp.json: PASSED
+# Bayora Static Seccomp Profile Audit Output
+# Capture Timestamp (UTC): 2026-10-25T10:32:11.297372+00:00
+# Command: python3 scripts/audit_seccomp_profiles.py
+# Auditor Self-Tests: 4/4 PASSED
+# Target High-Risk Syscalls: 18
 
-Verified: All 18 designated high-risk syscalls are completely absent from SCMP_ACT_ALLOW rules.
+Profile: policies/seccomp/model-server-seccomp.json
+  JSON Syntax: VALID
+  Default Action: SCMP_ACT_ERRNO
+  Total Rule Blocks: 57
+  Audit Status: PASSED
+  Prohibited in Allow: 0
+  Missing Unconditional Deny: 0
+  Target Syscall Breakdown:
+    - ptrace              : UNCONDITIONALLY_DENIED
+    - bpf                 : UNCONDITIONALLY_DENIED
+    - perf_event_open     : UNCONDITIONALLY_DENIED
+    - userfaultfd         : UNCONDITIONALLY_DENIED
+    - kexec_load          : UNCONDITIONALLY_DENIED
+    - kexec_file_load     : UNCONDITIONALLY_DENIED
+    - mount               : UNCONDITIONALLY_DENIED
+    - umount              : UNCONDITIONALLY_DENIED
+    - umount2             : UNCONDITIONALLY_DENIED
+    - pivot_root          : UNCONDITIONALLY_DENIED
+    - keyctl              : UNCONDITIONALLY_DENIED
+    - add_key             : UNCONDITIONALLY_DENIED
+    - request_key         : UNCONDITIONALLY_DENIED
+    - init_module         : UNCONDITIONALLY_DENIED
+    - finit_module        : UNCONDITIONALLY_DENIED
+    - delete_module       : UNCONDITIONALLY_DENIED
+    - process_vm_readv    : UNCONDITIONALLY_DENIED
+    - process_vm_writev   : UNCONDITIONALLY_DENIED
+
+Profile: policies/seccomp/python-service-seccomp.json
+  JSON Syntax: VALID
+  Default Action: SCMP_ACT_ERRNO
+  Total Rule Blocks: 57
+  Audit Status: PASSED
+  Prohibited in Allow: 0
+  Missing Unconditional Deny: 0
+  Target Syscall Breakdown:
+    - ptrace              : UNCONDITIONALLY_DENIED
+    - bpf                 : UNCONDITIONALLY_DENIED
+    - perf_event_open     : UNCONDITIONALLY_DENIED
+    - userfaultfd         : UNCONDITIONALLY_DENIED
+    - kexec_load          : UNCONDITIONALLY_DENIED
+    - kexec_file_load     : UNCONDITIONALLY_DENIED
+    - mount               : UNCONDITIONALLY_DENIED
+    - umount              : UNCONDITIONALLY_DENIED
+    - umount2             : UNCONDITIONALLY_DENIED
+    - pivot_root          : UNCONDITIONALLY_DENIED
+    - keyctl              : UNCONDITIONALLY_DENIED
+    - add_key             : UNCONDITIONALLY_DENIED
+    - request_key         : UNCONDITIONALLY_DENIED
+    - init_module         : UNCONDITIONALLY_DENIED
+    - finit_module        : UNCONDITIONALLY_DENIED
+    - delete_module       : UNCONDITIONALLY_DENIED
+    - process_vm_readv    : UNCONDITIONALLY_DENIED
+    - process_vm_writev   : UNCONDITIONALLY_DENIED
+
+# Empirical vs Static Enforcement Distinction:
+# Empirically tested at runtime: ptrace, mount
+# Statically verified in profile rules only: bpf, perf_event_open, userfaultfd, kexec_load, kexec_file_load, umount, umount2, pivot_root, keyctl, add_key, request_key, init_module, finit_module, delete_module, process_vm_readv, process_vm_writev
+# Note: The remaining 16 syscalls were not individually tested at runtime.

@@ -482,16 +482,15 @@ Executed automated leak-test suite inside `bayora-red-runner`:
 | `test_log_exposure.py` | PRIV-001 | Clean (exit 0) | `still_reproducible` (PASS) | Unredacted prompts in stdout logs; audit ledger scheduled for Phase 5. (Note: Evaluated at Docker daemon/operator boundary via `docker logs`, not via in-container Red access). |
 
 #### 3. Negative Security Tests Verification
-Added explicit negative tests (`tests/hardening/test_negative_security.py`) to confirm that denied actions fail visibly:
-- `ptrace` syscall: returns `-1` with `EPERM` (errno=1, Operation not permitted) enforced by custom Seccomp.
-- Raw socket creation: raises `PermissionError: [Errno 13] Permission denied` enforced by AppArmor (`deny network raw`) and capability dropping.
-- `mount` syscall: returns `-1` with `errno=1` (Operation not permitted) enforced by AppArmor (`deny mount`) and capability dropping.
-- Rootfs write: fails with `[Errno 30] Read-only file system` enforced by Docker read-only container rootfs.
-
+Added explicit negative tests (`tests/hardening/test_negative_security.py`) to confirm that denied actions fail visibly with expected error conditions:
+- `ptrace` syscall: returns `-1` with `EPERM` (errno=1, Operation not permitted) [consistent with Seccomp `SCMP_ACT_ERRNO`].
+- Raw socket creation: raises `PermissionError: [Errno 13] Permission denied` [enforced by `cap_drop: ALL`; AppArmor attribution not independently verified via audit logs].
+- `mount` syscall: returns `-1` with `errno=1` (Operation not permitted) [consistent with Seccomp / `cap_drop: ALL`; AppArmor attribution not independently verified via audit logs].
+- Rootfs write: fails strictly with `[Errno 30] Read-only file system` (`EROFS`) [enforced by Docker container `read_only: true` rootfs].
 
 #### 4. Functional & Smoke Verification
 - Blue Filter verified reading rules from `/app/blue_rules.json`: `/rules` returns 5 keywords and secret rule salt.
-- Model Server health check passes (`/health` returns `{"status":"ok"}`).
+- Model Server health check passes (`/health` returns `{"status":"ok"}`); `model-server` is verified `healthy` via Docker healthcheck. Other services (`blue-filter`, `baseline-stub`, `red-runner`) do not have container healthchecks and are verified running (`Up`).
 - Gateway smoke test recorded in saved artifact `inference_smoke_test.txt`: $p50 = 8,001.58\text{ ms}$, $9.55\text{ tok/s}$, 0 timeouts, 0 errors (distinguished from an earlier interactive trial of $7,101.66\text{ ms}$).
 
 #### 5. Evidence Artifacts Provenance (Phase 2.3)
@@ -500,32 +499,38 @@ Stored under `results/hardening/phase2.3-least-privilege/local-ubuntu-vm/`:
 2. `container_security_inspect.json` — Full Docker inspect of all 4 services confirming `CapDrop: ["ALL"]` and mount tables without shared volume.
 3. `blue_filter_rules_verification.json` — Response proving Blue loads baked-in `/app/blue_rules.json`.
 4. `inference_smoke_test.txt` — Gateway inference smoke test output ($8,001.58\text{ ms}$, $9.55\text{ tok/s}$).
-5. `docker_compose_ps.txt` — Running service inventory and localhost port bindings.
+5. `docker_compose_ps.txt` — Running service inventory, status, and localhost port bindings.
 6. `model_server_container_logs.txt` — Logs for `bayora-model-server`.
 7. `blue_filter_container_logs.txt` — Logs for `bayora-blue-filter`.
 8. `baseline_stub_container_logs.txt` — Logs for `bayora-baseline-stub`.
-9. `negative_security_tests.txt` — Output of explicit negative security test executions.
+9. `negative_security_tests.txt` — Authentic terminal output of explicit negative security test executions.
+10. `red_filesystem_audit.txt` — Authentic command output for full filesystem scan.
+11. `seccomp_static_audit.txt` — Authentic static seccomp audit output with self-tests.
 
-#### 7. Git Tag & Audit Reconciliation Note
+#### 7. Git Tag, Resolution & Audit Reconciliation Note
 **Date:** 2026-10-25  
 **Auditor / Lead Developer:** Atharva
 
-1. **Tag History Reconciliation (`phase2.3-least-privilege`):**
+1. **Tag History Reconciliation (`phase2.3-least-privilege` & historical tags):**
    - The published `phase2.3-least-privilege` tag experienced the following historical progression:
      - Initially pointed to commit `5b7f231` (initial Phase 2.3 implementation).
      - Moved to commit `759942d` (reboot persistence verification and AppArmor reconciliation).
      - Moved to commit `591cec6` (localhost port lockdown and non-root service execution).
    - In a prior automated session, `git push --tags -f` was run, force-updating published tags on remote.
    - **Tag Discrepancy & Preservation Audit:**
-     - `phase2.0-vm-baseline` points to `5f376f5` (verified intact and untouched on origin).
-     - `phase2.1-gvisor-hardening` points to `4cde5e6` (verified intact and untouched on origin).
-     - `phase2.2-seccomp-apparmor` points to `d932520` (verified intact and untouched on origin).
-     - Zero historical tags prior to Phase 2.3 were modified or moved.
+     - `phase2.2-seccomp-apparmor` points to `d932520` (verified match supported by earlier recorded SHA).
+     - `phase2.0-vm-baseline` points to `5f376f5` and `phase2.1-gvisor-hardening` points to `4cde5e6` (plausible historical targets consistent with commit messages and logs).
      - The original `5b7f231` commit remains permanently accessible in Git history, preserving the original baseline leak-test report and evidence.
+     - `phase2-complete` tag at `70171ac` represents the prior audit state; the new corrective commit supersedes its verification status without moving the tag.
      - **Permanent Rule:** Never use `git tag -f`, `git push --tags -f`, or any force-push command. All new commits and tags must be pushed normally.
-2. **Phase 2 Completion Tag (`phase2-complete`):**
-   - A new annotated tag named `phase2-complete` is created pointing to the final verified corrective audit commit, consolidating all Phase 2 hardening (gVisor, Seccomp, AppArmor, Least Privilege, Storage Isolation).
-   - Historical tags remain untouched on remote.
+2. **Red Runner Service Resolution & IP Assignment:**
+   - Under gVisor `runsc`, Red resolves service names via `/etc/hosts` populated by `extra_hosts`.
+   - On clean Compose startup (`docker compose down && docker compose up -d`), sequential IP allocation assigned `blue-filter: 172.18.0.2`, `model-server: 172.18.0.3`, `baseline-stub: 172.18.0.4`, matching `extra_hosts`.
+   - Live endpoint curl tests from Red confirmed each hostname routes to its intended service.
+   - Startup order dependency is documented as an accepted interim constraint, to be superseded in Phase 3 by dedicated subnets with explicit IPAM.
+3. **VM Git Synchronization:**
+   - The Ubuntu VM cannot fetch directly from GitHub via git remote due to deploy key / publickey restrictions.
+   - Synchronization of audit commits to the VM was accomplished by pushing from the primary Windows workstation to the VM repository over SSH into a dedicated synchronization ref (`refs/heads/phase2-hardening-sync`), verifying the working tree was clean, and fast-forwarding the VM's local `phase2-hardening` branch. No credentials or private keys were exposed.
 
 ---
 

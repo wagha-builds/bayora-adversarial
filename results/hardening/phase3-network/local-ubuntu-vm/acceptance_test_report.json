@@ -1,0 +1,129 @@
+{
+  "timestamp": "2026-10-28T13:52:47.359511+00:00",
+  "mode": "hardened",
+  "duration_seconds": 27.64,
+  "overall_pass": true,
+  "verdict": "PASS (All Hardened Policies Enforced)",
+  "membership_matrix": "Container                  | bayora_adversarial_blue-net | bayora_adversarial_gateway-host-net | bayora_adversarial_model-net | bayora_adversarial_red-net\n----------------------------------------------------------------------------------------------------------------------------------------------------------\nbayora-baseline-stub       | 172.20.2.2           | 172.20.0.2           | 172.20.3.2           | 172.20.1.2          \nbayora-blue-filter         | 172.20.2.10          | -                    | -                    | -                   \nbayora-model-server        | -                    | -                    | 172.20.3.20          | -                   \nbayora-red-runner          | -                    | -                    | -                    | 172.20.1.10         ",
+  "tests": [
+    {
+      "test": "phase2_controls_preserved",
+      "route": "HostConfig Hardening Check",
+      "target": "all containers",
+      "status": "PASS",
+      "detail": "All Phase 2 controls active (runsc, seccomp, AppArmor, cap_drop: ALL, read_only rootfs)"
+    },
+    {
+      "test": "ipam_static_assignments",
+      "route": "Docker Network Inspection",
+      "target": "Phase 3 IPAM",
+      "status": "PASS_IPAM",
+      "detail": "All static IPAM assignments verified matching running containers"
+    },
+    {
+      "test": "red_to_gateway_hostname_mapping",
+      "route": "Red /etc/hosts -> baseline-stub",
+      "target": "resolved=172.20.1.2, actual=172.20.1.2",
+      "status": "PASS_AUTHORIZED",
+      "detail": "Hostname 'baseline-stub' correctly resolves to Gateway red-net IP (172.20.1.2)"
+    },
+    {
+      "test": "red_to_gateway_authorized",
+      "route": "Red -> http://baseline-stub:8000/health",
+      "target": "172.20.1.2",
+      "status": "PASS_AUTHORIZED",
+      "detail": "Gateway reached at http://baseline-stub:8000/health; verified identity: 'baseline-stub'"
+    },
+    {
+      "test": "gateway_to_blue_authorized",
+      "route": "Gateway -> http://172.20.2.10:8001/health",
+      "target": "172.20.2.10",
+      "status": "PASS_AUTHORIZED",
+      "detail": "Gateway reached Blue filter; verified identity: 'blue-filter'"
+    },
+    {
+      "test": "gateway_to_model_authorized",
+      "route": "Gateway -> http://172.20.3.20:8080/health",
+      "target": "172.20.3.20",
+      "status": "PASS_AUTHORIZED",
+      "detail": "Gateway reached Model server; verified identity: 'ok'"
+    },
+    {
+      "test": "red_to_blue_by_name",
+      "route": "Red -> blue-filter:8001 (/rules)",
+      "target": "resolved=unresolved",
+      "status": "PASS_ISOLATED",
+      "detail": "Policy enforced: hostname unresolvable or network unreachable (resolved=unresolved, err=curl: (6) Could not resolve host: blue-filter)"
+    },
+    {
+      "test": "red_to_blue_by_ip",
+      "route": "Red -> 172.20.2.10:8001 (/rules)",
+      "target": "172.20.2.10",
+      "status": "PASS_ISOLATED",
+      "detail": "Network isolated: no route to Blue at 172.20.2.10 (err=curl: (7) Failed to connect to 172.20.2.10 port 8001 after 0 ms: Could not connect to server)"
+    },
+    {
+      "test": "red_to_model_by_name",
+      "route": "Red -> model-server:8080 (/health)",
+      "target": "resolved=unresolved",
+      "status": "PASS_ISOLATED",
+      "detail": "Policy enforced: hostname unresolvable or network unreachable (resolved=unresolved, err=curl: (6) Could not resolve host: model-server)"
+    },
+    {
+      "test": "red_to_model_by_ip",
+      "route": "Red -> 172.20.3.20:8080 (/health)",
+      "target": "172.20.3.20",
+      "status": "PASS_ISOLATED",
+      "detail": "Network isolated: no route to Model at 172.20.3.20 (err=curl: (7) Failed to connect to 172.20.3.20 port 8080 after 0 ms: Could not connect to server)"
+    },
+    {
+      "test": "blue_to_model_direct",
+      "route": "Blue -> Model (172.20.3.20:8080)",
+      "target": "172.20.3.20",
+      "status": "PASS_ISOLATED",
+      "detail": "Network isolated: Blue cannot route to Model at 172.20.3.20 (err=<urlopen error [Errno 101] Network is unreachable>)"
+    },
+    {
+      "test": "model_to_blue_direct",
+      "route": "Model -> Blue (172.20.2.10:8001)",
+      "target": "172.20.2.10",
+      "status": "PASS_ISOLATED",
+      "detail": "Network isolated: Model cannot route to Blue at 172.20.2.10 (err=curl: (7) Failed to connect to 172.20.2.10 port 8001 after 0 ms: Couldn't connect to server)"
+    },
+    {
+      "test": "blue_to_red_direct",
+      "route": "Blue -> Red (172.20.1.10:8088)",
+      "target": "172.20.1.10",
+      "status": "PASS_ISOLATED",
+      "detail": "Network isolated: Blue cannot reach Red at 172.20.1.10 (err=<urlopen error [Errno 101] Network is unreachable>)"
+    },
+    {
+      "test": "model_to_red_direct",
+      "route": "Model -> Red (172.20.1.10:8088)",
+      "target": "172.20.1.10",
+      "status": "PASS_ISOLATED",
+      "detail": "Network isolated: Model cannot reach Red at 172.20.1.10 (err=curl: (7) Failed to connect to 172.20.1.10 port 8088 after 0 ms: Couldn't connect to server)"
+    },
+    {
+      "test": "red_external_egress",
+      "route": "Red -> External Internet (1.1.1.1)",
+      "target": "1.1.1.1",
+      "status": "PASS_ISOLATED",
+      "detail": "External egress blocked by internal: true bridge (code=7, err=curl: (7) Failed to connect to 1.1.1.1 port 80 after 0 ms: Could not connect to server)"
+    },
+    {
+      "test": "red_to_bridge_host_sshd",
+      "route": "Red -> Bridge Host (172.20.1.1:22)",
+      "target": "172.20.1.1:22",
+      "status": "PASS_ISOLATED",
+      "detail": "Host port 22 unreachable via bridge gateway 172.20.1.1 (code=28, dropped by host firewall)"
+    },
+    {
+      "test": "red_to_bridge_container_ports",
+      "route": "Red -> Bridge (172.20.1.1:8001, 8080)",
+      "target": "172.20.1.1",
+      "status": "PASS",
+      "detail": "Bridge gateway ports 8001/8080 closed (127.0.0.1 binding effective)"
+    }
+  ]
+}

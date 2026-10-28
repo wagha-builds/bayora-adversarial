@@ -264,3 +264,47 @@ All errors returned by the Gateway use RFC 7807 Problem Details formatting:
 | **429 Too Many Requests** | `BUDGET_EXHAUSTED` | Query limit $Q$ ($Q=200$) reached. | `Evaluation query budget exhausted.` |
 | **500 Internal Error** | `LEDGER_FAILURE` | Audit ledger write failed or socket disconnected. | Platform halts to prevent un-audited evaluation. |
 | **504 Gateway Timeout** | `UPSTREAM_TIMEOUT` | Blue filter or Model timed out ($>500$ ms for Blue). | Upstream process failure recorded in audit log. |
+
+---
+
+## 5. Phase 3 Implemented Gateway Network Bindings (October 2026)
+
+### 5.1 Multi-Homed Network Interface Allocation
+In Phase 3, the Evaluation Gateway (`bayora-baseline-stub`) operates as the sole multi-homed container across internal zones:
+
+| Interface Network | Gateway IPv4 Address | Permitted Ingress / Egress Roles |
+|---|---|---|
+| `red-net` (`172.20.1.0/24`) | `172.20.1.2` | Ingress evaluation queries from `bayora-red-runner` (`172.20.1.10`); uniform refusal return. |
+| `blue-net` (`172.20.2.0/24`) | `172.20.2.2` | Egress prompt inspection to `bayora-blue-filter` (`172.20.2.10:8001`); ingress filter verdicts. |
+| `model-net` (`172.20.3.0/24`) | `172.20.3.2` | Egress prompt dispatch to `bayora-model-server` (`172.20.3.20:8080`); ingress model token streams. |
+| `gateway-host-net` (`172.20.0.0/24`) | `172.20.0.2` | Ingress Evaluator / Admin API calls; bound to host port `127.0.0.1:8000:8000`. |
+
+### 5.2 Endpoint Routing in Phase 3
+- Red targets `http://baseline-stub:8000/query`, which resolves via `/etc/hosts` to `172.20.1.2`.
+- Gateway routes backend filter calls to `http://172.20.2.10:8001` across `blue-net`.
+- Gateway routes backend completion calls to `http://172.20.3.20:8080` across `model-net`.
+- Host processes interact with the Gateway strictly through `http://127.0.0.1:8000`.
+
+---
+
+## 6. Contract-to-Implementation Gap Matrix (as of 28 October 2026)
+
+> **Important Truthfulness Notice:**
+> Sections 1 through 4 define the **normative target API specification**. The actual repository currently runs `services/baseline-stub/` (Phase 1 Insecure Baseline). The hardened Evaluation Gateway (`services/evaluation-gateway/`) is **planned and designed across 5 milestones**, but its production implementation is **not yet started**.
+
+| # | Endpoint & HTTP Method | Category | Contract Role & Permitted State | Baseline Stub (`baseline-stub`) Status | Hardened Gateway Status | Implementation Milestone |
+|---|---|---|---|---|---|---|
+| 1 | `POST /v1/eval/runs` | A: Lifecycle | Admin (`SETUP` creator) | **NOT IMPLEMENTED** | Planned | Milestone 2 |
+| 2 | `GET /v1/eval/runs/{run_id}` | A: Lifecycle | Admin / Red (All states) | **NOT IMPLEMENTED** | Planned | Milestone 2 |
+| 3 | `POST /v1/eval/runs/{run_id}/commit` | A: Lifecycle | Admin (`SETUP -> COMMITTED`) | **NOT IMPLEMENTED** | Planned | Milestone 2 |
+| 4 | `POST /v1/eval/runs/{run_id}/start` | A: Lifecycle | Admin (`COMMITTED -> RUNNING`) | **NOT IMPLEMENTED** | Planned | Milestone 2 |
+| 5 | `POST /v1/eval/runs/{run_id}/close` | A: Lifecycle | Admin (`RUNNING -> CLOSED`) | **NOT IMPLEMENTED** | Planned | Milestone 2 |
+| 6 | `POST /v1/eval/query` | B: Inference | Red Team (`RUNNING` only) | **INCOMPATIBLE** (exposes `/runs/{id}/query` & `/query` without OPA, budget, or ledger) | Planned | Milestone 4 |
+| 7 | `GET /v1/eval/runs/{run_id}/budget` | B: Inference | Red / Admin (`RUNNING`, `CLOSED`) | **NOT IMPLEMENTED** | Planned | Milestone 3 |
+| 8 | `POST /v1/admin/defenses/register` | C: Admin | Admin (`SETUP`) | **NOT IMPLEMENTED** | Planned | Milestone 2 |
+| 9 | `POST /v1/admin/models/register` | C: Admin | Admin (`SETUP`) | **NOT IMPLEMENTED** | Planned | Milestone 2 |
+| 10 | `GET /v1/audit/runs/{run_id}/blocks` | D: Audit | Admin / Auditor (`CLOSED`, `REVEALED`) | **NOT IMPLEMENTED** | Planned | Milestone 3 |
+| 11 | `POST /v1/audit/runs/{run_id}/anchor` | D: Audit | Admin (`CLOSED -> REVEALED`) | **NOT IMPLEMENTED** | Planned | Milestone 3 |
+
+*Authoritative Path Clarification for Endpoint 11:*
+The normative endpoint path ratified in this specification is **`POST /v1/audit/runs/{run_id}/anchor`** (Category D: Audit & Ledger Verification). Any informal design references to `/v1/admin/audit/anchor` are strictly superseded by this contract.

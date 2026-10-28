@@ -68,3 +68,22 @@ Evaluating all **7 Trust-Boundary Crossings (X1 through X7)** across the **6 STR
 3. **Scenario 3: The Cache Snooping Attack:**
    - *Attack:* Red sends a warm-up prompt, measures token generation latency on subsequent prompts to detect if previous queries primed the KV cache.
    - *Mitigation:* `llama.cpp` runs with prompt and KV caching disabled; slots reset after every query; Model runs on physically dedicated CPU cores (Cores 0-1) on Ampere Altra ARM64.
+
+---
+
+## 4. Phase 3 Verification & Residual Threat Analysis (October 2026)
+
+### 4.1 Direct Pivot Attack Verification (Scenario 2 — Mitigated)
+In Phase 3, the Direct Pivot attack (SEC-008) was empirically mitigated via four-network Docker bridge segmentation:
+- **Red $\rightarrow$ Blue Direct:** Fails with name resolution failure and unreachable route (`PASS_ISOLATED`).
+- **Red $\rightarrow$ Model Direct:** Fails with name resolution failure and unreachable route (`PASS_ISOLATED`).
+- **Blue $\leftrightarrow$ Model Direct:** Direct routing blocked (`PASS_ISOLATED`).
+- **Reverse Routes (Blue/Model $\rightarrow$ Red):** Blocked across tenant zones (`PASS_ISOLATED`), verified against dedicated probe server (`scripts/test_listener_server.py` on port 8088).
+
+### 4.2 Bridge Gateway Host Exposure Analysis (Phase 3.3 — Mitigated & Active via Systemd)
+- **Threat:** By default, Docker bridge networks configure the host kernel as the default gateway (`172.20.1.1` on `red-net`). Host services bound to `0.0.0.0` (such as OpenSSH on port 22) were reachable from within tenant containers across the bridge gateway, leaking the SSH daemon banner (`SSH-2.0-OpenSSH_9.6p1`).
+- **Remediation & Current Status:** Dedicated host firewall table `inet bayora_host_firewall` drops tenant bridge subnets (`172.20.1.0/24`, `172.20.2.0/24`, `172.20.3.0/24`) destined to host ports while preserving administrative SSH on `enp0s3`. Applied via `scripts/apply_phase3_host_firewall.sh` and enabled via systemd unit `bayora-host-firewall.service`. Verified active with nonzero packet drop counters and acceptance test `red_to_bridge_host_sshd` passing `PASS_ISOLATED`. (Note: Cold reboot verification remains an open testing item; rollback available via `scripts/rollback_phase3_host_firewall.sh`).
+
+
+### 4.3 Cache Timing Threat Status (Scenario 3 — Deferred to Phase 6)
+- Rerouted through the Evaluation Gateway (`http://baseline-stub:8000/query`), the prefix-caching timing oracle (LLM-001) remains reproducible with a measured latency delta of $+3,644.29\text{ ms}$ (cold: $3,809.72\text{ ms}$ vs. warm: $165.43\text{ ms}$; `cache_n = 67`). Mitigation is scheduled for Phase 6 (disabling KV prompt caching and context resets).

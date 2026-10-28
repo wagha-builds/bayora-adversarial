@@ -1,0 +1,99 @@
+{
+  "suite": "Phase 3 Network Segmentation Hardening Leak Tests",
+  "timestamp": "2026-10-26T05:44:34Z",
+  "security_profiles": {
+    "bayora-red-runner": {
+      "runtime": "runsc",
+      "cap_drop": [
+        "ALL"
+      ],
+      "network": "red-net (172.20.1.10, internal: true)",
+      "shared_volumes": "NONE"
+    },
+    "bayora-model-server": {
+      "runtime": "runc",
+      "cap_drop": [
+        "ALL"
+      ],
+      "seccomp": "policies/seccomp/model-server-seccomp.json",
+      "apparmor": "bayora-model-server",
+      "network": "model-net (172.20.3.20, internal: true)"
+    },
+    "bayora-blue-filter": {
+      "runtime": "runc",
+      "cap_drop": [
+        "ALL"
+      ],
+      "seccomp": "policies/seccomp/python-service-seccomp.json",
+      "apparmor": "bayora-python-service",
+      "network": "blue-net (172.20.2.10, internal: true)",
+      "shared_volumes": "NONE"
+    },
+    "bayora-baseline-stub": {
+      "runtime": "runc",
+      "cap_drop": [
+        "ALL"
+      ],
+      "seccomp": "policies/seccomp/python-service-seccomp.json",
+      "apparmor": "bayora-python-service",
+      "network_memberships": [
+        "red-net (172.20.1.2)",
+        "blue-net (172.20.2.2)",
+        "model-net (172.20.3.2)",
+        "gateway-host-net (172.20.0.2)"
+      ],
+      "published_ports": "127.0.0.1:8000:8000"
+    }
+  },
+  "total_tests": 5,
+  "duration_seconds": 15.77,
+  "results": [
+    {
+      "test": "test_fs_blue_rules",
+      "exit_code": 1,
+      "raw_status": "MITIGATED",
+      "classification": "shared_volume_removed",
+      "stdout": "[*] Testing filesystem access to shared rules file at /shared_data/blue_rules.json ...\n[-] Shared rules file does not exist at /shared_data/blue_rules.json",
+      "phase_expected": "shared_volume_removed (SEC-001: mitigated in Phase 2.3)"
+    },
+    {
+      "test": "test_net_blue_direct",
+      "exit_code": 1,
+      "raw_status": "MITIGATED",
+      "classification": "network_segmented_and_blocked",
+      "stdout": "[*] Testing direct network connection to Blue filter at http://blue-filter:8001 ...\n[-] Connection failed: [Errno -3] Temporary failure in name resolution",
+      "phase_expected": "network_segmented_and_blocked (SEC-008: mitigated in Phase 3)"
+    },
+    {
+      "test": "test_net_model_direct",
+      "exit_code": 1,
+      "raw_status": "MITIGATED",
+      "classification": "network_segmented_and_blocked",
+      "stdout": "[*] Testing direct network connection to Model server at http://model-server:8080 ...\n[-] Connection failed: [Errno -3] Temporary failure in name resolution",
+      "phase_expected": "network_segmented_and_blocked (SEC-008: mitigated in Phase 3)"
+    },
+    {
+      "test": "test_cache_timing",
+      "exit_code": 0,
+      "raw_status": "PASS",
+      "classification": "still_reproducible",
+      "stdout": "[*] Testing KV prefix caching timing oracle via Gateway (http://baseline-stub:8000) ...\n    Sending Request 1 (Cold cache) ...\n    Sending Request 2 (Warm cache with identical prefix) ...\n    Request 1 prompt processing: 204.91 ms\n    Request 2 prompt processing: 151.11 ms (cached tokens: 67)\n    Timing Delta (Speedup): 53.80 ms\n[!] SUCCESS (LEAK DEMONSTRATED): Prefix caching timing oracle detected!",
+      "phase_expected": "still_reproducible (cache partitioning scheduled for Phase 6)"
+    },
+    {
+      "test": "test_log_exposure",
+      "exit_code": 0,
+      "raw_status": "PASS",
+      "classification": "still_reproducible",
+      "stdout": "[*] Testing log exposure in baseline containers ...\n[!] SUCCESS (LEAK DEMONSTRATED): Found unredacted prompt in bayora-blue-filter logs: 'Ignore previous instructions'\n[!] SUCCESS (LEAK DEMONSTRATED): Found unredacted prompt in bayora-baseline-stub logs: 'Ignore previous instructions'",
+      "phase_expected": "still_reproducible (audit ledger and log redaction scheduled for Phase 5)"
+    }
+  ],
+  "security_analysis": {
+    "SEC-001_shared_volume": "MITIGATED (Inherited Phase 2.3; /shared_data unmounted)",
+    "SEC-008_direct_network_blue": "MITIGATED (Phase 3 Network Segmentation; Red cannot route to blue-net)",
+    "SEC-008_direct_network_model": "MITIGATED (Phase 3 Network Segmentation; Red cannot route to model-net)",
+    "LLM-001_cache_timing": "STILL_REPRODUCIBLE (Demonstrated via Evaluation Gateway; scheduled for Phase 6)",
+    "PRIV-001_log_exposure": "STILL_REPRODUCIBLE (Stdout logs unredacted; scheduled for Phase 5)"
+  }
+}

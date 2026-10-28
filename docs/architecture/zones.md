@@ -62,6 +62,7 @@ Every component of Bayora operates within one of five isolated security domains.
 ### 1.4 Zone 4: Control Zone (Evaluation Gateway & Policy Engine)
 * **Purpose:** Orchestrates the evaluation lifecycle, enforces OPA policy, mediates cross-zone requests, manages secrets, and pushes events to the audit ledger.
 * **Trust Level:** **Trusted Computing Base (TCB).** Root of enforcement within the sandbox.
+* **Implementation Status Note:** Currently deployed in Phase 3 as `bayora-baseline-stub` (insecure routing baseline). The hardened Evaluation Gateway (`services/evaluation-gateway/`) with OPA sidecar, OpenBao secrets, and `step-ca` PKI is designed and planned across 5 milestones for Phase 4.
 * **Assets Housed:** Gateway orchestration logic, OPA Rego policies, OpenBao secrets, `step-ca` PKI root, SQLite run metadata.
 * **Permitted Communications:**
   - Multi-homed across all internal bridge networks (Red-Net, Blue-Net, Model-Net, Audit-Net).
@@ -135,3 +136,23 @@ Security guarantees in Bayora rely on the following explicit trust assumptions (
 * **TA-4 (Deterministic Hardware Isolation):** Physical CPU pinning (`cpuset`) on non-hyperthreaded Ampere Altra ARM64 cores provides deterministic computational isolation, preventing simultaneous multithreading (SMT) cache leakage between the Model and other zones.
 * **TA-5 (Evaluator Authority):** The human operator / evaluator acting with admin credentials is trusted not to collude with the Red or Blue teams during active runs.
 * **TA-6 (Cryptographic Primitives):** Standard cryptographic algorithms (SHA-256, Ed25519, AES-256-GCM, TLS 1.3) are computationally sound and resist practical cryptanalysis.
+
+---
+
+## 5. Phase 3 Implemented Network Topology & Enforcement (October 2026)
+
+### 5.1 Docker Bridge Network Segmentation
+In Phase 3, the flat Docker bridge architecture was replaced with four dedicated bridge networks with explicit Docker IPAM subnets:
+
+| Network Name | Subnet CIDR | `internal` Flag | Gateway IP (Host) | Attached Containers & Static IPs |
+|---|---|---|---|---|
+| `red-net` | `172.20.1.0/24` | `true` | `172.20.1.1` | `bayora-red-runner` (`172.20.1.10`), `bayora-baseline-stub` (`172.20.1.2`) |
+| `blue-net` | `172.20.2.0/24` | `true` | `172.20.2.1` | `bayora-blue-filter` (`172.20.2.10`), `bayora-baseline-stub` (`172.20.2.2`) |
+| `model-net` | `172.20.3.0/24` | `true` | `172.20.3.1` | `bayora-model-server` (`172.20.3.20`), `bayora-baseline-stub` (`172.20.3.2`) |
+| `gateway-host-net` | `172.20.0.0/24` | `false` | `172.20.0.1` | `bayora-baseline-stub` (`172.20.0.2`), published to `127.0.0.1:8000:8000` |
+
+### 5.2 Network Isolation Invariants
+1. **Multi-Homed Evaluation Gateway:** `bayora-baseline-stub` (Zone 4) is the **sole multi-homed container** bridging across internal networks.
+2. **Single-Homed Tenants:** Red, Blue, and Model are strictly single-homed on their respective internal networks. They share no direct network and cannot resolve each other's hostnames or route to each other's subnets.
+3. **No Direct Host Exposure for Backend Services:** Blue (`8001`) and Model (`8080`) ports are NOT published to the host. Only the Evaluation Gateway is reachable on host `127.0.0.1:8000`.
+4. **Host Firewall Remediation & Persistence (Phase 3.3):** Docker bridge gateway IPs (`172.20.1.1`, etc.) expose host-bound services (such as SSH on port 22) across the bridge. A dedicated `nftables` table (`inet bayora_host_firewall`) drops traffic from tenant subnets (`172.20.1.0/24`, `172.20.2.0/24`, `172.20.3.0/24`) to host ports, while preserving administrative SSH on `enp0s3`. The ruleset is persistent via systemd service `bayora-host-firewall.service` (with cold reboot verification pending), and verified via test `red_to_bridge_host_sshd` (`PASS_ISOLATED`).

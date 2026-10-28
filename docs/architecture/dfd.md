@@ -22,6 +22,8 @@ Bayora enforces the **Five-Zone Rule** as its foundational security boundary:
 
 ## 2. Five-Zone Architecture Diagram
 
+> **Architecture Scope Note:** The diagram below illustrates the full **Target Architecture (Phases 4–5)**, including the OpenBao secrets engine, `step-ca` PKI, OPA policy sidecar, and Zone 5 append-only audit ledger. The **currently deployed Phase 3 stack** consists of `bayora-red-runner`, `bayora-baseline-stub` (insecure routing stub), `bayora-blue-filter`, and `bayora-model-server` across 4 segmented networks, as detailed in Section 6.
+
 ### 2.1 Complete System Topology (Mermaid)
 
 ```mermaid
@@ -178,3 +180,30 @@ The host firewall (`nftables`) and Docker engine configuration enforce the follo
 | **Zone 5 (Audit)** | **DENIED** | **DENIED** | **DENIED** | **ALLOWED (Resp)** | Local Only | **ALLOWED (Egress Anchor)**|
 
 **Core Guarantee:** The only container with multi-interface access is the Evaluation Gateway in Zone 4. All inter-zone routing via IP forwarding is disabled at the host kernel (`net.ipv4.ip_forward = 0`).
+
+---
+
+## 6. Phase 3 Implemented Network Topology & Verification (October 2026)
+
+### 6.1 Implemented Zone Subnets & Static Addresses
+In Phase 3, the DFD network boundaries were materialized using 4 distinct Docker networks with explicit IPAM:
+- **`red-net` (`172.20.1.0/24`, `internal: true`):**
+  - `bayora-red-runner`: `172.20.1.10`
+  - `bayora-baseline-stub` (Gateway): `172.20.1.2`
+- **`blue-net` (`172.20.2.0/24`, `internal: true`):**
+  - `bayora-blue-filter`: `172.20.2.10`
+  - `bayora-baseline-stub` (Gateway): `172.20.2.2`
+- **`model-net` (`172.20.3.0/24`, `internal: true`):**
+  - `bayora-model-server`: `172.20.3.20`
+  - `bayora-baseline-stub` (Gateway): `172.20.3.2`
+- **`gateway-host-net` (`172.20.0.0/24`, `internal: false`):**
+  - `bayora-baseline-stub` (Gateway): `172.20.0.2` [Published: `127.0.0.1:8000:8000`]
+
+### 6.2 Empirical Isolation Verification
+Verified via `tests/network/test_phase3_network_acceptance.py`:
+1. **Red $\rightarrow$ Gateway (X1):** `PASS_AUTHORIZED` (resolves `172.20.1.2`, HTTP 200).
+2. **Gateway $\rightarrow$ Blue (X2) & Gateway $\rightarrow$ Model (X3):** `PASS_AUTHORIZED` (backend health checks pass).
+3. **Cross-Zone Denials (Red $\rightarrow$ Blue, Red $\rightarrow$ Model, Blue $\leftrightarrow$ Model):** `PASS_ISOLATED` (timed out or unreachable; no L3 route).
+4. **Reverse Probes (Blue $\rightarrow$ Red, Model $\rightarrow$ Red):** `PASS_ISOLATED` (fails to reach Red's dedicated probe server on `172.20.1.10:8088`, using `scripts/test_listener_server.py`).
+5. **Bridge Host Exposure (Phase 3.3):** Red $\rightarrow$ `172.20.1.1:22` (Host SSH) is blocked (`PASS_ISOLATED`, packets dropped by `inet bayora_host_firewall`). The table is persistent via systemd service `bayora-host-firewall.service` (with cold reboot verification pending).
+6. **Overall Suite Verdict:** `PASS (All Hardened Policies Enforced)` (17/17 checks passed).

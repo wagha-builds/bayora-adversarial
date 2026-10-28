@@ -1,11 +1,12 @@
-# Bayora Insecure Baseline - Docker Compose (Phase 1 / Hardening Phase 2)
-# Hardened in Phase 2:
-# 1. Red isolated under gVisor (runsc)
-# 2. Seccomp and AppArmor enforcing profiles on services
-# 3. Linux capabilities dropped (cap_drop: ALL) and no-new-privileges: true
-# 4. Shared volume removed; Red given payloads-only read-only mount and tmpfs results (no host write)
-# 5. Blue filter and Gateway run as non-root (65534:65534) with read-only rootfs and tmpfs /tmp
-# 6. Host published ports strictly bound to 127.0.0.1 (localhost)
+# Bayora Hardened Architecture - Phase 3 Five-Zone Network Segmentation
+# Enforces:
+# 1. Three internal isolated networks (red-net, blue-net, model-net) with internal: true
+# 2. Host-facing network (gateway-host-net) with published port 127.0.0.1:8000:8000 strictly for Gateway
+# 3. Gateway (bayora-baseline-stub) is the SOLE multi-homed container across internal trust zones
+# 4. Strict static IPAM addresses for all containers; deterministic addressing prevents IP drift
+# 5. Red extra_hosts restricted strictly to baseline-stub (172.20.1.2)
+# 6. Blue and Model ports (8001, 8080) NOT published to host
+# 7. All Phase 2 controls preserved: gVisor (runsc) on Red, seccomp/AppArmor on Model, cap_drop: ALL, read-only rootfs
 
 services:
   model-server:
@@ -25,8 +26,6 @@ services:
       - "--cache-prompt"
     volumes:
       - ./models/qwen2.5-1.5b-instruct-q4_k_m.gguf:/models/model.gguf:ro
-    ports:
-      - "127.0.0.1:8080:8080"
     security_opt:
       - seccomp:./policies/seccomp/model-server-seccomp.json
       - apparmor:bayora-model-server
@@ -34,7 +33,8 @@ services:
     cap_drop:
       - ALL
     networks:
-      - baseline-net
+      model-net:
+        ipv4_address: 172.20.3.20
     restart: unless-stopped
 
   blue-filter:
@@ -48,8 +48,6 @@ services:
       - /tmp:rw,size=64m,noexec,nosuid
     environment:
       - BLUE_RULES_PATH=/app/blue_rules.json
-    ports:
-      - "127.0.0.1:8001:8001"
     security_opt:
       - seccomp:./policies/seccomp/python-service-seccomp.json
       - apparmor:bayora-python-service
@@ -57,7 +55,8 @@ services:
     cap_drop:
       - ALL
     networks:
-      - baseline-net
+      blue-net:
+        ipv4_address: 172.20.2.10
     restart: unless-stopped
 
   baseline-stub:
@@ -80,11 +79,21 @@ services:
       - no-new-privileges:true
     cap_drop:
       - ALL
+    extra_hosts:
+      - "blue-filter:172.20.2.10"
+      - "model-server:172.20.3.20"
     depends_on:
       - blue-filter
       - model-server
     networks:
-      - baseline-net
+      gateway-host-net:
+        ipv4_address: 172.20.0.2
+      red-net:
+        ipv4_address: 172.20.1.2
+      blue-net:
+        ipv4_address: 172.20.2.2
+      model-net:
+        ipv4_address: 172.20.3.2
     restart: unless-stopped
 
   red-runner:
@@ -109,13 +118,41 @@ services:
     depends_on:
       - baseline-stub
     extra_hosts:
-      - "model-server:172.18.0.3"
-      - "blue-filter:172.18.0.2"
-      - "baseline-stub:172.18.0.4"
+      - "baseline-stub:172.20.1.2"
     networks:
-      - baseline-net
+      red-net:
+        ipv4_address: 172.20.1.10
     restart: unless-stopped
 
 networks:
-  baseline-net:
+  red-net:
     driver: bridge
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.1.0/24
+
+  blue-net:
+    driver: bridge
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.2.0/24
+
+  model-net:
+    driver: bridge
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.3.0/24
+
+  gateway-host-net:
+    driver: bridge
+    internal: false
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/24

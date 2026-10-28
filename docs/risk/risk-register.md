@@ -64,3 +64,32 @@ A primary concern in adversarial safety testing is **Defense Extraction via Orac
 | **R-20** | gVisor runtime incompatibility on Model container | 4 / 3 (12 - High) | Evaluated with 1-2h timebox; fallback to hardened `runc` with custom seccomp/AppArmor profile if performance unacceptable (D-CONF-8). | 2 / 2 (4 - Low) | Tokens-per-second benchmark comparing gVisor vs runc on ARM64. | Native Linux KVM MicroVM virtualization. |
 | **R-21** | Host kernel eBPF probe bypass or Falco failure | 2 / 4 (8 - Medium) | Falco uses modern eBPF probe mode (bypasses OCI kernel signing issues); systemd watchdog auto-restarts failed agent (SEC-010). | 1 / 2 (2 - Low) | Falco health check heartbeat; systemd journal monitoring. | Redundant kernel auditd logging daemon. |
 | **R-22** | False positive cascade in Blue defense halting evaluation | 3 / 3 (9 - Medium) | Evaluation run includes benign calibration benchmark prompts prior to adversarial suite; false positive rate threshold checks. | 2 / 1 (2 - Low) | Gateway tracks block-ratio metrics; alerts if benign queries exceed threshold. | Dynamic human-in-the-loop review for disputed blocks. |
+
+---
+
+## 4. Phase 3 Residual Risk Reconciliation (October 2026)
+
+### 4.1 Verified Mitigations
+- **R-02 (Direct Network Pivot / SEC-008):** **MITIGATED & VERIFIED.** Dedicated internal Docker bridge networks (`red-net`, `blue-net`, `model-net`) with static IPAM enforce strict Layer 3 network isolation. Negative tests confirmed Red cannot reach Blue or Model by hostname or container IP (`PASS_ISOLATED`). Residual risk score: **4 (Low)**.
+
+### 4.2 New Risk Finding: Docker Bridge Host Exposure (R-23)
+- **Risk ID:** **R-23**
+- **Threat / Failure Mode:** Docker bridge gateways assign host kernel IP (`172.20.1.1` on `red-net`). Host services bound to `0.0.0.0` (such as OpenSSH on port 22) were reachable from within tenant containers across the bridge gateway, leaking the SSH daemon banner (`SSH-2.0-OpenSSH_9.6p1`).
+- **Pre L / I (Score):** 4 / 4 (16 - Critical)
+- **Architectural Mitigation:** Dedicated host firewall table `inet bayora_host_firewall` hooking `input` chain at priority `filter - 1`. Explicitly drops traffic from tenant subnets (`172.20.1.0/24`, `172.20.2.0/24`, `172.20.3.0/24`) destined to host ports while preserving established/related connections, loopback, and admin SSH on `enp0s3`.
+- **Post L / I (Score):** 1 / 3 (3 - Low).
+- **Current Operational Status:** **MITIGATED & ACTIVE VIA SYSTEMD (`PASS_ISOLATED`).** Applied via `scripts/apply_phase3_host_firewall.sh`; service `/etc/systemd/system/bayora-host-firewall.service` is active and enabled; acceptance test `red_to_bridge_host_sshd` verified `PASS_ISOLATED`. (Note: Cold reboot persistence verification remains an open verification item; safe rollback provided via `scripts/rollback_phase3_host_firewall.sh`).
+
+### 4.3 Unaddressed Risks Remaining Reproducible (Scheduled for Future Phases)
+- **R-04 (Cache Timing / LLM-001):** Rerouted through the Evaluation Gateway; cold/warm latency delta ($+3,644.29\text{ ms}$, `cache_n = 67`) remains reproducible until Phase 6 KV prompt cache removal.
+- **R-17 / PRIV-001 (Container Log Exposure):** Raw prompts remain visible in `docker logs` at the operator daemon boundary; deferred to Phase 5 encrypted audit ledger.
+
+### 4.4 Operational Risk: Host VM Scheduling & Contention Dilation (R-24)
+- **Risk ID:** **R-24**
+- **Threat / Failure Mode:** VirtualBox VM vCPUs scheduled across hybrid Intel P/E-cores on Windows 11 host experience guest timer dilation, soft-lockup alarms, and client timeouts under unconstrained multi-core CPU flood.
+- **Current Mitigation & Waiver:** Accepted waiver for Phase 2.0 baseline; unconstrained stress testing avoided on VM. Bounded contention benchmark ($\le 2$ stressor cores leaving $\ge 2$ cores free) deferred to Phase 7 cgroup v2 testing.
+
+### 4.5 Scope Risk: Baseline Stub vs. Hardened Gateway Conflation (R-25)
+- **Risk ID:** **R-25**
+- **Threat / Failure Mode:** Prematurely replacing `services/baseline-stub` would destroy the vulnerable baseline required for scientific before-vs-after regression testing (SEC-001, SEC-008, LLM-001).
+- **Architectural Mitigation:** The baseline stub is preserved as `services/baseline-stub` (`version 0.1.0-baseline`). The hardened Evaluation Gateway (`services/evaluation-gateway/`, `version 1.0.0-hardened`) is designed as a separate service toggled via Docker Compose profiles (`COMPOSE_PROFILES=hardened` vs `COMPOSE_PROFILES=baseline`) to strictly preserve the single multi-homed gateway invariant.

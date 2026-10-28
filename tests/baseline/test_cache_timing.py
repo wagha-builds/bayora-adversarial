@@ -10,7 +10,7 @@ import sys
 import time
 import httpx
 
-MODEL_URL = "http://model-server:8080"
+GATEWAY_URL = "http://baseline-stub:8000"
 LONG_PREFIX = (
     "In the year 2026, autonomous evaluation platforms were deployed to assess adversarial AI security. "
     "Researchers developed a set of five strict security zones with hardware-assisted memory isolation, "
@@ -20,33 +20,33 @@ LONG_PREFIX = (
 
 
 def test_cache_timing() -> dict:
-    print(f"[*] Testing KV prefix caching timing oracle against {MODEL_URL} ...")
+    print(f"[*] Testing KV prefix caching timing oracle via Gateway ({GATEWAY_URL}) ...")
     try:
         with httpx.Client(timeout=60.0) as client:
-            # 1. Cold request (initial prompt ingestion into KV cache)
+            # 1. Cold request (initial prompt ingestion into KV cache via Gateway)
             print("    Sending Request 1 (Cold cache) ...")
             t0 = time.perf_counter()
             resp1 = client.post(
-                f"{MODEL_URL}/completion",
-                json={"prompt": LONG_PREFIX + "Query alpha.", "n_predict": 5}
+                f"{GATEWAY_URL}/query",
+                json={"prompt": LONG_PREFIX + "Query alpha.", "max_tokens": 5}
             )
             resp1.raise_for_status()
             dt1_ms = (time.perf_counter() - t0) * 1000
             data1 = resp1.json()
-            timings1 = data1.get("timings", {})
+            timings1 = data1.get("timings") or {}
             prompt_ms_1 = timings1.get("prompt_ms", dt1_ms)
 
-            # 2. Warm request (identical prefix, prompt caching active)
+            # 2. Warm request (identical prefix, prompt caching active via Gateway)
             print("    Sending Request 2 (Warm cache with identical prefix) ...")
             t1 = time.perf_counter()
             resp2 = client.post(
-                f"{MODEL_URL}/completion",
-                json={"prompt": LONG_PREFIX + "Query beta.", "n_predict": 5}
+                f"{GATEWAY_URL}/query",
+                json={"prompt": LONG_PREFIX + "Query beta.", "max_tokens": 5}
             )
             resp2.raise_for_status()
             dt2_ms = (time.perf_counter() - t1) * 1000
             data2 = resp2.json()
-            timings2 = data2.get("timings", {})
+            timings2 = data2.get("timings") or {}
             prompt_ms_2 = timings2.get("prompt_ms", dt2_ms)
 
             delta_ms = prompt_ms_1 - prompt_ms_2

@@ -1,0 +1,45 @@
+================================================================================
+ BAYORA PHASE 3 — STATIC IPAM & NETWORK TOPOLOGY PREFLIGHT AUDIT
+ Timestamp (UTC): 2026-10-28T13:31:01.258642+00:00
+================================================================================
+
+================================================================================
+ LIVE DOCKER NETWORK MEMBERSHIP MATRIX
+================================================================================
+Container                  | blue-net         | gateway-host-net | model-net        | red-net
+------------------------------------------------------------------------------------------------------
+bayora-baseline-stub       | 172.20.2.2       | 172.20.0.2       | 172.20.3.2       | 172.20.1.2
+bayora-blue-filter         | 172.20.2.10      | -                | -                | -
+bayora-model-server        | -                | -                | 172.20.3.20      | -
+bayora-red-runner          | -                | -                | -                | 172.20.1.10
+================================================================================
+
+[*] Verified Checks Passed: 26
+  [+] bayora_adversarial_red-net: internal=True verified
+  [+] bayora_adversarial_red-net: subnet=172.20.1.0/24 verified
+  [+] bayora_adversarial_blue-net: internal=True verified
+  [+] bayora_adversarial_blue-net: subnet=172.20.2.0/24 verified
+  [+] bayora_adversarial_model-net: internal=True verified
+  [+] bayora_adversarial_model-net: subnet=172.20.3.0/24 verified
+  [+] bayora_adversarial_gateway-host-net: internal=False verified
+  [+] bayora_adversarial_gateway-host-net: subnet=172.20.0.0/24 verified
+  [+] bayora-red-runner -> red-net (172.20.1.10) verified
+  [+] bayora-blue-filter -> blue-net (172.20.2.10) verified
+  [+] bayora-model-server -> model-net (172.20.3.20) verified
+  [+] bayora-baseline-stub -> red-net (172.20.1.2) verified
+  [+] bayora-baseline-stub -> blue-net (172.20.2.2) verified
+  [+] bayora-baseline-stub -> model-net (172.20.3.2) verified
+  [+] bayora-baseline-stub -> gateway-host-net (172.20.0.2) verified
+  [+] Tenant isolation: bayora-red-runner is strictly single-homed (1 internal network)
+  [+] Tenant isolation: bayora-blue-filter is strictly single-homed (1 internal network)
+  [+] Tenant isolation: bayora-model-server is strictly single-homed (1 internal network)
+  [+] Gateway is correctly multi-homed across all 3 internal zones (red, blue, model)
+  [+] bayora-red-runner: no ports published to host (verified)
+  [+] bayora-blue-filter: no ports published to host (verified)
+  [+] bayora-model-server: no ports published to host (verified)
+  [+] Gateway port 8000 correctly bound to 127.0.0.1:8000
+  [+] Red /etc/hosts: baseline-stub -> 172.20.1.2 verified
+  [+] Red /etc/hosts: blue-filter direct mapping absent (verified)
+  [+] Red /etc/hosts: model-server direct mapping absent (verified)
+
+[+] SUCCESS: Static IPAM preflight passed with 100% compliance!

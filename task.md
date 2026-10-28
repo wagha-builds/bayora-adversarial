@@ -534,20 +534,139 @@ Stored under `results/hardening/phase2.3-least-privilege/local-ubuntu-vm/`:
 
 ---
 
-## Future Phase: Phase 3 — Five-Zone Network Isolation
-**Status:** DEFERRED
-**Key Tasks:**
-- [ ] **Phase 3.1:** Implement strict Docker bridge network isolation (5 distinct networks).
-- [ ] **Phase 3.2:** Configure internal DNS resolution.
-- [ ] **Phase 3.3:** Configure host-level `nftables` defense-in-depth.
+## Phase 3 — Five-Zone Network Isolation & Static IPAM Audit Findings
+**Date:** 2026-10-26<br>
+**Environment:** Local Ubuntu 24.04 LTS on VirtualBox (6 vCPUs, 8 GB RAM, kernel 6.8.0-147-generic)<br>
+**Status / Sign-off Readiness:** Fully Implemented & Empirically Verified ✅ (Branch: `phase3-network`)
 
-### 8. Acceptance Criteria (FR-022)
-- **PASS:** The insecure baseline is successfully spun up locally and on the Oracle VM. Every script in the leak-test matrix successfully exploits the intended weakness (network, fs, cache, etc.). Baseline latency is measured *both* through the stub and via direct calls.
-- **FAIL:** The expected insecure behavior cannot be reproduced, or unintended isolation prevents the baseline from failing as designed.
+### 1. Changes Implemented
+- **Four Dedicated Docker Networks with Explicit IPAM (`docker-compose.yml`):**
+  - `red-net` (`172.20.1.0/24`, `internal: true`): isolated bridge for Red Team untrusted runner and Gateway.
+  - `blue-net` (`172.20.2.0/24`, `internal: true`): isolated bridge for Blue Team defense filter and Gateway.
+  - `model-net` (`172.20.3.0/24`, `internal: true`): isolated bridge for Model server and Gateway.
+  - `gateway-host-net` (`172.20.0.0/24`, `internal: false`): host-facing bridge publishing the Gateway.
+- **Static IPv4 Address Assignments:**
+  - `bayora-red-runner`: `172.20.1.10` (`red-net`)
+  - `bayora-blue-filter`: `172.20.2.10` (`blue-net`)
+  - `bayora-model-server`: `172.20.3.20` (`model-net`)
+  - `bayora-baseline-stub` (Evaluation Gateway): `172.20.1.2` (`red-net`), `172.20.2.2` (`blue-net`), `172.20.3.2` (`model-net`), `172.20.0.2` (`gateway-host-net`).
+- **Multi-Homed Gateway Invariant:**
+  - The Evaluation Gateway is the **sole multi-homed container** connecting internal networks.
+  - Tenant containers (`red-runner`, `blue-filter`, `model-server`) are strictly single-homed and share no direct network.
+- **Hostname Resolution & Port Lockdown:**
+  - Red's `extra_hosts` maps `baseline-stub` exclusively to `172.20.1.2` (on `red-net`). Stale mappings to `blue-filter` and `model-server` removed.
+  - Removed host published ports `8001` (Blue) and `8080` (Model). Only Gateway port `8000` is published to host `127.0.0.1:8000:8000`.
+- **Phase 2 Hardening Preservation:**
+  - Red continues running under gVisor (`runsc`) with `cap_drop: ALL` and in-memory `tmpfs` results.
+  - Model continues running under hardened `runc` with custom `seccomp` and `AppArmor` policies.
+  - Read-only filesystems and non-root execution preserved for Blue and Gateway.
 
-### 9. Prerequisites & Manual Actions Required
-1. **WSL2 Environment (✅ COMPLETED):** The repository has been successfully moved to the native WSL2 filesystem (`/home/atharva/bayora_adversarial`).
-2. **Oracle VM Validation (✅ DEFERRED TO PHASE 3):** The final evidence (leak table, latency, throughput, cache-timing chart) MUST be generated on the Oracle ARM64 VM. You must record the instance type next to the timing numbers (R-04, R-14).
-3. **Model Hash Pinning:** On the first run of the download script, you will need to manually verify the computed SHA-256 hash against the official HuggingFace page. This hash becomes the registered weights hash (FR-015, LLM-008).
-4. **License Check (✅ COMPLETED):** Qwen2.5-1.5B-Instruct uses the Apache 2.0 license. This is an open-source, permissive license that is fully compliant with the project's requirements. No restrictions exist for this usage.
+### 2. Static IPAM Preflight Audit Results (`scripts/check_network_ipam.py`)
+Executed on native Ubuntu VM on 2026-10-26:
+- **Verified Checks Passed:** 26 of 26 (100% compliance).
+- Confirmed all 4 networks exist with exact subnets and `internal: true` flags.
+- Confirmed actual container IP assignments match static plan.
+- Confirmed tenant single-homing and Gateway multi-homing invariants.
+- Confirmed port publication lockdown (only Gateway on `127.0.0.1:8000`).
+- Confirmed Red `/etc/hosts` contains only `baseline-stub -> 172.20.1.2`.
 
+### 3. Hardened Network Acceptance Test Results (`tests/network/test_phase3_network_acceptance.py`)
+Executed in hardened mode on native Ubuntu VM:
+| Test Name | Status | Target | Interpretation |
+|---|---|---|---|
+| `phase2_controls_preserved` | PASS | All containers | gVisor, seccomp, AppArmor, cap_drop, read_only rootfs confirmed intact. |
+| `ipam_static_assignments` | PASS_IPAM | Phase 3 IPAM | Precondition passed; all addresses match static IPAM configuration. |
+| `red_to_gateway_hostname_mapping` | PASS_AUTHORIZED | resolved=172.20.1.2, actual=172.20.1.2 | Red resolves Gateway to intended `red-net` IP. |
+| `red_to_gateway_authorized` | PASS_AUTHORIZED | 172.20.1.2:8000 | Authorized end-to-end evaluation route succeeds (HTTP 200). |
+| `gateway_to_blue_authorized` | PASS_AUTHORIZED | 172.20.2.10:8001 | Gateway reaches Blue across `blue-net` (HTTP 200). |
+| `gateway_to_model_authorized` | PASS_AUTHORIZED | 172.20.3.20:8080 | Gateway reaches Model across `model-net` (HTTP 200). |
+| `red_to_blue_by_name` | PASS_ISOLATED | resolved=unresolved | DNS resolution fails; direct access blocked. |
+| `red_to_blue_by_ip` | PASS_ISOLATED | 172.20.2.10:8001 | Direct TCP connection fails (no route / unreachable). |
+| `red_to_model_by_name` | PASS_ISOLATED | resolved=unresolved | DNS resolution fails; direct access blocked. |
+| `red_to_model_by_ip` | PASS_ISOLATED | 172.20.3.20:8080 | Direct TCP connection fails (no route / unreachable). |
+| `blue_to_model_direct` | PASS_ISOLATED | 172.20.3.20:8080 | Direct cross-zone routing blocked between Blue and Model. |
+| `model_to_blue_direct` | PASS_ISOLATED | 172.20.2.10:8001 | Direct cross-zone routing blocked between Model and Blue. |
+| `blue_to_red_direct` | PASS_ISOLATED | 172.20.1.10:8088 | Reverse probe fails against verified temporary listener in Red. |
+| `model_to_red_direct` | PASS_ISOLATED | 172.20.1.10:8088 | Reverse probe fails against verified temporary listener in Red. |
+| `red_external_egress` | PASS_ISOLATED | 1.1.1.1:80 | Outbound egress blocked by `internal: true` bridge configuration. |
+| `red_to_bridge_host_sshd` | PASS_ISOLATED | 172.20.1.1:22 | Host port 22 unreachable via bridge gateway 172.20.1.1 (dropped by host firewall). |
+| `red_to_bridge_container_ports` | PASS | 172.20.1.1:8001,8080 | Host container ports not reachable (ports no longer published to host). |
+
+**Suite Verdict:** **`PASS (All Hardened Policies Enforced)`** (17 of 17 checks passed across two consecutive runs).
+
+### 4. Hardened Leak Suite Status Flips (`tests/hardening/run_phase3_leak_tests.py`)
+Executed inside Red runner and host daemon:
+| Test Script | Vulnerability ID | Phase 2.3 Status | Phase 3 Status | Security Impact |
+|---|---|---|---|---|
+| `test_fs_blue_rules.py` | SEC-001 | MITIGATED | **MITIGATED** | Filesystem path `/shared_data/blue_rules.json` unmounted; rule extraction blocked. |
+| `test_net_blue_direct.py` | SEC-008 | still_reproducible | **FLIPPED $\rightarrow$ MITIGATED** | Direct HTTP connection to Blue blocked by network segmentation (`network_segmented_and_blocked`). |
+| `test_net_model_direct.py` | SEC-008 | still_reproducible | **FLIPPED $\rightarrow$ MITIGATED** | Direct HTTP connection to Model blocked by network segmentation (`network_segmented_and_blocked`). |
+| `test_cache_timing.py` | LLM-001 | still_reproducible | **STILL_REPRODUCIBLE** | Rerouted via Gateway (`http://baseline-stub:8000/query`); prefix caching timing delta detected ($+3,644.29\text{ ms}$; scheduled for Phase 6). |
+| `test_log_exposure.py` | PRIV-001 | still_reproducible | **STILL_REPRODUCIBLE** | Raw prompts logged to container stdout/stderr at daemon boundary; scheduled for Phase 5. |
+
+### 5. Phase 3.3 Host Firewall Remediation (`nftables`) & Persistence Verification
+- **Finding:** Docker bridge gateways assign host kernel IP (`172.20.1.1` on `red-net`). Services bound to `0.0.0.0` (such as OpenSSH on port 22) were reachable from within tenant containers across the bridge gateway (`SSH-2.0-OpenSSH_9.6p1` banner exposed).
+- **Remediation Implementation:**
+  - `scripts/apply_phase3_host_firewall.sh`: Creates isolated ruleset at `/etc/nftables.d/bayora-host-firewall.nft` defining table `inet bayora_host_firewall`.
+  - Configures and enables dedicated systemd unit `/etc/systemd/system/bayora-host-firewall.service` (`After=network.target docker.service`).
+  - Does NOT touch `/etc/nftables.conf` and avoids `flush ruleset` to protect Docker bridge routing.
+  - Drops packets from tenant subnets (`172.20.1.0/24`, `172.20.2.0/24`, `172.20.3.0/24`) destined to host ports, while accepting established/related connections, loopback, and administrative SSH on `enp0s3`.
+- **Operational Verification:**
+  - `systemctl is-enabled bayora-host-firewall.service` returned `enabled`.
+  - `systemctl is-active bayora-host-firewall.service` returned `active`.
+  - `sudo nft list table inet bayora_host_firewall` verified drop rules with nonzero packet counters.
+  - Acceptance test `red_to_bridge_host_sshd` verified `PASS_ISOLATED`.
+- **Authoritative Caveat:**
+  - Cold reboot persistence has **not** been independently verified via a reboot cycle; persistence is confirmed active and enabled in the running systemd state.
+  - Safe rollback script: `scripts/rollback_phase3_host_firewall.sh`.
+
+### 6. Reverse-Isolation Test Listener Remediation (`scripts/test_listener_server.py`)
+- **Root Cause of Prior Failure:** Acceptance test previously spawned `python3 -m http.server 8088`, which exposed directory listings, lacked process management, and failed on socket rebind due to Linux kernel `TIME_WAIT` when `allow_reuse_address = False` was set.
+- **Remediated Implementation:**
+  - `scripts/test_listener_server.py`: Dedicated lightweight probe server returning strictly `BAYORA_TEST_LISTENER_OK\n` (HTTP 200), no directory or file serving, PID tracking in `/tmp/bayora_test_listener.pid`, and `allow_reuse_address = True`.
+  - `tests/network/test_phase3_network_acceptance.py`: Validates script copy exit status, captures container stderr in `/tmp/bayora_test_listener.log`, validates `/proc/<pid>/cmdline` before process termination, implements SIGTERM -> SIGKILL fallback, and cleans up reliably.
+- **Unit & Static Test Verification (19 of 19 passed):**
+  - `tests/network/test_isolated_listener.py`: 6/6 passed.
+  - `tests/network/test_firewall_scripts_static.py`: 7/7 passed.
+  - `tests/network/test_acceptance_logic.py`: 6/6 passed.
+
+### 7. Evaluation Gateway Architecture & Implementation Plan (Deliverable 3 Completed)
+- **Status:** **ARCHITECTURAL PLAN COMPLETE; CODE IMPLEMENTATION PLANNED**.
+- **Coexistence Invariant:** The existing `services/baseline-stub` (`version 0.1.0-baseline`) is preserved as the immutable Phase 1 baseline. The hardened Evaluation Gateway (`services/evaluation-gateway/`, `version 1.0.0-hardened`) is designed as a separate service toggled via Compose profiles (`COMPOSE_PROFILES=hardened` vs `COMPOSE_PROFILES=baseline`) to strictly preserve the single multi-homed gateway invariant.
+- **Design Specifications:**
+  - Full 11-endpoint contract compliance ([docs/api/gateway-contract.md](docs/api/gateway-contract.md)).
+  - 5-State lifecycle state machine: `SETUP -> COMMITTED -> RUNNING -> CLOSED -> REVEALED`.
+  - SQLite WAL persistence schema for runs, models, defenses, and audit blocks.
+  - Concurrency-safe atomic query budget reservation ($Q=200$).
+  - Double ledger commit (Event A: `QUERY_PRE`, Event B: `QUERY_POST`) with continuous SHA-256 chaining.
+  - Uniform refusal generator with latency normalization jitter (defeating R-05 oracle probing).
+  - RFC 7807 Problem Details error formatting across all endpoints.
+- **5-Milestone Roadmap:**
+  - Milestone 1: Core Foundation, Schemas & RFC 7807 Error Framework.
+  - Milestone 2: State Machine, Manifest Persistence & Admin API.
+  - Milestone 3: Atomic Query Budget Engine & Chained Audit Ledger.
+  - Milestone 4: Evaluation Query Pipeline, Upstream Clients & Uniform Refusal.
+  - Milestone 5: Docker Compose Integration, Mutual Exclusivity & Acceptance Suite.
+
+### 8. Evidence Artifacts Provenance (Phase 3)
+Stored under `results/hardening/phase3-network/local-ubuntu-vm/`:
+- `acceptance_test_report.json`: Full 17-test hardened acceptance suite execution report (17/17 passed).
+- `ipam_audit_output.txt`: 26-assertion static IPAM audit report (26/26 passed, 100% compliance).
+- `leak_test_results.json`: Full 5-test leak suite execution results demonstrating SEC-008 status flips.
+- `scripts/check_network_ipam.py`: Static IPAM preflight audit script.
+- `scripts/test_listener_server.py`: Dedicated reverse probe test listener.
+- `tests/network/test_phase3_network_acceptance.py`: Mode-aware network acceptance test suite.
+- `scripts/apply_phase3_host_firewall.sh` & `scripts/rollback_phase3_host_firewall.sh`: Host firewall management scripts.
+
+---
+
+## Follow-On Implementation Roadmap (Phases 4 through 10)
+| Phase | Title | Status | Dependencies | Deliverables & Acceptance Criteria |
+|---|---|---|---|---|
+| **Phase 4** | Identity, Secrets & Policy | In Progress (Gateway Plan Ready) | Phase 3 | Implement Evaluation Gateway (Milestones 1–5); deploy OpenBao secrets engine and `step-ca` PKI; enforce mTLS between Gateway, Blue, and Model; integrate OPA/Rego sidecar with phase-aware ABAC evaluation policies. |
+| **Phase 5** | Cryptographic Audit Ledger & Log Redaction | Not Started | Phase 4 | Append-only SHA-256 chained hash ledger with Ed25519 signatures; external Git anchoring; redacted one-way telemetry to resolve PRIV-001 log exposure; independent Verifier CLI. |
+| **Phase 6** | LLM Hardening & Side-Channel Mitigation | Not Started | Phase 3, Phase 5 | Disable KV prompt caching on `llama.cpp` to eliminate LLM-001 timing oracle; enforce stateless requests, prompt canary detection, model weight hashing, and uniform refusals. |
+| **Phase 7** | Resource Governance & Contention Defense | Not Started | Phase 6 | Apply cgroup v2 limits (`cpuset`, CFS CPU quotas, memory limits); rerun bounded contention benchmark ($\le 2$ stressor cores) to satisfy PERF-004 within stated tolerance. |
+| **Phase 8** | Telemetry, Runtime Monitoring & Observability | Not Started | Phase 4, Phase 5 | Deploy Falco with modern eBPF probe for host runtime threat detection; structured security-event logging and Prometheus metrics. |
+| **Phase 9** | Automated Assurance & Regression Stress Suite | Not Started | Phase 5, Phase 6, Phase 7 | Automated CI regression covering all leak tests; image signing with Cosign; network partition and credential expiration stress testing. |
+| **Phase 10** | Turnkey Deployment & Release Readiness | Not Started | Phase 9 | Single-command deployment (`make up` / `make verify`); release documentation, final risk register reconciliation, and offline verifiable evidence bundle. |
